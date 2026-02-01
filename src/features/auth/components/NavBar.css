@@ -1,0 +1,70 @@
+.navbar {
+    background-color: var(--theme-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Ensures vertical centering */
+    padding: 5px 5%; /* Unified padding for cleaner syntax */
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensures navbar stays on top of other content */
+    box-sizing: border-box; /* Prevents padding from breaking 100% width */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Subtle lift */
+    backdrop-filter: blur(10px); /* Optional: Modern glass effect if bg is slightly transparent */
+}
+
+.navbar-logo {
+    height: 60px;
+    width: auto;
+    border-radius: 12px; /* Slightly softer corners */
+    border: 2px solid var(--theme-border);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy smooth transition */
+    cursor: pointer;
+    background: white; /* Ensures logo png transparency doesn't look odd over shadows */
+}
+
+.navbar-logo:hover {
+    border-color: #333333;
+    transform: scale(1.05); /* Removed translateZ to avoid blurry text issues on some screens */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Changed from space-around for a tighter look, or keep space-around if preferred */
+    gap: 40px; /* Increased gap for better breathability */
+    width: 40%;
+}
+
+.navbar-link {
+    text-decoration: none;
+    color: #666666;
+    font-weight: 500;
+    font-size: 1.1em;
+    padding: 8px 0; /* Removed side padding to make underline animation fit text width */
+    position: relative; /* Needed for the underline effect */
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* The Animated Underline Effect */
+.navbar-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #333333; /* Uses your theme hover color */
+    transition: width 0.3s ease-in-out;
+}
+
+.navbar-link:hover {
+    color: #333333;
+    transform: translateY(-2px); /* Subtle lift without scale to prevent blur */
+}
+
+.navbar-link:hover::after {
+    width: 100%; /* Expands the line on hover */
+}

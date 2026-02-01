@@ -1,0 +1,401 @@
+/* Variables assumed to be defined globally */
+/*
+:root {
+    --theme-white: #ffffff;
+    --theme-font: #333333;
+    --theme-border: #e0e0e0;
+    --theme-button-bg: #007bff;
+    --theme-button-font: #ffffff;
+    --theme-border-yellow: #FFD700;
+}
+*/
+
+.auth-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar {
+    position: relative;
+    z-index: 10;
+}
+
+.auth-page {
+    background-image: url('../../../assets/login_bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 4rem;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box; /* Ensure padding is included in width/height */
+}
+
+.auth-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 40%, rgba(0, 0, 0, 0) 70%);
+    z-index: 1;
+}
+
+
+.form-card {
+    position: absolute;
+    top : 15%;
+    right: 8%;
+    background-color: var(--theme-white);
+    border-radius: 16px;
+    /* --- IMPORTANT CHANGES FOR FIXED SIZE AND LAYOUT --- */
+    width: 520px;
+    min-height: 580px; /* Adjust this value to fit your tallest form (Register) comfortably */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+    z-index: 5;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    overflow: hidden; /* Important for the toggle to sit on top */
+
+    display: flex; /* Make it a flex container */
+    flex-direction: column; /* Stack children vertically */
+    /* REMOVED justify-content: center; align-items: center; from here */
+    /* The content *inside* the main content area will be centered */
+}
+
+.form-card:hover {
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+    transform: translateY(-5px);
+}
+
+/* --- NEW WRAPPER FOR MAIN CONTENT INSIDE FORM-CARD --- */
+.form-card-content {
+    flex: 1; /* Allows this content area to take available space */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Vertically center the actual form content */
+    align-items: center; /* Horizontally center text/form */
+    padding: 2rem 2.5rem 2.5rem 2.5rem; /* Padding for the content area */
+    box-sizing: border-box;
+}
+/* --- END NEW WRAPPER --- */
+
+
+.form-card h1 {
+    font-size: 2rem;
+    color: var(--theme-font);
+    margin-bottom: 0.75rem;
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.2;
+}
+
+.form-card p {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+
+/* --- MODIFIED FORM TOGGLE FOR TAB-LIKE BEHAVIOR --- */
+.form-toggle {
+    display: flex;
+    width: 100%; /* Occupy full width of form-card */
+    background-color: #e6e6e6; /* Slightly lighter grey for background */
+    border-top-left-radius: 16px; /* Match card border radius */
+    border-top-right-radius: 16px; /* Match card border radius */
+    padding: 0.35rem; /* Padding around buttons */
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08); /* Inner shadow for depth */
+    box-sizing: border-box; /* Include padding in width */
+    position: sticky; /* Make it sticky to the top of the card */
+    top: 0;
+    z-index: 10; /* Ensure it stays above form content */
+    margin-bottom: 0; /* No margin below if you want it flush with content */
+}
+
+.form-toggle button {
+    flex: 1;
+    padding: 0.85rem 1.8rem;
+    border: none;
+    background-color: transparent;
+    color: #777;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 8px; /* Slightly softer corners for individual buttons */
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.form-toggle button.active {
+    background-color: var(--theme-white);
+    color: var(--theme-font);
+    transform: translateY(-2px);
+}
+
+/* Remove default focus outline / ring on toggle buttons (prevents black border) */
+.form-toggle button.active {
+    border: none;
+    box-shadow: none;
+}
+
+.form-toggle button:focus,
+.form-toggle button:focus-visible,
+.form-toggle button:active {
+    outline: none;
+    box-shadow: none;
+}
+
+.form-toggle button::-moz-focus-inner {
+    border: 0;
+}
+
+/* Prevent tap highlight on mobile */
+.form-toggle button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.form-toggle button:hover:not(.active) {
+    color: #444;
+    background-color: #f0f0f0;
+}
+/* --- END MODIFIED FORM TOGGLE --- */
+
+
+
+/* --- MODIFIED INPUT FIELD WIDTHS --- */
+.registration-form, .login-form { /* Assuming you'll have a .login-form too */
+    width: 100%; /* Ensure the inner form takes the full content width */
+    max-width: 480px; /* Slightly wider max-width for inputs */
+    margin: 0 auto; /* Center the actual form within the form-card-content */
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-bottom: 1rem; /* Remove any padding here, it's on form-card-content now */
+    box-sizing: border-box;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    width: 100%; /* Ensure form-row takes full available width */
+}
+
+.form-row label {
+    font-weight: 600;
+    color: var(--theme-font);
+    font-size: 0.9rem;
+    text-align: left;
+    width: 100%;
+}
+
+.form-row input,
+.form-row select {
+    padding: 0.6rem 0.85rem;
+    border: 2px solid var(--theme-border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: var(--theme-font);
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+    height: 38px;
+    width: 100%; /* Make inputs fill the available width of their parent .form-row */
+    box-sizing: border-box; /* Include padding/border in width */
+}
+
+/* --- AUTOFILL BACKGROUND FIX - No changes here, it's good --- */
+.form-row input:-webkit-autofill,
+.form-row input:-webkit-autofill:hover,
+.form-row input:-webkit-autofill:focus,
+.form-row input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset !important;
+    -webkit-text-fill-color: var(--theme-font) !important;
+    transition: background-color 9999s ease-out !important;
+}
+
+.form-row input[type="password"]:-webkit-autofill,
+.form-row input[type="password"]:-webkit-autofill:hover,
+.form-row input[type="password"]:-webkit-autofill:focus,
+.form-row input[type="password"]:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0px 1000px #f9f9f9 inset, 0 0 0 1000px transparent inset !important;
+}
+/* --- END AUTOFILL BACKGROUND FIX --- */
+
+
+.form-row input::placeholder {
+    color: #999;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+    outline: none;
+    border-color: var(--theme-border-yellow);
+    background-color: var(--theme-white);
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+.phone-flex-row, .split-flex-row {
+    width: 100%; /* Ensure these flex containers take full width */
+}
+
+/* --- Your submit button styles are good --- */
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    height: 42px;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.8s ease, color 0.8s ease;
+    z-index: 1;
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    transition: left 0.8s ease;
+    z-index: -1;
+}
+
+.submit-btn:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.submit-btn:hover::before {
+    left: 0;
+}
+
+.submit-btn:active {
+    transform: scale(0.98);
+}
+
+
+.auth-info {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    color: var(--theme-white);
+    max-width: 450px;
+    text-align: left;
+    z-index: 2;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+.auth-info h1 {
+    font-size: 3.8rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.auth-info h2 {
+    font-size: 4.2rem;
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+    color: #FF6B35;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.auth-info .tagline {
+    font-family: 'Georgia', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #FFD700;
+    line-height: 1.4;
+}
+
+.auth-info .quote {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    letter-spacing: 0.8px;
+    color: #f0f0f0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .auth-page {
+        padding: 2rem;
+        justify-content: center;
+    }
+    .auth-info {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        text-align: center;
+        margin-bottom: 2rem;
+        max-width: 100%;
+    }
+    .auth-page::before {
+        background: rgba(0, 0, 0, 0.5);
+    }
+    .form-card {
+        width: 90%;
+        max-width: 480px;
+        margin: 0;
+    }
+    .auth-info h2 {
+        font-size: 3rem;
+    }
+    .form-card-content { /* Ensure content adjusts on smaller screens */
+        padding: 1.5rem 1.5rem 2rem 1.5rem;
+    }
+}
+@media (max-width: 768px) {
+    .auth-page {
+        flex-direction: column;
+        justify-content: center;
+        padding-top: 80px;
+    }
+    .auth-info {
+        order: 1;
+        margin-bottom: 2rem;
+    }
+    .form-card {
+        order: 2;
+        width: 95%;
+        margin-bottom: 2rem;
+        min-height: auto;
+        border-radius: 10px; /* Smaller radius for smaller screens */
+    }
+    .form-toggle {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .form-card-content {
+        padding: 1rem 1rem 1.5rem 1rem;
+    }
+    .form-card h1 {
+        font-size: 1.5rem;
+    }
+    .form-card p {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+}

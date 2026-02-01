@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-border-yellow: #fecc18;
+}

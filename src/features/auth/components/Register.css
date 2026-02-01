@@ -1,0 +1,38 @@
+/* Ensure these variables are defined elsewhere in your project if they are not in this file */
+/* :root {
+    --theme-white: #ffffff;
+    --theme-font: #333333;
+    --theme-border: #e0e0e0;
+    --theme-button-bg: #007bff;
+    --theme-button-font: #ffffff;
+    --theme-border-yellow: #FFD700;
+} */
+.registration-form{
+    padding-top: 0.5rem;
+}
+
+.register-heading{
+    padding-top: 1rem;
+}
+
+.phone-flex-row {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.code-box {
+    flex: 0.3;
+}
+
+.phone-box {
+    flex: 0.7;
+}
+
+.split-flex-row {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.split-flex-row .form-row {
+    flex: 1;
+}
