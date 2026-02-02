@@ -1,12 +1,91 @@
-/* DriverPage Layout Styles */
+
 .driver-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--theme-light-bg);
+    position: relative;
+}
+
+/* SideMenu styles from your previous response */
+.side-menu {
   display: flex;
+  flex-direction: column;
+  width: var(--side-menu-width);
   min-height: 100vh;
-  background-color: #f5f6fa;
+  background-color: var(--theme-white);
+  color: var(--theme-font);
+  padding: 0;
+  box-sizing: border-box;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0.125rem 0 0.625rem rgba(0, 0, 0, 0.05);
+  position: fixed; /* Fix side menu position */
+  left: 0;
+  top: 0;
+  z-index: 1000;
 }
 
 .driver-main {
-  flex: 1;
-  overflow-y: auto;
-  background-color: #f5f6fa;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-left: var(--side-menu-width); /* Push main content to the right of the fixed side menu */
+    position: relative; /* Context for children's absolute/sticky positioning */
+}
+
+.driver-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--navbar-height);
+    background-color: var(--theme-white);
+    padding: 0 1.875rem; /* 30px converted to rem */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+    position: sticky; /* Sticky to the top of driver-main */
+    top: 0;
+    z-index: 999;
+}
+
+.driver-content-area {
+    padding: 1.875rem; /* 30px converted to rem */
+    flex: 1;
+    overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+    .side-menu {
+        width: 4rem; /* 64px collapsed width */
+    }
+    .driver-main {
+        margin-left: 4rem;
+    }
+    .driver-navbar {
+        padding: 0 1rem;
+    }
+    .fleet-info {
+        display: none; /* Hide fleet info on smaller screens if too crowded */
+    }
+}
+
+@media (max-width: 768px) {
+    .driver-layout {
+        flex-direction: column;
+    }
+    .side-menu {
+        width: 100%;
+        min-height: auto;
+        height: var(--navbar-height); /* Make side menu act as top bar */
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+    }
+    .driver-main {
+        margin-left: 0;
+        padding-top: 0; /* No need for padding-top if side-menu is now top bar */
+    }
+    .driver-navbar {
+        position: relative; /* Not sticky, flows with content */
+        width: 100%; /* Take full width */
+    }
 }

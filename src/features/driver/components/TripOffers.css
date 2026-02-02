@@ -1,0 +1,179 @@
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-light-bg: #f8f8f8;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-info: #17a2b8;
+}
+
+.trip-offers-page {
+    padding: 2rem;
+    background-color: var(--theme-light-bg);
+    min-height: calc(100vh - var(--navbar-height));
+    box-sizing: border-box;
+}
+
+.offers-heading {
+    font-size: 2.2rem;
+    color: var(--theme-font);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.offers-tagline {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.no-offers-message {
+    font-size: 1.1rem;
+    color: #888;
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--theme-white);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.offers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.offer-card {
+    background-color: var(--theme-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    display: flex; /* Make card content flex column */
+    flex-direction: column;
+}
+
+.offer-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.offer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    margin-bottom: 1rem;
+}
+
+.offer-id {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--theme-font);
+}
+
+.offer-fare {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--theme-button-bg);
+}
+
+.offer-details-summary { /* New class for simplified details */
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    flex-grow: 1; /* Allows this section to push actions to bottom */
+}
+
+.detail-item-summary {
+    display: flex;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.summary-label {
+    font-weight: 600;
+    color: var(--theme-font);
+    min-width: 6.5rem;
+    padding-right: 0.5rem;
+}
+
+.summary-value {
+    margin: 0;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.offer-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto; /* Pushes buttons to the bottom of the card */
+}
+
+.btn {
+    flex: 1;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: var(--theme-white);
+}
+
+.view-map-btn {
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font); /* Use theme-button-font for text */
+}
+
+.view-map-btn:hover {
+    background-color: darken(var(--theme-button-bg), 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(254, 204, 24, 0.3);
+}
+
+.reject-btn {
+    background-color: var(--color-danger);
+}
+
+.reject-btn:hover {
+    background-color: darken(var(--color-danger), 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .trip-offers-page {
+        padding: 1.5rem;
+    }
+    .offers-heading {
+        font-size: 1.8rem;
+    }
+    .offers-tagline {
+        font-size: 0.9rem;
+    }
+    .offers-list {
+        grid-template-columns: 1fr;
+    }
+    .offer-id {
+        font-size: 1.1rem;
+    }
+    .offer-fare {
+        font-size: 1.3rem;
+    }
+    .summary-label {
+        min-width: 5.5rem;
+    }
+    .offer-actions {
+        flex-direction: column;
+    }
+}

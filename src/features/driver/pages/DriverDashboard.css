@@ -1,96 +1,406 @@
-/* DriverDashboard Styles */
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-border-yellow: #fecc18;
+    --theme-light-bg: #f8f8f8;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #17a2b8;
+}
+
 .driver-dashboard {
-  padding: 2rem;
-  max-width: 900px;
-  margin: 0 auto;
+    padding: 2rem;
+    background-color: var(--theme-light-bg);
+    min-height: calc(100vh - var(--navbar-height)); /* Ensure it fills height below navbar */
+    box-sizing: border-box;
 }
 
-.dashboard-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--theme-font, #3b3e47);
-  margin-bottom: 1.5rem;
+.dashboard-heading {
+    font-size: 2.2rem;
+    color: var(--theme-font);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
 }
 
-.dashboard-card {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 8px;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+.dashboard-tagline {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
 }
 
-.dashboard-card h2 {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--theme-font, #3b3e47);
-  margin: 0 0 0.75rem 0;
+/* ==============================
+   General Card Styles
+   ============================== */
+
+.card {
+    background-color: var(--theme-white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.dashboard-card p {
-  margin: 0.25rem 0;
-  color: #555;
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
-.dashboard-card .no-data {
-  color: #999;
-  font-style: italic;
+.card-section-title {
+    font-size: 1.3rem;
+    color: var(--theme-font);
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* Shift status indicator */
-.shift-status {
-  display: inline-block;
-  padding: 0.35rem 0.9rem;
-  border-radius: 20px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
+/* ==============================
+   Summary Cards
+   ============================== */
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-.shift-status.online {
-  background-color: #d4edda;
-  color: #155724;
+.summary-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.shift-status.offline {
-  background-color: #f8d7da;
-  color: #721c24;
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
 }
 
-/* Shift buttons */
-.shift-btn {
-  display: inline-block;
-  padding: 0.7rem 1.5rem;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+.card-title {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
-.shift-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.card-value {
+    font-size: 1.8rem;
+    color: var(--theme-font);
+    font-weight: 700;
 }
 
-.start-btn {
-  background-color: var(--theme-button-bg, #fecc18);
-  color: var(--theme-button-font, #000);
+/* ==============================
+   Dashboard Sections Row (Recent Trips & Sidebar)
+   ============================== */
+
+.dashboard-sections-row {
+    display: flex;
+    gap: 2rem;
 }
 
-.start-btn:hover:not(:disabled) {
-  background-color: #e6b800;
-  transform: translateY(-2px);
+.recent-trips-card {
+    flex: 2; /* Takes more space */
 }
 
-.end-btn {
-  background-color: #dc3545;
-  color: #fff;
+.recent-trips-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.5rem;
 }
 
-.end-btn:hover:not(:disabled) {
-  background-color: #c82333;
-  transform: translateY(-2px);
+.trip-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.08);
+    font-size: 0.95rem;
+}
+
+.trip-item:last-child {
+    border-bottom: none;
+}
+
+.trip-id {
+    font-weight: 600;
+    color: var(--theme-font);
+    flex: 1;
+}
+
+.trip-status {
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 1rem;
+}
+
+.status-completed {
+    background-color: var(--color-success);
+    color: var(--theme-white);
+}
+
+.status-cancelled {
+    background-color: var(--color-danger);
+    color: var(--theme-white);
+}
+
+.status-pending {
+    background-color: var(--color-warning);
+    color: var(--theme-font);
+}
+
+.trip-earnings {
+    font-weight: 700;
+    color: var(--theme-font);
+    margin-left: 1rem;
+    min-width: 6rem;
+    text-align: right;
+}
+
+.trip-date {
+    color: #888;
+    font-size: 0.85rem;
+    margin-left: 1rem;
+    min-width: 6rem;
+    text-align: right;
+}
+
+/* ==============================
+   View All Button (Animated)
+   ============================== */
+.view-all-btn {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    
+    /* Animation Properties */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.5s ease;
+}
+
+.view-all-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start off-screen left */
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* Black hover background */
+    transition: left 0.5s ease;
+    z-index: -1; /* Behind text */
+}
+
+.view-all-btn:hover {
+    color: #fff !important; /* Force text white on hover */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.view-all-btn:hover::before {
+    left: 0; /* Slide in */
+}
+
+.view-all-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* ==============================
+   Dashboard Sidebar Cards (Shift & Documents)
+   ============================== */
+
+.dashboard-sidebar-cards {
+    flex: 1; /* Takes remaining space */
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.shift-status-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.shift-indicator {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.status-dot.active {
+    background-color: var(--color-success);
+}
+
+.status-dot.inactive {
+    background-color: var(--color-danger);
+}
+
+.shift-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--theme-font);
+    margin: 0;
+}
+
+.shift-details {
+    margin-bottom: 1.5rem;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.shift-details p {
+    margin: 0.2rem 0;
+}
+
+/* ==============================
+   Shift Toggle Button (Animated)
+   ============================== */
+.shift-toggle-btn {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--theme-white);
+
+    /* Animation Properties */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.5s ease;
+}
+
+.shift-toggle-btn.start {
+    background-color: var(--color-success);
+}
+
+.shift-toggle-btn.end {
+    background-color: var(--color-danger);
+}
+
+.shift-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    transition: left 0.5s ease;
+    z-index: -1;
+}
+
+.shift-toggle-btn:hover {
+    color: #fff !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.shift-toggle-btn:hover::before {
+    left: 0;
+}
+
+.shift-toggle-btn:active {
+    transform: scale(0.98);
+}
+
+/* ==============================
+   Responsive Adjustments
+   ============================== */
+
+@media (max-width: 1200px) {
+    .dashboard-sections-row {
+        flex-direction: column;
+    }
+    .recent-trips-card,
+    .dashboard-sidebar-cards {
+        flex: none;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .driver-dashboard {
+        padding: 1.5rem;
+    }
+    .dashboard-heading {
+        font-size: 1.8rem;
+    }
+    .summary-cards {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+    }
+    .card-icon {
+        font-size: 2rem;
+    }
+    .card-value {
+        font-size: 1.5rem;
+    }
+    .card-section-title {
+        font-size: 1.1rem;
+    }
+    .trip-item {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .trip-id, .trip-status, .trip-earnings, .trip-date {
+        flex: auto;
+        min-width: unset;
+        text-align: left;
+    }
+    .trip-earnings, .trip-date {
+        margin-left: 0;
+    }
+    .trip-earnings {
+        text-align: right;
+        flex-basis: 50%;
+    }
+    .trip-date {
+        text-align: right;
+        flex-basis: 50%;
+    }
+    .shift-toggle-btn, .upload-doc-btn, .view-all-btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .driver-dashboard {
+        padding: 1rem;
+    }
+    .dashboard-heading {
+        font-size: 1.5rem;
+    }
+    .summary-cards {
+        grid-template-columns: 1fr 1fr; /* Two columns on very small screens */
+    }
 }

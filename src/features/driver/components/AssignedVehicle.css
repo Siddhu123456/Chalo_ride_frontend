@@ -1,0 +1,263 @@
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-light-bg: #f8f8f8;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #17a2b8;
+}
+
+.assigned-vehicle-page {
+    padding: 2rem;
+    background-color: var(--theme-light-bg);
+    min-height: calc(100vh - var(--navbar-height));
+    box-sizing: border-box;
+}
+
+.vehicle-heading {
+    font-size: 2.2rem;
+    color: var(--theme-font);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.vehicle-tagline {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.vehicle-assignment-card, .no-vehicle-message, .no-previous-assignments {
+    background-color: var(--theme-white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto 2rem auto; /* Center and add bottom margin */
+}
+
+.vehicle-assignment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.vehicle-header-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-icon {
+    font-size: 3rem;
+    /* You might want to use an actual SVG icon or image here */
+}
+
+.vehicle-header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.vehicle-number {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--theme-font);
+    margin: 0;
+}
+
+.vehicle-assignment-status {
+    font-size: 1rem;
+    color: #666;
+    margin: 0.5rem 0 0;
+}
+
+.status-badge {
+    padding: 0.3em 0.7em;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85em;
+    color: var(--theme-white);
+}
+
+.status-badge.active {
+    background-color: var(--color-success);
+}
+
+.vehicle-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 1.1rem;
+    color: var(--theme-font);
+    font-weight: 600;
+}
+
+.vehicle-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: var(--theme-white);
+}
+
+.report-issue-btn {
+    background-color: var(--color-danger);
+}
+
+.report-issue-btn:hover {
+    background-color: darken(var(--color-danger), 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+}
+
+.view-documents-btn {
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+}
+
+.view-documents-btn:hover {
+    background-color: darken(var(--theme-button-bg), 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(254, 204, 24, 0.3);
+}
+
+.no-vehicle-message {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #888;
+    padding: 3rem;
+}
+
+.section-sub-heading {
+    font-size: 1.8rem;
+    color: var(--theme-font);
+    margin: 3rem auto 1.5rem auto; /* Center and provide spacing */
+    font-weight: 700;
+    max-width: 800px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding-bottom: 0.5rem;
+}
+
+.previous-assignments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.previous-assignment-card {
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.previous-assignment-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.assignment-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--theme-font);
+}
+
+.assignment-summary .summary-label {
+    font-weight: 600;
+    color: #666;
+    min-width: 7rem;
+}
+
+.assignment-summary .summary-value {
+    text-align: right;
+    flex-grow: 1;
+}
+
+.no-previous-assignments {
+    text-align: center;
+    font-size: 1rem;
+    color: #888;
+    padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .vehicle-assignment-card, .no-vehicle-message, .no-previous-assignments {
+        padding: 1.5rem;
+    }
+    .vehicle-heading {
+        font-size: 1.8rem;
+    }
+    .vehicle-header-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    .vehicle-number {
+        font-size: 1.5rem;
+    }
+    .vehicle-details-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .vehicle-actions {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .btn {
+        width: 100%;
+    }
+    .section-sub-heading {
+        font-size: 1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+    .assignment-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.2rem;
+    }
+    .assignment-summary .summary-value {
+        text-align: left;
+    }
+}

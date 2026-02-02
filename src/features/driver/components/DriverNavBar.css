@@ -1,0 +1,65 @@
+.driver-navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.welcome-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-font);
+}
+
+.driver-navbar-right {
+    display: flex;
+    width: 35%;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: space-evenly;
+}
+
+.fleet-info {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.9375rem;
+    background-color: #f0f0f0;
+    border-radius: 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #666;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.fleet-name {
+    color: var(--theme-font);
+    font-weight: 600;
+}
+
+.driver-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 1.5625rem;
+}
+
+.driver-profile:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    transform: translateY(-0.0625rem);
+}
+
+.profile-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--theme-button-bg);
+    box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+}
+
+.driver-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--theme-font);
+}

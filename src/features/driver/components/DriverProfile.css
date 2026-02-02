@@ -1,0 +1,198 @@
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-light-bg: #f8f8f8;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #17a2b8;
+}
+
+.driver-profile-page {
+    padding: 2rem;
+    background-color: var(--theme-light-bg);
+    min-height: calc(100vh - var(--navbar-height));
+    box-sizing: border-box;
+}
+
+.profile-heading {
+    font-size: 2.2rem;
+    color: var(--theme-font);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.profile-tagline {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.profile-card {
+    background-color: var(--theme-white);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    max-width: 800px; /* Constrain width for better readability */
+    margin: 0 auto; /* Center the card */
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.profile-header-section {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.profile-main-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--theme-button-bg);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--theme-font);
+    margin: 0;
+}
+
+.profile-status {
+    font-size: 1rem;
+    color: #666;
+    margin: 0.5rem 0 0;
+}
+
+.status-badge {
+    padding: 0.3em 0.7em;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85em;
+    color: var(--theme-white);
+}
+
+.status-approved {
+    background-color: var(--color-success);
+}
+
+.status-pending {
+    background-color: var(--color-warning);
+    color: var(--theme-font); /* Darker text for warning */
+}
+
+.status-rejected {
+    background-color: var(--color-danger);
+}
+
+.profile-details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 1.1rem;
+    color: var(--theme-font);
+    font-weight: 600;
+}
+
+.star-rating {
+    color: #ffc107; /* Yellow for stars */
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end; /* Align buttons to the right */
+}
+
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    color: var(--theme-white);
+}
+
+.edit-profile-btn {
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+}
+
+.edit-profile-btn:hover {
+    background-color: darken(var(--theme-button-bg), 5%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(254, 204, 24, 0.3);
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+    .profile-card {
+        padding: 1.5rem;
+    }
+    .profile-heading {
+        font-size: 1.8rem;
+    }
+    .profile-header-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+    }
+    .profile-main-avatar {
+        width: 60px;
+        height: 60px;
+    }
+    .profile-name {
+        font-size: 1.5rem;
+    }
+    .profile-details-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    .profile-actions {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,317 @@
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-light-bg: #f8f8f8;
+    --color-success: #28a745;
+    --color-danger: #dc3545;
+    --color-warning: #ffc107;
+    --color-info: #17a2b8;
+}
+
+.active-trip-page {
+    position: relative;
+    width: 100%;
+    height: calc(100vh - var(--navbar-height)); /* Fill remaining height below navbar */
+    overflow: hidden; /* Hide any overflow from map or positioned elements */
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   Map Container
+   ========================================= */
+.active-trip-map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.active-trip-leaflet-map {
+    width: 100%;
+    height: 100%;
+}
+
+/* =========================================
+   Bottom Action Card
+   ========================================= */
+.active-trip-bottom-card {
+    position: absolute;
+    bottom: 0; /* Stick to the very bottom */
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background-color: var(--theme-white);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    box-sizing: border-box;
+}
+
+/* Left Side: Locations */
+.card-left-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    padding-right: 2rem;
+    text-align: left;
+}
+
+.trip-location-info {
+    margin-bottom: 0.5rem;
+}
+
+.location-label {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+}
+
+.location-address {
+    font-size: 1.1rem;
+    color: var(--theme-font);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Right Side: Actions (OTP / Progress) */
+.card-right-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 1rem;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 1.4rem;
+    color: var(--theme-font);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* =========================================
+   OTP Inputs
+   ========================================= */
+.otp-verification-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.otp-form {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.otp-input-field {
+    width: 45px;
+    height: 45px;
+    padding: 0.5rem;
+    border: 1px solid var(--theme-border);
+    border-radius: 8px;
+    font-size: 1.5rem;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -moz-appearance: textfield; /* Firefox */
+}
+
+.otp-input-field::-webkit-inner-spin-button,
+.otp-input-field::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.otp-input-field:focus {
+    border-color: var(--theme-button-bg);
+    box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.3);
+}
+
+.otp-error-message {
+    color: var(--color-danger);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+}
+
+/* =========================================
+   Trip Status Sections
+   ========================================= */
+.ride-in-progress-section,
+.trip-completed-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ride-status-message,
+.trip-completed-message {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--theme-font);
+    margin-bottom: 1.2rem;
+}
+
+/* =========================================
+   Buttons & Animations
+   ========================================= */
+
+/* Generic Button Styling with Sliding Animation */
+.btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-width: 120px;
+    
+    /* Animation Properties */
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: color 0.5s ease;
+    color: var(--theme-white); /* Default text color */
+}
+
+/* The sliding black background element */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%; /* Start hidden to the left */
+    width: 100%;
+    height: 100%;
+    background-color: #000; /* Black hover background */
+    transition: left 0.5s ease; /* Slide speed */
+    z-index: -1; /* Behind the text */
+}
+
+/* Hover State */
+.btn:hover {
+    color: #fff !important; /* Force text to be white */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add slight shadow */
+}
+
+.btn:hover::before {
+    left: 0; /* Slide in */
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+/* Specific Button Colors (Base States) */
+
+.verify-otp-btn {
+    background-color: var(--theme-button-bg); /* Yellow */
+    color: var(--theme-button-font); /* Black text initially */
+}
+
+.complete-trip-btn {
+    background-color: var(--color-success); /* Green */
+    width: 100%;
+    max-width: 250px;
+}
+
+.go-to-dashboard-btn {
+    background-color: var(--color-info); /* Blue */
+    width: 100%;
+    max-width: 250px;
+}
+
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+@media (max-width: 992px) {
+    .active-trip-bottom-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .card-left-section {
+        border-right: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        padding-right: 0;
+        padding-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .card-right-section {
+        padding-left: 0;
+        width: 100%;
+        align-items: center;
+    }
+
+    .section-title {
+        font-size: 1.3rem;
+    }
+
+    .otp-input-field {
+        width: 40px;
+        height: 40px;
+        font-size: 1.3rem;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: none;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 576px) {
+    .active-trip-bottom-card {
+        padding: 0.8rem 1rem;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+    }
+
+    .location-label {
+        font-size: 0.85rem;
+    }
+
+    .location-address {
+        font-size: 1rem;
+    }
+
+    .otp-form {
+        flex-wrap: wrap;
+    }
+
+    .otp-input-field {
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+}
