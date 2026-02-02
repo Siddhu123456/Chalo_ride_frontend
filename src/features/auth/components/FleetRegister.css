@@ -1,0 +1,33 @@
+.form-content-box {
+	width: 100%;
+	box-sizing: border-box;
+    justify-content: center;
+    align-items: center ;
+}
+
+.form-intro{
+    text-align: center;
+    padding-top: 4.5rem;
+}
+
+.form-intro h2 {
+	font-size: 1.5rem;
+	color: var(--theme-font);
+	font-weight: 800;
+}
+
+.form-intro p {
+	color: #666;
+}
+
+.form-row select{
+    margin-bottom: 2rem;
+}
+
+/* Ensure select and inputs inherit existing form styles when inside registration-form */
+.registration-form select,
+.registration-form input {
+	width: 100%;
+	box-sizing: border-box;
+}
+

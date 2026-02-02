@@ -1,0 +1,78 @@
+/* Driver SideMenu Styles */
+.side-menu {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  min-height: 100vh;
+  background-color: #1a1a2e;
+  color: #fff;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.menu-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.menu-header p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0;
+  flex: 1;
+}
+
+.menu-item {
+  display: block;
+  padding: 0.9rem 1.5rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.menu-item.active {
+  background-color: rgba(254, 204, 24, 0.15);
+  color: var(--theme-button-bg, #fecc18);
+  border-left-color: var(--theme-button-bg, #fecc18);
+  font-weight: 600;
+}
+
+/* Responsive: collapse to icons on small screens (optional enhancement) */
+@media (max-width: 768px) {
+  .side-menu {
+    width: 60px;
+  }
+  .menu-header p,
+  .menu-item {
+    font-size: 0;
+  }
+  .menu-item::before {
+    font-size: 1.2rem;
+  }
+}

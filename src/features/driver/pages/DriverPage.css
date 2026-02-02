@@ -1,0 +1,12 @@
+/* DriverPage Layout Styles */
+.driver-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f6fa;
+}
+
+.driver-main {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f5f6fa;
+}

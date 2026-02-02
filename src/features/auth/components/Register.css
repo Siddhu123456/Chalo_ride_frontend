@@ -18,14 +18,17 @@
 .phone-flex-row {
     display: flex;
     gap: 0.8rem;
+    margin: 0;
 }
 
 .code-box {
     flex: 0.3;
+    margin: 0;
 }
 
 .phone-box {
     flex: 0.7;
+    margin: 0;
 }
 
 .split-flex-row {

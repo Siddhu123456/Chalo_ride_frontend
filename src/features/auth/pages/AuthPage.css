@@ -34,7 +34,8 @@
     padding: 4rem;
     width: 100%;
     position: relative;
-    overflow: hidden;
+    /* allow vertical scrolling of the auth area when content is taller than the viewport */
+    overflow-y: auto;
     box-sizing: border-box; /* Ensure padding is included in width/height */
 }
 
@@ -52,7 +53,8 @@
 
 .form-card {
     position: absolute;
-    top : 15%;
+    /* use viewport-relative units for more stable placement across varying heights */
+    top: 14vh;
     right: 8%;
     background-color: var(--theme-white);
     border-radius: 16px;
@@ -62,7 +64,7 @@
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
     z-index: 5;
     transition: box-shadow 0.3s ease, transform 0.3s ease;
-    overflow: hidden; /* Important for the toggle to sit on top */
+    overflow: visible; /* allow internal content to flow; internal scrolling handled by .form-card-content if needed */
 
     display: flex; /* Make it a flex container */
     flex-direction: column; /* Stack children vertically */
@@ -84,6 +86,14 @@
     align-items: center; /* Horizontally center text/form */
     padding: 2rem 2.5rem 2.5rem 2.5rem; /* Padding for the content area */
     box-sizing: border-box;
+}
+/* If the card is taller than the viewport, allow internal scrolling inside the card content
+   so the toggle remains visible and the page scrolls naturally. */
+.form-card {
+    max-height: calc(100vh - 4rem);
+}
+.form-card-content {
+    overflow-y: auto;
 }
 /* --- END NEW WRAPPER --- */
 
@@ -296,12 +306,13 @@
 .auth-info {
     position: absolute;
     top: 40%;
-    left: 10%;
+    left: 6%;
     color: var(--theme-white);
     max-width: 450px;
     text-align: left;
     z-index: 2;
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+    min-width: fit-content;
 }
 
 .auth-info h1 {
@@ -336,6 +347,21 @@
     line-height: 1.9;
     letter-spacing: 0.8px;
     color: #f0f0f0;
+}
+/* 🔒 Fleet owner: disable hover effect */
+.fleet-locked:hover {
+  background: inherit !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  cursor: not-allowed;
+}
+.fleet-locked {
+  transition: none !important;
+}
+.form-toggle button.active {
+  pointer-events: none;   /* 🔒 disables click */
+  cursor: default;
 }
 
 /* Responsive adjustments */
