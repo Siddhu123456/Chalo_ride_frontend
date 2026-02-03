@@ -1,30 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import SideMenu from "../components/SideMenu";
-import DriverNavBar from "../components/DriverNavBar.jsx";
-import Dashboard from "./DriverDashboard"; // Import the Dashboard component
-import TripOffers from "../components/TripOffers.jsx";
-import DriverProfile from "../components/DriverProfile.jsx";
-import AssignedVehicle from "../components/AssignedVehicle.jsx";
-import ActiveTrip from "../components/ActiveTrip.jsx";
+import DriverNavBar from "../components/DriverNavBar";
+
+import {
+  fetchDriverProfile,
+  fetchDriverDashboardSummary
+} from "../../../store/driverSlice";
+
 import "./DriverPage.css";
 
 const DriverPage = () => {
-  const mockDriverName = "Alex Sharma";
-  const mockFleetName = "Chalo Express Fleet";
-  const mockProfileImage = "https://images.unsplash.com/photo-1535713875002-d1d0cfce72b.jpeg?auto=format&fit=crop&q=80&w=2940&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Load once for entire driver layout
+    dispatch(fetchDriverProfile());
+    dispatch(fetchDriverDashboardSummary());
+  }, [dispatch]);
 
   return (
     <div className="driver-layout">
       <SideMenu />
+
       <main className="driver-main">
-        <DriverNavBar
-          driverName={mockDriverName}
-          fleetName={mockFleetName}
-          profileImage={mockProfileImage}
-        />
+        <DriverNavBar />
+
         <div className="driver-content-area">
-          {/* Directly render the Dashboard component here */}
           <Outlet />
         </div>
       </main>

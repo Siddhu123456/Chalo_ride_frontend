@@ -1,98 +1,131 @@
-import React, { useState, useEffect } from "react";
-import DriverNavBar from "../components/DriverNavBar"; // Ensure path is correct
-import DocumentUploadCard from "../components/DocumentUploadCard"; // We will create this below
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+
+import DriverNavBar from "../components/DriverNavBar";
+import DocumentUploadCard from "../components/DocumentUploadCard";
+
+import {
+  fetchDriverDocStatus,
+  uploadDriverDocument,
+  fetchDriverProfile
+} from "../../../store/driverSlice";
+
 import "./DriverDocsPage.css";
 
 const DriverDocsPage = () => {
-  const driverName = "Alex Sharma";
-  const fleetName = "Chalo Express Fleet";
-  const profileImage = "https://images.unsplash.com/photo-1535713875002-d1d0cfce72b.jpeg?auto=format&fit=crop&q=80&w=2940&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+  const dispatch = useDispatch();
 
-  // Dummy State to simulate Backend Data
-  const [docStatus, setDocStatus] = useState({
-    missing: ["DRIVING_LICENSE", "VEHICLE_REGISTRATION" ],
-    uploaded: [
-      { document_type: "PAN", status: "APPROVED", document_id: "1" }
-    ],
-    all_uploaded: false
-  });
+  const { docStatus, profile } = useSelector((state) => state.driver);
 
   const [uploadProgress, setUploadProgress] = useState({});
 
-  // Calculations for Progress Bar
-  const totalRequired = 3; // Total docs needed
-  const uploadedCount = docStatus.uploaded.length;
-  const progressPercent = (uploadedCount / totalRequired) * 100;
+  /* =====================================================
+     LOAD PROFILE + DOCUMENT STATUS
+  ===================================================== */
+  useEffect(() => {
+    dispatch(fetchDriverProfile());
+    dispatch(fetchDriverDocStatus());
+  }, [dispatch]);
 
-  // Simulate File Upload
-  const handleUpload = (type, file) => {
-    // 1. Set loading state for specific card
+  /* =====================================================
+     AUTO REDIRECT WHEN APPROVED
+     (CRITICAL FIX)
+  ===================================================== */
+  if (profile?.approval_status === "APPROVED") {
+    return <Navigate to="/driver/dashboard" replace />;
+  }
+
+  /* =====================================================
+     LOADING STATE
+  ===================================================== */
+  if (!docStatus) {
+    return (
+      <div className="docs-loading">
+        <p>Loading document status...</p>
+      </div>
+    );
+  }
+
+  /* =====================================================
+     PROGRESS CALCULATION
+  ===================================================== */
+  const totalRequired =
+    docStatus.missing.length + docStatus.uploaded.length;
+
+  const uploadedCount = docStatus.uploaded.length;
+
+  const progressPercent =
+    totalRequired === 0
+      ? 100
+      : Math.round((uploadedCount / totalRequired) * 100);
+
+  /* =====================================================
+     DOCUMENT UPLOAD HANDLER (REAL BACKEND)
+  ===================================================== */
+  const handleUpload = async (type, file) => {
     setUploadProgress((prev) => ({ ...prev, [type]: true }));
 
-    console.log(`Uploading ${type}...`, file);
+    const formData = new FormData();
+    formData.append("document_type", type);
+    formData.append("file", file);
 
-    // 2. Simulate Network Delay (2 seconds)
-    setTimeout(() => {
-      setDocStatus((prev) => {
-        // Remove from missing
-        const newMissing = prev.missing.filter((doc) => doc !== type);
-        
-        // Add to uploaded with "PENDING" status
-        const newUploaded = [
-          ...prev.uploaded,
-          { document_type: type, status: "PENDING", document_id: Date.now().toString() }
-        ];
+    try {
+      await dispatch(uploadDriverDocument(formData)).unwrap();
 
-        return {
-          missing: newMissing,
-          uploaded: newUploaded,
-          all_uploaded: newMissing.length === 0
-        };
-      });
-
-      // 3. Remove loading state
+      // 🔁 Refresh state after successful upload
+      dispatch(fetchDriverDocStatus());
+      dispatch(fetchDriverProfile());
+    } catch (err) {
+      console.error("Upload failed:", err);
+    } finally {
       setUploadProgress((prev) => ({ ...prev, [type]: false }));
-    }, 2000);
+    }
   };
 
   return (
     <div className="driver-layout">
-      {/* Reusing your existing NavBar */}
-      <DriverNavBar 
-        driverName={driverName} 
-        fleetName={fleetName} 
-        profileImage={profileImage} 
-      />
+      {/* NavBar reused across pages */}
+      <DriverNavBar />
 
       <div className="driver-docs-content">
         <div className="docs-container">
-          
-          {/* Header Section */}
+
+          {/* ================= HEADER ================= */}
           <div className="docs-header">
             <div className="header-text">
               <h1 className="page-title">Driver Verification</h1>
-              <p className="page-subtitle">Upload the required documents to activate your account.</p>
+              <p className="page-subtitle">
+                Upload required documents to activate your account.
+              </p>
             </div>
 
-            {/* Progress Bar */}
             <div className="progress-container">
               <div className="progress-stats">
-                <span className="progress-label">Completion Status</span>
-                <span className="progress-value">{uploadedCount} of {totalRequired}</span>
+                <span className="progress-label">
+                  Completion Status
+                </span>
+                <span className="progress-value">
+                  {uploadedCount} of {totalRequired}
+                </span>
               </div>
+
               <div className="progress-track">
-                <div 
-                  className="progress-fill" 
+                <div
+                  className="progress-fill"
                   style={{ width: `${progressPercent}%` }}
-                ></div>
+                />
               </div>
             </div>
           </div>
 
-          {/* Missing Documents Grid */}
+          {/* ================= MISSING DOCUMENTS ================= */}
           {docStatus.missing.length > 0 && (
             <div className="docs-section">
-              <h3 className="section-heading">Pending Uploads</h3>
+              <h3 className="section-heading">
+                Pending Uploads
+              </h3>
+
               <div className="docs-grid">
                 {docStatus.missing.map((type) => (
                   <DocumentUploadCard
@@ -107,35 +140,40 @@ const DriverDocsPage = () => {
             </div>
           )}
 
-          {/* Uploaded Documents Grid */}
+          {/* ================= UPLOADED DOCUMENTS ================= */}
           {docStatus.uploaded.length > 0 && (
             <div className="docs-section">
-              <h3 className="section-heading">Uploaded Documents</h3>
+              <h3 className="section-heading">
+                Uploaded Documents
+              </h3>
+
               <div className="docs-grid">
                 {docStatus.uploaded.map((doc) => (
                   <DocumentUploadCard
                     key={doc.document_id}
                     type={doc.document_type}
                     uploaded={true}
-                    status={doc.status}
-                    onUpload={() => {}} // No action for uploaded
+                    status={doc.verification_status}
                   />
                 ))}
               </div>
             </div>
           )}
 
-          {/* Success Banner (Shows when all docs are uploaded) */}
-          {docStatus.all_uploaded && (
-            <div className="completion-banner">
-              <div className="completion-icon">🎉</div>
-              <div className="completion-text">
-                <h4>All Documents Submitted!</h4>
-                <p>Our team is currently reviewing your profile. You will be notified via SMS once approved.</p>
+          {/* ================= ALL DOCS SUBMITTED ================= */}
+          {docStatus.missing.length === 0 &&
+            profile?.approval_status !== "APPROVED" && (
+              <div className="completion-banner">
+                <div className="completion-icon">⏳</div>
+                <div className="completion-text">
+                  <h4>Documents Submitted</h4>
+                  <p>
+                    Your documents are under review. You will be
+                    automatically redirected once approved.
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
-
+            )}
         </div>
       </div>
     </div>

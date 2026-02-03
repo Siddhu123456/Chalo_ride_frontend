@@ -84,7 +84,7 @@ const ActiveTrip = () => {
     drop_lng: -118.6919,
     drop_address: '456 Beach Rd, Santa Monica',
     fare_amount: 35.75,
-    status: 'DRIVER_ACCEPTED', // DRIVER_ACCEPTED -> OTP_VERIFIED -> COMPLETED
+    status: 'COMPLETED', // DRIVER_ACCEPTED -> OTP_VERIFIED -> COMPLETED
   });
 
   // Driver's current location (mocked to move towards pickup, then dropoff)

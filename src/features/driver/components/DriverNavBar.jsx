@@ -1,33 +1,41 @@
-import React from 'react';
-import './DriverNavBar.css'; // Don't forget to create this CSS file
+import React from "react";
+import { useSelector } from "react-redux";
+import "./DriverNavBar.css";
 
-// Assuming you have a default profile image or an icon library
-// import { FaUserCircle } from 'react-icons/fa'; // Example if using react-icons
+const DriverNavBar = () => {
+  const { profile, dashboardSummary } = useSelector(
+    (state) => state.driver
+  );
 
-const DriverNavBar = ({ driverName, fleetName, profileImage }) => {
-  // Default values for demonstration
-  const defaultDriverName = driverName || "John Doe";
-  const defaultFleetName = fleetName || "Chalo Fleet X";
-  const defaultProfileImage = profileImage || "https://via.placeholder.com/40"; // Placeholder image
+  const driverName = profile?.full_name || "Driver";
+  const tenantName = dashboardSummary?.tenant?.tenant_name;
+  const fleetName = dashboardSummary?.fleet?.fleet_name;
 
   return (
     <nav className="driver-navbar">
       <div className="driver-navbar-left">
-        {/* You can add more elements here if needed, like a search bar or quick links */}
-        <span className="welcome-message">Hello, {defaultDriverName}!</span>
+        <span className="welcome-message">
+          Hi, {driverName}
+          {tenantName && (
+            <span className="tenant-name"> · {tenantName}</span>
+          )}
+        </span>
       </div>
 
       <div className="driver-navbar-right">
-        <div className="fleet-info">
-          <span className="fleet-name">{defaultFleetName}</span>
-        </div>
+        {fleetName && (
+          <div className="fleet-info">
+            <span className="fleet-name">{fleetName}</span>
+          </div>
+        )}
+
         <div className="driver-profile">
           <img
-            src={defaultProfileImage}
+            src="https://via.placeholder.com/40"
             alt="Driver Profile"
             className="profile-avatar"
           />
-          <span className="driver-name">{defaultDriverName}</span>
+          <span className="driver-name">{driverName}</span>
         </div>
       </div>
     </nav>

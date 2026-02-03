@@ -1,107 +1,195 @@
-import React from 'react';
-import './DriverDashboard.css'; // Don't forget to create this CSS file
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  fetchDriverDashboardSummary,
+  fetchCurrentShift,
+  startShift,
+  endShift,
+  fetchDriverTrips,
+  updateDriverLocation
+} from "../../../store/driverSlice";
+
+import useGeolocation from "../../../hooks/useGeolocation";
+import usePolling from "../../../hooks/usePolling";
+
+import "./DriverDashboard.css";
 
 const Dashboard = () => {
-  // Dummy Data
-  const driverName = "Alex Sharma";
-  const dashboardSummary = {
-    totalTrips: 125,
-    totalEarnings: 3250.75, // USD
-    averageRating: 4.8,
-    onlineHours: 180, // hours
-    completedTripsToday: 5,
-  };
+  const dispatch = useDispatch();
+  const { getCurrentLocation } = useGeolocation();
 
-  const recentTrips = [
-    { id: 'T78901', status: 'Completed', earnings: 25.50, date: '2023-10-26 14:30' },
-    { id: 'T78899', status: 'Completed', earnings: 35.00, date: '2023-10-26 12:15' },
-    { id: 'T78898', status: 'Cancelled', earnings: 0.00, date: '2023-10-26 11:00' },
-    { id: 'T78897', status: 'Completed', earnings: 18.25, date: '2023-10-26 10:30' },
-  ];
+  const {
+    dashboardSummary,
+    shift,
+    tripHistory,
+    profile
+  } = useSelector((state) => state.driver);
 
-  const docStatus = {
-    license: 'Verified',
-    vehicleRegistration: 'Pending',
-    insurance: 'Verified',
-    backgroundCheck: 'Verified',
-  };
+  const [coords, setCoords] = useState(null);
 
-  const currentShift = {
-    isActive: true,
-    startTime: '2023-10-26 09:00',
-    duration: '06h 45m',
+  /* =====================================================
+     INITIAL LOAD
+  ===================================================== */
+  useEffect(() => {
+    dispatch(fetchDriverDashboardSummary());
+    dispatch(fetchCurrentShift());
+    dispatch(fetchDriverTrips({ page: 1, limit: 5 }));
+
+    getCurrentLocation()
+      .then(setCoords)
+      .catch(() => {});
+  }, [dispatch, getCurrentLocation]);
+
+  /* =====================================================
+     LOCATION POLLING (HOOK MUST ALWAYS RUN)
+  ===================================================== */
+  usePolling(
+    () => {
+      if (!shift || !coords || !profile) return;
+
+      dispatch(
+        updateDriverLocation({
+          driver_id: profile.driver_id,
+          latitude: coords.lat,
+          longitude: coords.lng
+        })
+      );
+    },
+    15000,
+    !!shift // enabled flag only
+  );
+
+  /* =====================================================
+     SAFE EARLY RETURN (AFTER ALL HOOKS)
+  ===================================================== */
+  if (!dashboardSummary || !profile) {
+    return <p className="dashboard-loading">Loading dashboard...</p>;
+  }
+
+  /* =====================================================
+     DATA
+  ===================================================== */
+  const { today, tenant } = dashboardSummary;
+  const isOnline = !!shift;
+
+  const startedAt = shift?.started_at
+    ? new Date(shift.started_at)
+    : null;
+
+  const recentTrips = tripHistory?.list || [];
+
+  /* =====================================================
+     SHIFT TOGGLE
+  ===================================================== */
+  const handleShiftToggle = () => {
+    if (isOnline) {
+      dispatch(endShift({ driver_id: profile.driver_id }));
+    } else {
+      if (!coords) return;
+
+      dispatch(
+        startShift({
+          driver_id: profile.driver_id,
+          tenant_id: tenant?.tenant_id,
+          latitude: coords.lat,
+          longitude: coords.lng
+        })
+      );
+    }
   };
 
   return (
     <div className="driver-dashboard">
-      <h1 className="dashboard-heading">Welcome Back, {driverName}!</h1>
-      <p className="dashboard-tagline">Here's an overview of your activity.</p>
+      <h1 className="dashboard-heading">
+        Welcome Back, {profile.full_name}!
+      </h1>
 
-      {/* Summary Cards */}
+      <p className="dashboard-tagline">
+        Here's an overview of your activity.
+      </p>
+
       <div className="summary-cards">
-        <div className="card summary-card">
-          <span className="card-icon">🚗</span>
-          <h3 className="card-title">Total Trips</h3>
-          <p className="card-value">{dashboardSummary.totalTrips}</p>
-        </div>
-        <div className="card summary-card">
-          <span className="card-icon">💰</span>
-          <h3 className="card-title">Total Earnings</h3>
-          <p className="card-value">${dashboardSummary.totalEarnings.toFixed(2)}</p>
-        </div>
-        <div className="card summary-card">
-          <span className="card-icon">⭐</span>
-          <h3 className="card-title">Avg. Rating</h3>
-          <p className="card-value">{dashboardSummary.averageRating}</p>
-        </div>
-        <div className="card summary-card">
-          <span className="card-icon">⏱️</span>
-          <h3 className="card-title">Online Hours</h3>
-          <p className="card-value">{dashboardSummary.onlineHours} hrs</p>
-        </div>
-        <div className="card summary-card">
-          <span className="card-icon">✅</span>
-          <h3 className="card-title">Trips Today</h3>
-          <p className="card-value">{dashboardSummary.completedTripsToday}</p>
-        </div>
+        {today?.trip_count !== undefined && (
+          <div className="card summary-card">
+            <span className="card-icon">✅</span>
+            <h3 className="card-title">Trips Today</h3>
+            <p className="card-value">{today.trip_count}</p>
+          </div>
+        )}
+
+        {today?.total_earnings !== undefined && (
+          <div className="card summary-card">
+            <span className="card-icon">💰</span>
+            <h3 className="card-title">Earnings Today</h3>
+            <p className="card-value">
+              ₹{today.total_earnings.toFixed(2)}
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="dashboard-sections-row">
         <div className="dashboard-sidebar-cards">
-          {/* Shift Status */}
           <div className="card shift-status-card">
             <h2 className="card-section-title">Shift Status</h2>
+
             <div className="shift-indicator">
-              <span className={`status-dot ${currentShift.isActive ? 'active' : 'inactive'}`}></span>
-              <p className="shift-text">{currentShift.isActive ? 'You are currently ON SHIFT' : 'You are currently OFF SHIFT'}</p>
+              <span className={`status-dot ${isOnline ? "active" : "inactive"}`} />
+              <p className="shift-text">
+                {isOnline
+                  ? "You are currently ONLINE"
+                  : "You are currently OFFLINE"}
+              </p>
             </div>
-            {currentShift.isActive && (
+
+            {isOnline && startedAt && (
               <div className="shift-details">
-                <p>Started: {new Date(currentShift.startTime).toLocaleTimeString()}</p>
-                <p>Duration: {currentShift.duration}</p>
+                <p>
+                  Started at{" "}
+                  {startedAt.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })}
+                </p>
               </div>
             )}
-            <button className={`shift-toggle-btn ${currentShift.isActive ? 'end' : 'start'}`}>
-              {currentShift.isActive ? 'End Shift' : 'Start Shift'}
+
+            <button
+              className={`shift-toggle-btn ${isOnline ? "end" : "start"}`}
+              onClick={handleShiftToggle}
+            >
+              {isOnline ? "End Shift" : "Start Shift"}
             </button>
           </div>
         </div>
 
-        {/* Recent Trips */}
-        <div className="card recent-trips-card">
-          <h2 className="card-section-title">Recent Trips</h2>
-          <ul className="recent-trips-list">
-            {recentTrips.map(trip => (
-              <li key={trip.id} className="trip-item">
-                <span className="trip-id">{trip.id}</span>
-                <span className={`trip-status status-${trip.status.toLowerCase()}`}>{trip.status}</span>
-                <span className="trip-earnings">${trip.earnings.toFixed(2)}</span>
-                <span className="trip-date">{new Date(trip.date).toLocaleDateString()}</span>
-              </li>
-            ))}
-          </ul>
-          <button className="view-all-btn">View All Trips</button>
-        </div>
+        {recentTrips.length > 0 && (
+          <div className="card recent-trips-card">
+            <h2 className="card-section-title">Recent Trips</h2>
+
+            <ul className="recent-trips-list">
+              {recentTrips.map((trip) => (
+                <li key={trip.trip_id} className="trip-item">
+                  <span className="trip-id">#{trip.trip_id}</span>
+                  <span className={`trip-status status-${trip.status.toLowerCase()}`}>
+                    {trip.status}
+                  </span>
+                  <span className="trip-earnings">
+                    ₹{trip.fare_amount.toFixed(2)}
+                  </span>
+                  <span className="trip-date">
+                    {trip.completed_at
+                      ? new Date(trip.completed_at).toLocaleDateString()
+                      : "-"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            <button className="view-all-btn">View All Trips</button>
+          </div>
+        )}
       </div>
     </div>
   );
