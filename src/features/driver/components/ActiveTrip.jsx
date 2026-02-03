@@ -1,217 +1,271 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import './ActiveTrip.css';
+import React, { useEffect, useRef, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Polyline,
+  useMap
+} from "react-leaflet";
+import L from "leaflet";
 
-// Fix for default marker icons not showing in Webpack
+import {
+  generateOtp,
+  verifyOtp,
+  completeTrip,
+  updateDriverLocation
+} from "../../../store/driverSlice";
+
+import useGeolocation from "../../../hooks/useGeolocation";
+import usePolling from "../../../hooks/usePolling";
+
+import "leaflet/dist/leaflet.css";
+import "./ActiveTrip.css";
+
+/* =====================================================
+   LEAFLET ICON FIX
+===================================================== */
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  iconUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png"
 });
 
-// Custom icons for driver, pickup, and dropoff
+/* =====================================================
+   CUSTOM ICONS
+===================================================== */
 const driverIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
 });
 
 const pickupIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
 });
 
 const dropoffIcon = new L.Icon({
-    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
 });
 
-
-// Helper component to update map view based on trip stage
-const MapUpdater = ({ pickupCoords, dropCoords, driverCoords, otpVerified, tripCompleted }) => {
+/* =====================================================
+   MAP AUTO FIT
+===================================================== */
+const MapUpdater = ({
+  pickupCoords,
+  dropCoords,
+  driverCoords,
+  otpVerified,
+  tripCompleted
+}) => {
   const map = useMap();
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || !pickupCoords || !dropCoords) return;
 
     if (!tripCompleted) {
       if (!otpVerified && driverCoords) {
-        // Before pickup, focus on driver and pickup
-        const bounds = L.latLngBounds([driverCoords, pickupCoords]);
-        map.fitBounds(bounds, { padding: [100, 100, 200, 100] }); // Adjust padding for bottom card
+        map.fitBounds([driverCoords, pickupCoords], {
+          padding: [100, 100, 200, 100]
+        });
       } else if (otpVerified && driverCoords) {
-        // After pickup, focus on driver and dropoff
-        const bounds = L.latLngBounds([driverCoords, dropCoords]);
-        map.fitBounds(bounds, { padding: [100, 100, 200, 100] }); // Adjust padding for bottom card
-      } else if (pickupCoords && dropCoords) {
-        // Default: focus on pickup and dropoff
-        const bounds = L.latLngBounds([pickupCoords, dropCoords]);
-        map.fitBounds(bounds, { padding: [100, 100, 200, 100] }); // Adjust padding for bottom card
+        map.fitBounds([driverCoords, dropCoords], {
+          padding: [100, 100, 200, 100]
+        });
       }
     } else {
-      // Trip completed, show full path
-      const bounds = L.latLngBounds([pickupCoords, dropCoords]);
-      map.fitBounds(bounds, { padding: [50, 50] });
+      map.fitBounds([pickupCoords, dropCoords], {
+        padding: [50, 50]
+      });
     }
   }, [map, pickupCoords, dropCoords, driverCoords, otpVerified, tripCompleted]);
 
   return null;
 };
 
-
+/* =====================================================
+   ACTIVE TRIP
+===================================================== */
 const ActiveTrip = () => {
-  // Dummy Data for an active trip
-  const [trip, setTrip] = useState({
-    trip_id: 'TRIP2023001',
-    pickup_lat: 34.0522,
-    pickup_lng: -118.2437,
-    pickup_address: '123 Main St, Downtown Los Angeles',
-    drop_lat: 34.0207,
-    drop_lng: -118.6919,
-    drop_address: '456 Beach Rd, Santa Monica',
-    fare_amount: 35.75,
-    status: 'COMPLETED', // DRIVER_ACCEPTED -> OTP_VERIFIED -> COMPLETED
-  });
+  const dispatch = useDispatch();
+  const { getCurrentLocation } = useGeolocation();
 
-  // Driver's current location (mocked to move towards pickup, then dropoff)
-  const [driverLocation, setDriverLocation] = useState({
-    lat: 34.06, // Slightly offset from pickup for visual demo
-    lng: -118.25,
-  });
+  const { activeTrip, tripStatus, profile } = useSelector(
+    (state) => state.driver
+  );
 
-  const [otpInputs, setOtpInputs] = useState(['', '', '', '']); // Array for 4 digit OTP
+  const [otpInputs, setOtpInputs] = useState(["", "", "", ""]);
   const otpInputRefs = useRef([]);
-  const [otpError, setOtpError] = useState('');
+  const [otpError, setOtpError] = useState("");
+  const navigate = useNavigate();
 
-  const pickupCoords = [trip.pickup_lat, trip.pickup_lng];
-  const dropCoords = [trip.drop_lat, trip.drop_lng];
-  const driverCoords = [driverLocation.lat, driverLocation.lng];
+  /* ================= HARD GUARD ================= */
+  if (
+    !activeTrip ||
+    activeTrip.pickup_lat == null ||
+    activeTrip.pickup_lng == null ||
+    activeTrip.drop_lat == null ||
+    activeTrip.drop_lng == null
+  ) {
+    return null;
+  }
 
-  // Helper booleans for conditional rendering
-  const isOtpWaiting = trip.status === 'DRIVER_ACCEPTED';
-  const isRideInProgress = trip.status === 'OTP_VERIFIED';
-  const isTripCompleted = trip.status === 'COMPLETED';
+  const pickupCoords = useMemo(
+    () => [activeTrip.pickup_lat, activeTrip.pickup_lng],
+    [activeTrip.pickup_lat, activeTrip.pickup_lng]
+  );
 
+  const dropCoords = useMemo(
+    () => [activeTrip.drop_lat, activeTrip.drop_lng],
+    [activeTrip.drop_lat, activeTrip.drop_lng]
+  );
 
-  // Simulate driver movement
-  useEffect(() => {
-    let interval;
-    if (isOtpWaiting) {
-      // Driver moving towards pickup
-      interval = setInterval(() => {
-        setDriverLocation(prevLoc => {
-          // Simple linear interpolation to move towards pickup
-          const newLat = prevLoc.lat + (pickupCoords[0] - prevLoc.lat) * 0.005; // Move 0.5% closer each second
-          const newLng = prevLoc.lng + (pickupCoords[1] - prevLoc.lng) * 0.005;
-          return { lat: newLat, lng: newLng };
-        });
-      }, 500); // Update every 0.5 seconds for smoother movement
-    } else if (isRideInProgress) {
-      // Driver moving towards dropoff
-      interval = setInterval(() => {
-        setDriverLocation(prevLoc => {
-          // Simple linear interpolation to move towards dropoff
-          const newLat = prevLoc.lat + (dropCoords[0] - prevLoc.lat) * 0.005;
-          const newLng = prevLoc.lng + (dropCoords[1] - prevLoc.lng) * 0.005;
-          return { lat: newLat, lng: newLng };
-        });
-      }, 500);
-    }
-    return () => clearInterval(interval);
-  }, [trip.status, pickupCoords, dropCoords]);
+  const driverCoords =
+    activeTrip.last_latitude != null &&
+    activeTrip.last_longitude != null
+      ? [activeTrip.last_latitude, activeTrip.last_longitude]
+      : null;
 
+  const isOtpWaiting = tripStatus === "ASSIGNED";
+  const isRideInProgress = tripStatus === "PICKED_UP";
+  const isTripCompleted = tripStatus === "COMPLETED";
 
+  /* =====================================================
+     LOCATION POLLING (SAFE)
+  ===================================================== */
+  usePolling(
+    async () => {
+      if (
+        !profile?.driver_id ||
+        !activeTrip ||
+        isTripCompleted
+      )
+        return;
+
+      try {
+        const loc = await getCurrentLocation();
+        if (!loc?.lat || !loc?.lng) return;
+
+        await dispatch(
+          updateDriverLocation({
+            driver_id: profile.driver_id,
+            latitude: loc.lat,
+            longitude: loc.lng
+          })
+        ).unwrap();
+      } catch (err) {
+        console.warn("Location update skipped:", err);
+      }
+    },
+    5000,
+    true
+  );
+
+  /* =====================================================
+     OTP HANDLERS
+  ===================================================== */
   const handleOtpChange = (e, index) => {
-    const { value } = e.target;
-    if (/[^0-9]/.test(value)) return; // Only allow numbers
+    if (/[^0-9]/.test(e.target.value)) return;
 
-    const newOtpInputs = [...otpInputs];
-    newOtpInputs[index] = value;
-    setOtpInputs(newOtpInputs);
-    setOtpError('');
+    const updated = [...otpInputs];
+    updated[index] = e.target.value;
+    setOtpInputs(updated);
+    setOtpError("");
 
-    // Move focus to next input if a digit is entered
-    if (value && index < 3) {
+    if (e.target.value && index < 3) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
 
   const handleOtpKeyDown = (e, index) => {
-    if (e.key === 'Backspace' && !otpInputs[index] && index > 0) {
+    if (e.key === "Backspace" && !otpInputs[index] && index > 0) {
       otpInputRefs.current[index - 1]?.focus();
+    }
+  };
+
+  const handleGenerateOtp = () => {
+    if (isOtpWaiting && activeTrip?.trip_id) {
+      dispatch(generateOtp(activeTrip.trip_id));
     }
   };
 
   const handleOtpSubmit = (e) => {
     e.preventDefault();
-    setOtpError('');
-    const fullOtp = otpInputs.join('');
-    if (fullOtp === '1234') { // Dummy OTP for demo
-      setTrip(prevTrip => ({ ...prevTrip, status: 'OTP_VERIFIED' }));
-      console.log('OTP Verified! Rider picked up.');
-    } else {
-      setOtpError('Invalid OTP. Please try again.');
+    const otp = otpInputs.join("");
+
+    if (otp.length !== 4) {
+      setOtpError("Enter 4 digit OTP");
+      return;
     }
+
+    dispatch(
+      verifyOtp({
+        tripId: activeTrip.trip_id,
+        otp_code: otp
+      })
+    );
   };
 
   const handleCompleteTrip = () => {
-    setTrip(prevTrip => ({ ...prevTrip, status: 'COMPLETED' }));
-    console.log('Trip Completed!');
-    // In a real app, you would make an API call here.
+    dispatch(completeTrip(activeTrip.trip_id));
+    navigate("/driver/dashboard");
   };
 
+  /* =====================================================
+     UI (UNCHANGED)
+  ===================================================== */
   return (
     <div className="active-trip-page">
       <div className="active-trip-map-container">
         <MapContainer
-          center={pickupCoords} // Initial center, will be adjusted by MapUpdater
+          center={pickupCoords}
           zoom={13}
-          scrollWheelZoom={true}
+          scrollWheelZoom
           className="active-trip-leaflet-map"
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution="&copy; OpenStreetMap contributors"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          {!isTripCompleted && (
-            <>
-              {/* Driver Marker */}
-              <Marker position={driverCoords} icon={driverIcon} />
+          {driverCoords && (
+            <Marker position={driverCoords} icon={driverIcon} />
+          )}
+          <Marker position={pickupCoords} icon={pickupIcon} />
+          <Marker position={dropCoords} icon={dropoffIcon} />
 
-              {/* Pickup Marker */}
-              <Marker position={pickupCoords} icon={pickupIcon} />
-
-              {/* Dropoff Marker */}
-              <Marker position={dropCoords} icon={dropoffIcon} />
-
-              {/* Polyline: Driver to Pickup (before OTP), then Pickup to Dropoff (after OTP) */}
-              {isOtpWaiting && <Polyline positions={[driverCoords, pickupCoords]} color="#007bff" weight={5} opacity={0.7} />}
-              {isRideInProgress && <Polyline positions={[pickupCoords, dropCoords]} color="#28a745" weight={5} opacity={0.7} />}
-            </>
+          {isOtpWaiting && driverCoords && (
+            <Polyline
+              positions={[driverCoords, pickupCoords]}
+              color="#007bff"
+              weight={5}
+            />
           )}
 
-          {isTripCompleted && (
-            <>
-              {/* Show only pickup and dropoff and the completed path */}
-              <Marker position={pickupCoords} icon={pickupIcon} />
-              <Marker position={dropCoords} icon={dropoffIcon} />
-              <Polyline positions={[pickupCoords, dropCoords]} color="#6c757d" weight={5} opacity={0.7} dashArray="10, 10" />
-            </>
+          {isRideInProgress && (
+            <Polyline
+              positions={[pickupCoords, dropCoords]}
+              color="#28a745"
+              weight={5}
+            />
           )}
 
           <MapUpdater
@@ -221,7 +275,6 @@ const ActiveTrip = () => {
             otpVerified={isRideInProgress || isTripCompleted}
             tripCompleted={isTripCompleted}
           />
-
         </MapContainer>
       </div>
 
@@ -229,51 +282,102 @@ const ActiveTrip = () => {
         <div className="card-left-section">
           <div className="trip-location-info">
             <h3 className="location-label">Pickup Location:</h3>
-            <p className="location-address">{trip.pickup_address}</p>
+            <p className="location-address">
+              {activeTrip.pickup_address}
+            </p>
           </div>
           <div className="trip-location-info">
             <h3 className="location-label">Dropoff Location:</h3>
-            <p className="location-address">{trip.drop_address}</p>
+            <p className="location-address">
+              {activeTrip.drop_address}
+            </p>
           </div>
         </div>
 
         <div className="card-right-section">
           {isOtpWaiting && (
             <div className="otp-verification-section">
-              <h2 className="section-title">Verify Pickup OTP</h2>
-              <form onSubmit={handleOtpSubmit} className="otp-form">
-                {otpInputs.map((digit, index) => (
+              <h2 className="section-title">
+                Verify Pickup OTP
+              </h2>
+
+              <div className="otp-helper-row">
+                <button
+                    className="btn-text-only"
+                    onClick={handleGenerateOtp}
+                    style={{ 
+                        background:'none', 
+                        border:'none', 
+                        color:'#007bff', 
+                        cursor:'pointer', 
+                        fontSize:'0.9rem',
+                        marginBottom:'10px',
+                        textDecoration:'underline'
+                    }}
+                >
+                    Resend/Generate OTP
+                </button>
+              </div>
+
+              <form
+                onSubmit={handleOtpSubmit}
+                className="otp-form"
+              >
+                {otpInputs.map((d, i) => (
                   <input
-                    key={index}
-                    type="text"
+                    key={i}
+                    value={d}
                     maxLength="1"
-                    value={digit}
-                    onChange={(e) => handleOtpChange(e, index)}
-                    onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                    ref={(el) => (otpInputRefs.current[index] = el)}
                     className="otp-input-field"
-                    autoFocus={index === 0}
+                    onChange={(e) =>
+                      handleOtpChange(e, i)
+                    }
+                    onKeyDown={(e) =>
+                      handleOtpKeyDown(e, i)
+                    }
+                    ref={(el) =>
+                      (otpInputRefs.current[i] = el)
+                    }
                   />
                 ))}
-                <button type="submit" className="btn verify-otp-btn">Verify</button>
+                <button
+                  type="submit"
+                  className="btn verify-otp-btn"
+                >
+                  Verify
+                </button>
               </form>
-              {otpError && <p className="otp-error-message">{otpError}</p>}
+
+              {otpError && (
+                <p className="otp-error-message">
+                  {otpError}
+                </p>
+              )}
             </div>
           )}
 
           {isRideInProgress && (
             <div className="ride-in-progress-section">
-              <h2 className="section-title">Ride in Progress</h2>
-              <p className="ride-status-message">Driving to Destination!</p>
-              <button className="btn complete-trip-btn" onClick={handleCompleteTrip}>Mark as Completed</button>
+              <h2 className="section-title">
+                Ride in Progress
+              </h2>
+              <button
+                className="btn complete-trip-btn"
+                onClick={handleCompleteTrip}
+              >
+                Mark as Completed
+              </button>
             </div>
           )}
 
           {isTripCompleted && (
             <div className="trip-completed-section">
-              <h2 className="section-title">Trip Completed!</h2>
-              <p className="trip-completed-message">Fare: ${trip.fare_amount.toFixed(2)}</p>
-              <button className="btn go-to-dashboard-btn">Go to Dashboard</button>
+              <h2 className="section-title">
+                Trip Completed
+              </h2>
+              <p className="trip-completed-message">
+                Fare: ₹{activeTrip.fare_amount}
+              </p>
             </div>
           )}
         </div>

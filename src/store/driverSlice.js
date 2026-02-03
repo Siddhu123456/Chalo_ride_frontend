@@ -198,6 +198,62 @@ export const respondOffer = createAsyncThunk(
   }
 );
 
+
+/* =========================================================
+   OTP
+========================================================= */
+export const generateOtp = createAsyncThunk(
+  "driver/generateOtp",
+  async (tripId, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${API}/trips/${tripId}/otp/generate`,
+        {},
+        authHeader()
+      );
+      return res.data; // { trip_id, otp_code, expires_at }
+    } catch (e) {
+      return rejectWithValue("Failed to generate OTP");
+    }
+  }
+);
+
+export const verifyOtp = createAsyncThunk(
+  "driver/verifyOtp",
+  async ({ tripId, otp_code }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${API}/trips/${tripId}/otp/verify`,
+        { otp_code },
+        authHeader()
+      );
+      return res.data; // { trip_id, status }
+    } catch {
+      return rejectWithValue("Invalid OTP");
+    }
+  }
+);
+
+/* =========================================================
+   COMPLETE TRIP
+========================================================= */
+export const completeTrip = createAsyncThunk(
+  "driver/completeTrip",
+  async (tripId, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        `${API}/trips/${tripId}/complete`,
+        {},
+        authHeader()
+      );
+      return res.data; // { fare }
+    } catch {
+      return rejectWithValue("Failed to complete trip");
+    }
+  }
+);
+
+
 /* =========================================================
    SLICE
 ========================================================= */
@@ -298,7 +354,22 @@ const driverSlice = createSlice({
           state.activeTrip = action.payload.data.trip;
           state.tripStatus = action.payload.data.trip.status;
         }
+      })
+
+      .addCase(generateOtp.fulfilled, (state, action) => {
+        state.currentOtp = action.payload.otp_code;
+      })
+
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.tripStatus = action.payload.status;
+      })
+
+      .addCase(completeTrip.fulfilled, (state, action) => {
+        state.activeTrip = null;
+        state.tripStatus = null;
+        state.currentOtp = null;
       });
+
   }
 });
 

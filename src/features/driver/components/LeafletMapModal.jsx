@@ -2,7 +2,11 @@ import React from "react";
 import { MapContainer, TileLayer, Marker, Polyline } from "react-leaflet";
 import L from "leaflet";
 import { useDispatch } from "react-redux";
-import { respondOffer } from "../../../store/driverSlice";
+
+import {
+  respondOffer,
+  generateOtp
+} from "../../../store/driverSlice";
 
 import "leaflet/dist/leaflet.css";
 import "./LeafletMapModal.css";
@@ -29,24 +33,50 @@ const LeafletMapModal = ({ offer, onClose }) => {
     (pickupCoords[1] + dropCoords[1]) / 2
   ];
 
-  const handleAccept = () => {
-    dispatch(
-      respondOffer({
-        attemptId: offer.attempt_id,
-        accept: true
-      })
-    );
-    onClose();
+  /* =====================================================
+     ACCEPT FLOW
+  ===================================================== */
+  const handleAccept = async () => {
+    try {
+      // 1. Accept Offer
+      const res = await dispatch(
+        respondOffer({
+          attemptId: offer.attempt_id,
+          accept: true
+        })
+      ).unwrap();
+
+      // 2. Extract Trip ID (Handle different potential response structures)
+      const tripId = res?.data?.trip?.trip_id;
+
+      // 3. Generate OTP immediately
+      if (tripId) {
+        console.log("Trip created with ID:", tripId, "- Requesting OTP...");
+        await dispatch(generateOtp(tripId)).unwrap();
+      } else {
+        console.warn("Trip ID not found in acceptance response. OTP generation skipped.");
+      }
+
+      // 4. Close Modal
+      onClose();
+    } catch (err) {
+      console.error("Failed to accept offer:", err);
+    }
   };
 
-  const handleReject = () => {
-    dispatch(
-      respondOffer({
-        attemptId: offer.attempt_id,
-        accept: false
-      })
-    );
-    onClose();
+  const handleReject = async () => {
+    try {
+      await dispatch(
+        respondOffer({
+          attemptId: offer.attempt_id,
+          accept: false
+        })
+      ).unwrap();
+
+      onClose();
+    } catch (err) {
+      console.error("Failed to reject offer:", err);
+    }
   };
 
   return (
@@ -75,13 +105,24 @@ const LeafletMapModal = ({ offer, onClose }) => {
         </div>
 
         <div className="modal-actions">
-          <button className="btn accept-confirm-btn" onClick={handleAccept}>
+          <button
+            className="btn accept-confirm-btn"
+            onClick={handleAccept}
+          >
             Accept
           </button>
-          <button className="btn reject-modal-btn" onClick={handleReject}>
+
+          <button
+            className="btn reject-modal-btn"
+            onClick={handleReject}
+          >
             Reject
           </button>
-          <button className="btn back-btn" onClick={onClose}>
+
+          <button
+            className="btn back-btn"
+            onClick={onClose}
+          >
             Back
           </button>
         </div>

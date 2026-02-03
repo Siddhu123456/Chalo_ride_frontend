@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 import { fetchOffers } from "../../../store/driverSlice";
 import usePolling from "../../../hooks/usePolling";
@@ -9,9 +12,19 @@ import "./TripOffers.css";
 
 const TripOffers = () => {
   const dispatch = useDispatch();
-  const { offers } = useSelector((state) => state.driver);
+  const { offers, activeTrip } = useSelector((state) => state.driver);
+
 
   const [selectedOffer, setSelectedOffer] = useState(null);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (activeTrip) {
+      navigate("/driver/trips/active");
+    }
+  }, [activeTrip, navigate]);
+
 
   /* =====================================================
      POLLING PENDING OFFERS
