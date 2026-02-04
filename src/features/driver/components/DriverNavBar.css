@@ -4,9 +4,9 @@
 }
 
 .welcome-message {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--theme-font);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--theme-button-bg);
 }
 
 .driver-navbar-right {

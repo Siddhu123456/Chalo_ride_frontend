@@ -15,7 +15,6 @@ const DriverNavBar = () => {
     <nav className="driver-navbar">
       <div className="driver-navbar-left">
         <span className="welcome-message">
-          Hi, {driverName}
           {tenantName && (
             <span className="tenant-name"> · {tenantName}</span>
           )}
