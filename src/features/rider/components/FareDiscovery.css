@@ -1,0 +1,161 @@
+/* FareDiscovery.css - FIXED */
+
+.panel-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+    color: var(--theme-font);
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #e9ecef;
+    margin-bottom: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding-bottom: 12px;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #777;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--theme-button-bg);
+    transition: width 0.3s ease;
+}
+
+.tab:hover {
+    color: #333;
+}
+
+.tab.active {
+    color: #333;
+    border-bottom: 3px solid var(--theme-button-bg);
+}
+
+.tab.active::after {
+    width: 100%;
+}
+
+.ride-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.ride-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.ride-item:hover {
+    border-color: var(--theme-button-bg);
+    background-color: rgba(254, 204, 24, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 204, 24, 0.2);
+}
+
+.ride-details {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ride-details h4,
+.ride-details p {
+    color: var(--theme-font);
+    margin: 0;
+}
+
+.ride-details h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.ride-details p {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.ride-icon {
+    font-size: 1.75rem;
+    transition: transform 0.3s ease;
+    color: var(--theme-button-bg);
+}
+
+.ride-item:hover .ride-icon {
+    transform: scale(1.1);
+}
+
+.ride-price {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1.2rem;
+    color: var(--theme-font);
+    padding: 6px 12px;
+    background: rgba(254, 204, 24, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.ride-item:hover .ride-price {
+    background: var(--theme-button-bg);
+    color: var(--theme-button-font);
+}
+
+.ride-price svg {
+    transition: transform 0.3s ease;
+}
+
+.ride-item:hover .ride-price svg {
+    transform: translateX(3px);
+}

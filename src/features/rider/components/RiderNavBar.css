@@ -1,0 +1,78 @@
+/* RiderNavBar.css - FIXED */
+
+.rider-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.rider-navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--theme-button-bg);
+    text-transform: capitalize;
+}
+
+.rider-navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: flex-end;
+}
+
+.rider-profile {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+}
+
+.rider-profile:hover {
+    background-color: rgba(254, 204, 24, 0.1);
+    transform: translateY(-1px);
+}
+
+.profile-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--theme-button-bg);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.rider-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--theme-font);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .rider-navbar {
+        padding: 0.8rem 1rem;
+    }
+
+    .page-title {
+        font-size: 1.5rem;
+    }
+
+    .rider-name {
+        display: none;
+    }
+
+    .rider-profile {
+        padding: 0.5rem;
+    }
+}

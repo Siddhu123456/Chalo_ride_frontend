@@ -1,39 +1,60 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import './style/variable.css';
-import AuthPage from './features/auth/pages/AuthPage.jsx';
 
-// Driver pages
-import DriverPage from './features/driver/pages/DriverPage.jsx';
-import DriverDashboard from './features/driver/pages/DriverDashboard.jsx';
-import DriverProfile from './features/driver/components/DriverProfile.jsx';
-import TripOffers from './features/driver/components/TripOffers.jsx';
-import ActiveTrip from './features/driver/components/ActiveTrip.jsx';
-import AssignedVehicle from './features/driver/components/AssignedVehicle.jsx';
-import DriverDocsPage from './features/driver/pages/DriverDocsPage.jsx';
+// --- RIDER IMPORTS ---
+import RiderPage from './features/rider/pages/RiderPage.jsx';
+import RiderHome from './features/rider/pages/RiderHome.jsx';
+
+import 'leaflet/dist/leaflet.css';
+
+
+const RiderHistory = () => (
+  <div style={{ padding: '20px' }}>
+    <h2>📜 Trip History</h2>
+    <p>List of past rides will go here.</p>
+  </div>
+);
+
+const RiderProfile = () => (
+  <div style={{ padding: '20px' }}>
+    <h2>👤 Rider Profile</h2>
+    <p>User settings and details will go here.</p>
+  </div>
+);
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Auth */}
-        <Route path="/" element={<AuthPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-
-        <Route path="/driver/docs" element={<DriverDocsPage />} />
-
-        {/* Driver Layout with nested routes */}
-        <Route path="/driver" element={<DriverPage />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<DriverDashboard />} />
-          <Route path="profile" element={<DriverProfile />} />
-          <Route path="offers" element={<TripOffers />} />
-          <Route path="trips/active" element={<ActiveTrip />} />
-          <Route path="vehicle" element={<AssignedVehicle />} />
+        
+        {/* --- RIDER ROUTES --- */}
+        {/* We use path="/" so the NavLinks in SideMenu (e.g., to="/home") work automatically */}
+        <Route path="/" element={<RiderPage />}>
+          {/* Default redirect to Home */}
+          <Route index element={<Navigate to="home" replace />} />
+          
+          <Route path="home" element={<RiderHome />} />
+          <Route path="trips/history" element={<RiderHistory />} />
+          <Route path="profile" element={<RiderProfile />} />
         </Route>
 
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* --- DRIVER ROUTES (Kept for reference/future use) --- */}
+        {/* 
+        <Route path="/driver" element={<DriverPage />}>
+           <Route index element={<Navigate to="dashboard" replace />} />
+           <Route path="dashboard" element={<DriverDashboard />} />
+           <Route path="profile" element={<DriverProfile />} />
+           <Route path="offers" element={<TripOffers />} />
+           <Route path="trips/active" element={<ActiveTrip />} />
+           <Route path="vehicle" element={<AssignedVehicle />} />
+        </Route> 
+        */}
+
+        {/* Fallback for unknown routes */}
+        <Route path="*" element={<Navigate to="/home" replace />} />
+      
       </Routes>
     </BrowserRouter>
   );

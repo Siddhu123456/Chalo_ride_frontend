@@ -1,0 +1,234 @@
+/* TripSummary.css - FIXED */
+
+.panel-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 24px 0;
+    color: var(--theme-font);
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.summary-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--theme-button-bg);
+    transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card h4 {
+    color: var(--theme-font);
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.summary-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--theme-button-bg);
+}
+
+.route-display {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.route-line {
+    position: absolute;
+    left: 7px;
+    top: 12px;
+    bottom: 12px;
+    width: 2px;
+    background-color: #e9ecef;
+    z-index: 0;
+}
+
+.route-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    background: #fff;
+    padding: 8px 0;
+}
+
+.route-point:first-child {
+    margin-bottom: 24px;
+}
+
+.route-point span {
+    font-weight: 600;
+    color: var(--theme-font);
+}
+
+.icon.pickup-icon {
+    color: #555;
+}
+
+.icon.drop-icon {
+    color: var(--theme-button-bg);
+}
+
+.fare-breakup {
+    border-top: 1px solid #e9ecef;
+    padding-top: 1rem;
+}
+
+.fare-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-weight: 500;
+}
+
+.fare-line span {
+    color: var(--theme-font);
+}
+
+.fare-line.total {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 12px 0;
+    margin-top: 8px;
+    border-top: 2px solid #e9ecef;
+}
+
+.fare-line.total span:last-child {
+    color: var(--theme-button-bg);
+}
+
+.booking-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.primary-btn {
+    flex: 1;
+    padding: 16px;
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(254, 204, 24, 0.3);
+    height: 52px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.primary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    transition: left 0.8s ease;
+    z-index: -1;
+}
+
+.primary-btn:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.primary-btn:hover::before {
+    left: 0;
+}
+
+.primary-btn:active {
+    transform: scale(0.98);
+}
+
+.secondary-btn {
+    flex: 1;
+    padding: 16px;
+    background: #e9ecef;
+    color: #333;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    height: 52px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.secondary-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #666;
+    transition: left 0.8s ease;
+    z-index: -1;
+}
+
+.secondary-btn:hover {
+    background-color: transparent;
+    color: white;
+}
+
+.secondary-btn:hover::before {
+    left: 0;
+}
+
+.secondary-btn:active {
+    transform: scale(0.98);
+}
+
