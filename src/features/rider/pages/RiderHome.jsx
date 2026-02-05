@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   MapContainer,
@@ -7,44 +7,49 @@ import {
   Polyline,
   Tooltip,
   useMapEvents,
-} from 'react-leaflet';
-import L from 'leaflet';
+} from "react-leaflet";
+import L from "leaflet";
+
 import { fetchFareEstimates } from "../../../store/fareSlice";
-import { requestTrip, fetchTripStatus, fetchTripOtp } from "../../../store/tripSlice";
+import { requestTrip } from "../../../store/tripSlice";
 
-import LocationPicker from '../components/LocationPicker';
-import FareDiscovery from '../components/FareDiscovery';
-import TripSummary from '../components/TripSummary';
-import TripTracking from '../components/TripTracking';
+import LocationPicker from "../components/LocationPicker";
+import FareDiscovery from "../components/FareDiscovery";
+import TripSummary from "../components/TripSummary";
+import TripTracking from "../components/TripTracking";
 
-import './RiderHome.css';
+import "./RiderHome.css";
 
-// --- ICONS ---
+/* -----------------------------------------
+   Marker Icons
+------------------------------------------ */
 const pickupIcon = L.icon({
-  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png',
+  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
 
 const dropIcon = L.icon({
-  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png',
+  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png",
   iconSize: [32, 32],
   iconAnchor: [16, 32],
 });
 
 const activePickupIcon = L.icon({
-  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/green.png',
+  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green.png",
   iconSize: [36, 36],
   iconAnchor: [18, 36],
 });
 
 const activeDropIcon = L.icon({
-  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/red.png',
+  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/red.png",
   iconSize: [36, 36],
   iconAnchor: [18, 36],
 });
 
-// 🔁 Reverse geocode
+/* -----------------------------------------
+   Reverse Geocode Helper
+------------------------------------------ */
 const reverseGeocode = async (lat, lng) => {
   const res = await fetch(
     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
@@ -53,7 +58,9 @@ const reverseGeocode = async (lat, lng) => {
   return data.display_name || "Unknown location";
 };
 
-// 👇 Map click handler (always enabled)
+/* -----------------------------------------
+   Map Click Handler
+------------------------------------------ */
 const MapClickHandler = ({ onPick }) => {
   useMapEvents({
     click(e) {
@@ -66,25 +73,37 @@ const MapClickHandler = ({ onPick }) => {
 const RiderHome = () => {
   const dispatch = useDispatch();
 
-  const [step, setStep] = useState('location');
+  /* -----------------------------------------
+     Local UI State
+  ------------------------------------------ */
+  const [step, setStep] = useState("location");
   const [pickup, setPickup] = useState(null);
   const [drop, setDrop] = useState(null);
+  const [activePick, setActivePick] = useState("pickup");
 
-  const [activePick, setActivePick] = useState('pickup');
-
+  /* -----------------------------------------
+     Redux State
+  ------------------------------------------ */
   const selectedRide = useSelector((state) => state.fare.selectedRide);
+  const cityId = useSelector((state) => state.fare.cityId);
   const trip = useSelector((state) => state.trip);
 
+  /* -----------------------------------------
+     Map Click Logic
+  ------------------------------------------ */
   const handleMapPick = async ({ lat, lng }) => {
     const address = await reverseGeocode(lat, lng);
 
-    if (activePick === 'pickup') {
+    if (activePick === "pickup") {
       setPickup({ lat, lng, address });
     } else {
       setDrop({ lat, lng, address });
     }
   };
 
+  /* -----------------------------------------
+     Confirm Locations → Fare Discovery
+  ------------------------------------------ */
   const handleLocationConfirm = async () => {
     if (!pickup || !drop) return;
 
@@ -99,52 +118,78 @@ const RiderHome = () => {
       })
     );
 
-    setStep('fare');
+    setStep("fare");
   };
 
-
+  /* -----------------------------------------
+     Confirm Booking → Request Trip
+  ------------------------------------------ */
   const handleBookingConfirm = async () => {
-    if (!pickup || !drop || !selectedRide) return;
+    if (!pickup || !drop || !selectedRide || !cityId) {
+      console.error("❌ Missing booking data", {
+        pickup,
+        drop,
+        selectedRide,
+        cityId,
+      });
+      return;
+    }
 
-    const result = await dispatch(
-      requestTrip({
-        pickup_lat: pickup.lat,
-        pickup_lng: pickup.lng,
-        pickup_address: pickup.address,
+    const payload = {
+      tenant_id: selectedRide.tenant_id,
+      city_id: cityId,
 
-        drop_lat: drop.lat,
-        drop_lng: drop.lng,
-        drop_address: drop.address,
+      pickup_lat: pickup.lat,
+      pickup_lng: pickup.lng,
+      pickup_address: pickup.address,
 
-        tenant_id: selectedRide.tenant_id,
-        vehicle_category: selectedRide.vehicle_category,
-      })
-    );
+      drop_lat: drop.lat,
+      drop_lng: drop.lng,
+      drop_address: drop.address,
+
+      vehicle_category: selectedRide.vehicle_category,
+      fare_amount: Math.round(
+        selectedRide.breakup?.total_fare ?? selectedRide.price
+      ),
+    };
+
+    console.log("🚀 Sending trip request:", payload);
+
+    const result = await dispatch(requestTrip(payload));
 
     if (requestTrip.fulfilled.match(result)) {
       setStep("tracking");
     }
   };
 
-
-  const handleRideSelect = () => setStep('summary');
-  const handleChangeRide = () => setStep('fare');
+  /* -----------------------------------------
+     Navigation Helpers
+  ------------------------------------------ */
+  const handleRideSelect = () => setStep("summary");
+  const handleChangeRide = () => setStep("fare");
 
   const handleNewRide = () => {
     setPickup(null);
     setDrop(null);
-    setActivePick('pickup');
-    setStep('location');
+    setActivePick("pickup");
+    setStep("location");
   };
 
+  /* -----------------------------------------
+     Right Panel Renderer
+  ------------------------------------------ */
   const renderControlPanel = () => {
-    switch (step) {
-      case 'fare':
-        return <FareDiscovery onRideSelect={handleRideSelect} />;
-      case 'summary':
+    if (trip.tripId && trip.status && step === "tracking") {
+      return <TripTracking onNewRide={handleNewRide} />;
+    }
 
+    switch (step) {
+      case "fare":
+        return <FareDiscovery onRideSelect={handleRideSelect} />;
+
+      case "summary":
         if (!selectedRide) {
-          setStep('fare');
+          setStep("fare");
           return null;
         }
 
@@ -157,28 +202,31 @@ const RiderHome = () => {
             onChange={handleChangeRide}
           />
         );
-      case 'tracking':
-        return <TripTracking ride={null} onNewRide={handleNewRide} />;
+
+      case "location":
       default:
         return (
           <LocationPicker
-            pickup={pickup?.address || ''}
-            drop={drop?.address || ''}
+            pickup={pickup?.address || ""}
+            drop={drop?.address || ""}
             onConfirm={handleLocationConfirm}
-            onPickupFocus={() => setActivePick('pickup')}
-            onDropFocus={() => setActivePick('drop')}
+            onPickupFocus={() => setActivePick("pickup")}
+            onDropFocus={() => setActivePick("drop")}
           />
         );
     }
   };
 
+  /* -----------------------------------------
+     Render
+  ------------------------------------------ */
   return (
     <div className="rider-home-layout">
       <div className="map-section">
         <MapContainer
           center={[17.385, 78.4867]}
           zoom={13}
-          style={{ height: '100%', width: '100%' }}
+          style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
             attribution="&copy; OpenStreetMap"
@@ -190,7 +238,9 @@ const RiderHome = () => {
           {pickup && (
             <Marker
               position={[pickup.lat, pickup.lng]}
-              icon={activePick === 'pickup' ? activePickupIcon : pickupIcon}
+              icon={
+                activePick === "pickup" ? activePickupIcon : pickupIcon
+              }
             >
               <Tooltip permanent>Pickup</Tooltip>
             </Marker>
@@ -199,7 +249,7 @@ const RiderHome = () => {
           {drop && (
             <Marker
               position={[drop.lat, drop.lng]}
-              icon={activePick === 'drop' ? activeDropIcon : dropIcon}
+              icon={activePick === "drop" ? activeDropIcon : dropIcon}
             >
               <Tooltip permanent>Drop</Tooltip>
             </Marker>

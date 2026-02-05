@@ -95,9 +95,7 @@ const tripSlice = createSlice({
   initialState: {
     tripId: null,
     status: null,
-
-    driver: null,
-    vehicle: null,
+    
     otp: null,
 
     fareAmount: null,
@@ -148,9 +146,7 @@ const tripSlice = createSlice({
 
       // OTP + Driver
       .addCase(fetchTripOtp.fulfilled, (state, action) => {
-        state.otp = action.payload.otp;
-        state.driver = action.payload.driver;
-        state.vehicle = action.payload.vehicle;
+        state.otp = action.payload;
       })
 
       // Cancel
