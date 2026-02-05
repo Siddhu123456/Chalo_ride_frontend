@@ -14,26 +14,31 @@ const Roles = ({ onFleetSelect, onBack }) => {
     // 1️⃣ Select role
     await dispatch(selectRole({ user_id: user.user_id, role }));
 
-    // 2️⃣ Fleet Owner flow unchanged
+    // 2️⃣ Fleet Owner flow (unchanged)
     if (role === "FLEET_OWNER") {
       onFleetSelect();
       return;
     }
 
-    // 3️⃣ Driver flow
+    // 3️⃣ Driver flow (unchanged)
     if (role === "DRIVER") {
       const result = await dispatch(fetchDriverProfile());
 
       if (fetchDriverProfile.fulfilled.match(result)) {
         const profile = result.payload;
 
-        // 🔑 Decision based on approval status
         if (profile.approval_status === "APPROVED") {
           navigate("/driver/dashboard");
         } else {
           navigate("/driver/docs");
         }
       }
+      return;
+    }
+
+    // 4️⃣ Rider flow ✅
+    if (role === "RIDER") {
+      navigate("/rider"); // RiderPage → redirects to /home
     }
   };
 

@@ -9,6 +9,7 @@
 /* SideMenu styles from your previous response */
 .side-menu {
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   width: var(--side-menu-width);
   min-height: 100vh;
@@ -33,6 +34,8 @@
 }
 
 .driver-navbar {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -53,11 +56,18 @@
 }
 
 @media (max-width: 1024px) {
-    .side-menu {
-        width: 4rem; /* 64px collapsed width */
+    :root {
+        --collapsed-width: 65px; /* Define a single value here */
     }
+
+    .side-menu {
+        width: var(--collapsed-width) !important;
+        align-items: center;
+        padding: 15px 0;
+    }
+
     .driver-main {
-        margin-left: 4rem;
+        margin-left: var(--collapsed-width) !important;
     }
     .driver-navbar {
         padding: 0 1rem;

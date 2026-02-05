@@ -1,6 +1,16 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Polyline } from 'react-leaflet';
+import { useSelector, useDispatch } from "react-redux";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Polyline,
+  Tooltip,
+  useMapEvents,
+} from 'react-leaflet';
 import L from 'leaflet';
+import { fetchFareEstimates } from "../../../store/fareSlice";
+import { requestTrip, fetchTripStatus, fetchTripOtp } from "../../../store/tripSlice";
 
 import LocationPicker from '../components/LocationPicker';
 import FareDiscovery from '../components/FareDiscovery';
@@ -9,36 +19,121 @@ import TripTracking from '../components/TripTracking';
 
 import './RiderHome.css';
 
-// --- FIXED LEAFLET ICON SETUP ---
-// Create custom icons using data URIs to avoid external resource loading issues
-const defaultIcon = L.icon({
-  iconUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RXGjRtxXhKs3dUOjMYGZt8R5+H3C55T+5LhIgRIZ+tYpZhJgv+bNPVhD8zMHa0JMkcdY6YoFw1WrJXoHR9LqLBz4rr0NHdyX3A4oQvUDKSPNqj6Kt0hqvlpC8n1nZQh1f2wA3Q3Y3j4D+6lhM3+O+3v+LZP+Qd3Wf3m2Y+Y4nf+Yw9v+dLl/P+1xN/+m+3vr//m3v+7Z/+dv+9M/+vfr/AAAA//8DAFBLAwQUAAYACAAAACEAU+VAu9MAAAC6AAAADwAAAHdvcmQvc3R5bGVzLnhtbKxSy07DMBC8I/EPVu5N2hYhVJVIH3D+ANsyJaHOI7KdQv6etaHQQhU4cLVnZ2Z3vPbycbLBA2iHxnJanVMGhlQW9a0svt69Xs0ZwcBISRubXSpwnBefn/jBqhYk44MlSwqoQqANxOUxE1xWQkkY85hNWtMSWU8avdDODgPJCp2LBnq7s9/TvqlhqJ+1Hv42bjzH+S3PWeN1YYFQAjhJ48T8CPgPYP7HXtPv1y7BAAAA//8DAFBLAwQUAAYACAAAACEAJDKR6aoAAABrAAAAEQAAAGRvY1Byb3BzL2NvcmUueG1spY/BDoIwEETvJv6D6V2xJiYGYjwY/QDaDULSbkkXFPx6y8G7h3qbzLx5M5uPp5XDE4yVWlSYRCFyEIKrSlSN/n2cg3s8EfGBWt1BgQs84PnP3d3mjjZ84QGYVbRA3VLjGSNaA9vqiDXgqIPWdLSxq/aM2TdoqkNmOccLxhS/ghG0KW0+wnAm5p7S5wR1Y6QflsXpWF+Lp7bHUzxdP1YT9q/oEw==</iconUrl>',
-  iconRetinaUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RXGjRtxXhKs3dUOjMYGZt8R5+H3C55T+5LhIgRIZ+tYpZhJgv+bNPVhD8zMHa0JMkcdY6YoFw1WrJXoHR9LqLBz4rr0NHdyX3A4oQvUDKSPNqj6Kt0hqvlpC8n1nZQh1f2wA3Q3Y3j4D+6lhM3+O+3v+LZP+Qd3Wf3m2Y+Y4nf+Yw9v+dLl/P+1xN/+m+3vr//m3v+7Z/+dv+9M/+vfr/AAAA//8DAFBLAwQUAAYACAAAACEAU+VAu9MAAAC6AAAADwAAAHdvcmQvc3R5bGVzLnhtbKxSy07DMBC8I/EPVu5N2hYhVJVIH3D+ANsyJaHOI7KdQv6etaHQQhU4cLVnZ2Z3vPbycbLBA2iHxnJanVMGhlQW9a0svt69Xs0ZwcBISRubXSpwnBefn/jBqhYk44MlSwqoQqANxOUxE1xWQkkY85hNWtMSWU8avdDODgPJCp2LBnq7s9/TvqlhqJ+1Hv42bjzH+S3PWeN1YYFQAjhJ48T8CPgPYP7HXtPv1y7BAAAA//8DAFBLAwQUAAYACAAAACEAJDKR6aoAAABrAAAAEQAAAGRvY1Byb3BzL2NvcmUueG1spY/BDoIwEETvJv6D6V2xJiYGYjwY/QDaDULSbkkXFPx6y8G7h3qbzLx5M5uPp5XDE4yVWlSYRCFyEIKrSlSN/n2cg3s8EfGBWt1BgQs84PnP3d3mjjZ84QGYVbRA3VLjGSNaA9vqiDXgqIPWdLSxq/aM2TdoqkNmOccLxhS/ghG0KW0+wnAm5p7S5wR1Y6QflsXpWF+Lp7bHUzxdP1YT9q/oEw==',
-  shadowUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAQAAAACach9AAACMUlEQVR4Ae3ShY7jQBSF4dPKMmXm7/9r7eQhY5Lk7eQ+Qy4kkRRZEqlkEv///xW7tCKNlCKN1CKN9CKNDCONjCKNzCKNLCONrCKNbCON7CKNHCONnCKNXCONPCONfCONgiKNQiONoiKNYiONEiONUiONMiONciKNSiONKiONaiKNGiONWiONOiON+iKN+iKN+iKN+iKN+iKNBiONRiONJiONZiONFiONViONNiONdiONTiONLiONbiONHiONXiONPiONfiONASKNQSKNISKNYSKNESKNUSKNMSKNcSKNSSKNKSKNaSKNGSKNWSKNOSKNeSKNBSKNRSKNJSKNZSKNFSKNVSKNNSKNdSKNTSKNLSKNbSKNHSKNXSKNPSKNfSKNAyKNQyKNIyKNYyKNEyKNUyKNMyKNcyKNSyKNKyKNayKNGyKNWyKNOyKNeyKNByKNRyKNJyKNZyKNFyKNVyKNNyKNdyKNTyKNLyKNbyKNHyKNXyKNPyKNfyKNA6KNQ6KNI6KNY6KNE6KNU6KNM6KNc6KNS6KNK6KNa6KNG6KNW6KNO6KNe6KNB6KNR6KNJ6KNZ6KNF6KNV6KNN6KNd6KNT6KNL6KNb6KNH6KNX6KNP6KNf6KNgFBH6ih1lDpKHaWOUkdpoNRR6ih1lDpKHaWOUkepo9RR6ih1lDpKHaWOUkepo9RR6ih1lDpKHaWOUv8BUC2lAAAAAElFTkSuQmCC',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+// --- ICONS ---
+const pickupIcon = L.icon({
+  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
 });
 
-// Set default icon
-L.Marker.prototype.options.icon = defaultIcon;
+const dropIcon = L.icon({
+  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32],
+});
+
+const activePickupIcon = L.icon({
+  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/green.png',
+  iconSize: [36, 36],
+  iconAnchor: [18, 36],
+});
+
+const activeDropIcon = L.icon({
+  iconUrl: 'https://maps.gstatic.com/mapfiles/ms2/micons/red.png',
+  iconSize: [36, 36],
+  iconAnchor: [18, 36],
+});
+
+// 🔁 Reverse geocode
+const reverseGeocode = async (lat, lng) => {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+  );
+  const data = await res.json();
+  return data.display_name || "Unknown location";
+};
+
+// 👇 Map click handler (always enabled)
+const MapClickHandler = ({ onPick }) => {
+  useMapEvents({
+    click(e) {
+      onPick(e.latlng);
+    },
+  });
+  return null;
+};
 
 const RiderHome = () => {
-  const [step, setStep] = useState('location'); // location -> fare -> summary -> tracking
-  const [pickup] = useState({ lat: 17.3850, lng: 78.4867, address: 'Nampally, Hyderabad' });
-  const [drop] = useState({ lat: 17.4375, lng: 78.4483, address: 'Banjara Hills, Hyderabad' });
-  const [selectedRide, setSelectedRide] = useState(null);
+  const dispatch = useDispatch();
 
-  const handleLocationConfirm = () => setStep('fare');
-  const handleRideSelect = (ride) => {
-    setSelectedRide(ride);
-    setStep('summary');
+  const [step, setStep] = useState('location');
+  const [pickup, setPickup] = useState(null);
+  const [drop, setDrop] = useState(null);
+
+  const [activePick, setActivePick] = useState('pickup');
+
+  const selectedRide = useSelector((state) => state.fare.selectedRide);
+  const trip = useSelector((state) => state.trip);
+
+  const handleMapPick = async ({ lat, lng }) => {
+    const address = await reverseGeocode(lat, lng);
+
+    if (activePick === 'pickup') {
+      setPickup({ lat, lng, address });
+    } else {
+      setDrop({ lat, lng, address });
+    }
   };
-  const handleBookingConfirm = () => setStep('tracking');
+
+  const handleLocationConfirm = async () => {
+    if (!pickup || !drop) return;
+
+    await dispatch(
+      fetchFareEstimates({
+        pickup_lat: pickup.lat,
+        pickup_lng: pickup.lng,
+        pickup_address: pickup.address,
+        drop_lat: drop.lat,
+        drop_lng: drop.lng,
+        drop_address: drop.address,
+      })
+    );
+
+    setStep('fare');
+  };
+
+
+  const handleBookingConfirm = async () => {
+    if (!pickup || !drop || !selectedRide) return;
+
+    const result = await dispatch(
+      requestTrip({
+        pickup_lat: pickup.lat,
+        pickup_lng: pickup.lng,
+        pickup_address: pickup.address,
+
+        drop_lat: drop.lat,
+        drop_lng: drop.lng,
+        drop_address: drop.address,
+
+        tenant_id: selectedRide.tenant_id,
+        vehicle_category: selectedRide.vehicle_category,
+      })
+    );
+
+    if (requestTrip.fulfilled.match(result)) {
+      setStep("tracking");
+    }
+  };
+
+
+  const handleRideSelect = () => setStep('summary');
   const handleChangeRide = () => setStep('fare');
+
   const handleNewRide = () => {
-    setSelectedRide(null);
+    setPickup(null);
+    setDrop(null);
+    setActivePick('pickup');
     setStep('location');
   };
 
@@ -47,6 +142,12 @@ const RiderHome = () => {
       case 'fare':
         return <FareDiscovery onRideSelect={handleRideSelect} />;
       case 'summary':
+
+        if (!selectedRide) {
+          setStep('fare');
+          return null;
+        }
+
         return (
           <TripSummary
             ride={selectedRide}
@@ -57,14 +158,15 @@ const RiderHome = () => {
           />
         );
       case 'tracking':
-        return <TripTracking ride={selectedRide} onNewRide={handleNewRide} />;
-      case 'location':
+        return <TripTracking ride={null} onNewRide={handleNewRide} />;
       default:
         return (
           <LocationPicker
-            pickup={pickup.address}
-            drop={drop.address}
+            pickup={pickup?.address || ''}
+            drop={drop?.address || ''}
             onConfirm={handleLocationConfirm}
+            onPickupFocus={() => setActivePick('pickup')}
+            onDropFocus={() => setActivePick('drop')}
           />
         );
     }
@@ -73,28 +175,49 @@ const RiderHome = () => {
   return (
     <div className="rider-home-layout">
       <div className="map-section">
-        <MapContainer 
-          center={[pickup.lat, pickup.lng]} 
-          zoom={13} 
+        <MapContainer
+          center={[17.385, 78.4867]}
+          zoom={13}
           style={{ height: '100%', width: '100%' }}
-          scrollWheelZoom={true}
         >
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            attribution="&copy; OpenStreetMap"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[pickup.lat, pickup.lng]} icon={defaultIcon} />
-          <Marker position={[drop.lat, drop.lng]} icon={defaultIcon} />
-          {step !== 'location' && (
-            <Polyline 
-              positions={[[pickup.lat, pickup.lng], [drop.lat, drop.lng]]} 
-              color="#fecc18" 
+
+          <MapClickHandler onPick={handleMapPick} />
+
+          {pickup && (
+            <Marker
+              position={[pickup.lat, pickup.lng]}
+              icon={activePick === 'pickup' ? activePickupIcon : pickupIcon}
+            >
+              <Tooltip permanent>Pickup</Tooltip>
+            </Marker>
+          )}
+
+          {drop && (
+            <Marker
+              position={[drop.lat, drop.lng]}
+              icon={activePick === 'drop' ? activeDropIcon : dropIcon}
+            >
+              <Tooltip permanent>Drop</Tooltip>
+            </Marker>
+          )}
+
+          {pickup && drop && (
+            <Polyline
+              positions={[
+                [pickup.lat, pickup.lng],
+                [drop.lat, drop.lng],
+              ]}
+              color="#fecc18"
               weight={4}
-              opacity={0.8}
             />
           )}
         </MapContainer>
       </div>
+
       <div className="control-section">
         {renderControlPanel()}
       </div>

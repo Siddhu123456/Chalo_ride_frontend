@@ -9,7 +9,7 @@
 }
 
 /* Side Menu Positioning */
-.side-menu {
+.side-menu-rider {
     display: flex;
     flex-direction: column;
     width: 240px;

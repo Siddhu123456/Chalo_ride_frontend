@@ -1,14 +1,17 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import "./RiderNavBar.css";
 
 const RiderNavBar = () => {
+  const city = useSelector((state) => state.rider.city);
+  const profile = useSelector((state) => state.rider.profile);
 
-  const location = "hyderbad";
-  const riderName = "Rahul Sharma"; // Dummy Name
+  const location = city?.city_name || "Detecting location...";
+  const riderName = profile?.full_name || "Loading...";
 
   return (
     <nav className="rider-navbar">
-      {/* Left Side: Current View Name */}
+      {/* Left Side: Current City */}
       <div className="rider-navbar-left">
         <span className="page-title">
           {location}
