@@ -1,11 +1,19 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Navigate } from "react-router-dom";
 import logo from "../../../assets/logo.png";
+
+import { logout } from "../../../store/authSlice";
 import "./RiderSideMenu.css";
 
 const RiderSideMenu = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const handleLogout = () => {
+    dispatch(logout());
+    navigate("/auth")
     console.log("Rider logged out!");
   };
 
@@ -39,6 +47,13 @@ const RiderSideMenu = () => {
         >
           <i className="menu-icon-rider">👤</i>
           Profile
+        </NavLink>
+
+        <NavLink 
+          to="/fleet-registration" 
+          className={({ isActive }) => `menu-item-rider ${isActive ? 'active-rider' : ''}`}
+        >
+          Fleet Registration
         </NavLink>
 
         <button onClick={handleLogout} className="menu-item-rider logout-btn-rider">

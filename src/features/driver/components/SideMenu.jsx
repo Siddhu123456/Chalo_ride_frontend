@@ -1,9 +1,16 @@
-import React from "react"; // No need for useEffect, useLocation, useSelector, useDispatch
-import { NavLink } from "react-router-dom"; // Still need NavLink
+import React from "react"; 
+import { NavLink } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { logout } from "../../../store/authSlice"; 
 import logo from "../../../assets/logo.png";
 import "./SideMenu.css";
 
 const SideMenu = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   // Dummy Data for demo purposes - completely replaces Redux state access
   const demoCurrentShift = { isActive: true, activeTrip: null }; // Example: Driver is on shift, but no active trip
   // const demoDocStatus = { license: 'Verified', vehicleRegistration: 'Pending' }; // No longer needed as Documents link removed
@@ -12,8 +19,9 @@ const SideMenu = () => {
   // const docsNeedAttention = demoDocStatus && Object.values(demoDocStatus).some(doc => doc === 'Pending' || doc === 'Rejected');
 
   const handleLogout = () => {
+    dispatch(logout());
+    navigate("/auth");
     console.log("Driver logged out!");
-    // In a real app, this would dispatch a Redux logout action or redirect.
   };
 
   return (

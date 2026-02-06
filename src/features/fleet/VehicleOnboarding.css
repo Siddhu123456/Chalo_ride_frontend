@@ -1,0 +1,200 @@
+/* src/features/fleet/FleetDashboard.css */
+
+.fd-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: #f8f9fa;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.fd-sidebar {
+  width: 260px;
+  background: #000000;
+  color: #888;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  flex-shrink: 0;
+  border-right: 1px solid #222;
+}
+
+.fd-brand {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+  letter-spacing: -0.5px;
+}
+
+.fd-badge {
+  font-size: 0.6rem;
+  background: #333;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* User Profile */
+.fd-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #222;
+  margin-bottom: 24px;
+}
+
+.fd-avatar {
+  width: 40px;
+  height: 40px;
+  background: #333;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.fd-username { color: #fff; font-size: 0.9rem; font-weight: 600; }
+.fd-role { font-size: 0.75rem; color: #666; }
+
+/* Nav Buttons */
+.fd-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.fd-nav-item {
+  background: transparent;
+  border: none;
+  color: #999;
+  padding: 12px 16px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.fd-nav-item:hover { background: #222; color: #fff; }
+.fd-nav-item.active { background: #fff; color: #000; }
+.fd-nav-item.logout { margin-top: auto; color: #ef4444; }
+.fd-nav-item.logout:hover { background: #222; }
+
+/* --- MAIN CONTENT --- */
+.fd-content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  position: relative;
+}
+
+.fd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.fd-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #111;
+  margin: 0;
+  letter-spacing: -1px;
+}
+
+.fd-btn-primary {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.fd-btn-primary:hover { background: #333; }
+
+/* --- CARDS GRID --- */
+.fd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.fd-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: transform 0.2s;
+}
+
+.fd-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.05); }
+
+.fd-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.fd-card-title { font-weight: 800; font-size: 1.2rem; color: #000; }
+
+.fd-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.fd-status.green { color: #166534; background: #f0fdf4; }
+.fd-status.red { color: #dc2626; background: #fef2f2; }
+
+.fd-card-body p { margin: 6px 0; font-size: 0.95rem; color: #444; }
+.fd-meta { color: #888 !important; font-size: 0.85rem !important; margin-top: 10px !important; }
+
+.fd-card-actions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  gap: 16px;
+}
+
+.fd-btn-text {
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #000;
+  padding: 0;
+}
+.fd-btn-text:hover { text-decoration: underline; }
+
+/* Loading State */
+.fd-loading {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #666;
+}

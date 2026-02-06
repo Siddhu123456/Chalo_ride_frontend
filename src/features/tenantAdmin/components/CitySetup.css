@@ -1,0 +1,763 @@
+/* --- CITY SETUP ROOT LAYOUT --- */
+.cs-root {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 28px;
+  height: 100%;
+  animation: fadeInScale 0.4s ease-out;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   LEFT PANEL - CITY BROWSER
+======================================== */
+
+.cs-browser-pane {
+  background: linear-gradient(to bottom, var(--rydo-white) 0%, #fafbfc 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.cs-browser-header {
+  padding: 32px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cs-header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.cs-header-top h3 {
+  font-size: 1.375rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.cs-add-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, var(--rydo-black) 0%, #1a1a1a 100%);
+  color: var(--rydo-white);
+  font-size: 1.5rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cs-add-btn:hover {
+  transform: translateY(-2px) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* --- SEARCH BOX --- */
+.cs-search-box {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.cs-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  opacity: 0.4;
+}
+
+.cs-search-box input {
+  width: 100%;
+  height: 48px;
+  padding: 0 16px 0 48px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--rydo-white);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--text-main);
+  transition: var(--transition);
+}
+
+.cs-search-box input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.cs-search-box input::placeholder {
+  color: #9ca3af;
+}
+
+/* --- STATS --- */
+.cs-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cs-stat-item {
+  background: var(--rydo-white);
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.cs-stat-value {
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--rydo-black);
+  letter-spacing: -0.5px;
+}
+
+.cs-stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* --- CITY LIST --- */
+.cs-city-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.cs-city-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cs-city-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cs-city-list::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 3px;
+}
+
+.cs-city-list::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+
+/* --- COUNTRY GROUPS --- */
+.cs-country-group {
+  margin-bottom: 24px;
+}
+
+.cs-country-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.cs-country-flag {
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: var(--text-main);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cs-country-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--rydo-white);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* --- CITY ITEMS --- */
+.cs-cities-in-country {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cs-city-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--rydo-white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cs-city-item:hover {
+  border-color: #cbd5e1;
+  background: #fafbfc;
+  transform: translateX(4px);
+}
+
+.cs-city-item.selected {
+  background: linear-gradient(135deg, var(--rydo-black) 0%, #1a1a1a 100%);
+  color: var(--rydo-white);
+  border-color: var(--rydo-black);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cs-city-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-city-item strong {
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.cs-city-tz {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.cs-city-currency {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  background: #f1f5f9;
+  color: var(--text-main);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.cs-city-item.selected .cs-city-currency {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--rydo-white);
+}
+
+/* ========================================
+   RIGHT PANEL - DETAILS/FORM
+======================================== */
+
+.cs-detail-pane {
+  background: linear-gradient(to bottom, var(--rydo-white) 0%, #fafbfc 100%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 40px;
+  overflow-y: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.cs-detail-pane::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: radial-gradient(ellipse at top right, rgba(37, 99, 235, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 12px 12px 0 0;
+}
+
+.cs-detail-pane::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cs-detail-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.cs-detail-pane::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 4px;
+}
+
+/* --- PLACEHOLDER STATE --- */
+.cs-placeholder {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.cs-placeholder-icon {
+  font-size: 5rem;
+  opacity: 0.15;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.cs-placeholder h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.cs-placeholder p {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  max-width: 400px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.cs-placeholder-btn {
+  margin-top: 12px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--rydo-black) 0%, #1a1a1a 100%);
+  color: var(--rydo-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cs-placeholder-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* --- CITY DETAILS VIEW --- */
+.cs-city-details {
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cs-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cs-detail-title h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.8px;
+}
+
+.cs-detail-country {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cs-status-badge {
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cs-status-badge.active {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+/* --- DETAIL SECTIONS --- */
+.cs-detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cs-detail-section h4 {
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+  margin: 0 0 20px 0;
+}
+
+.cs-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.cs-detail-item {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cs-detail-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+.cs-detail-value {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+/* --- STATUS CARDS --- */
+.cs-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.cs-status-card {
+  background: linear-gradient(135deg, var(--rydo-white) 0%, #fafbfc 100%);
+  border: 1px solid var(--border-color);
+  padding: 24px;
+  border-radius: 10px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.cs-status-card:hover {
+  border-color: var(--rydo-black);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.cs-status-icon {
+  font-size: 2rem;
+  opacity: 0.8;
+}
+
+.cs-status-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cs-status-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cs-status-number {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+/* --- SETTINGS LIST --- */
+.cs-settings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cs-setting-item {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 16px 20px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.cs-setting-item span:first-child {
+  color: var(--text-main);
+}
+
+.cs-setting-item span:last-child {
+  color: var(--text-muted);
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 0.875rem;
+}
+
+/* --- FORM CONTAINER --- */
+.cs-form-container {
+  position: relative;
+  z-index: 1;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.cs-form-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cs-form-header h3 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.cs-form-header p {
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* --- FORM FIELDS --- */
+.cs-bulk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.cs-field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cs-field label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
+}
+
+.cs-field input {
+  height: 54px;
+  padding: 0 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-input);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  transition: var(--transition);
+}
+
+.cs-field textarea {
+  height: 320px;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-input);
+  font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+  font-size: 0.875rem;
+  color: var(--text-main);
+  resize: none;
+  line-height: 1.7;
+  transition: var(--transition);
+}
+
+.cs-field input:focus,
+.cs-field textarea:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  background: var(--rydo-white);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
+
+.cs-field input::placeholder,
+.cs-field textarea::placeholder {
+  color: #9ca3af;
+}
+
+.cs-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: -4px;
+}
+
+/* --- FORM ACTIONS --- */
+.cs-form-actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.cs-cancel-btn {
+  height: 56px;
+  background: var(--rydo-white);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.cs-cancel-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.cs-submit-btn {
+  height: 56px;
+  background: linear-gradient(135deg, var(--rydo-black) 0%, #1a1a1a 100%);
+  color: var(--rydo-white);
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cs-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cs-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- EMPTY STATE --- */
+.cs-empty-state {
+  text-align: center;
+  padding: 80px 40px;
+  color: var(--text-muted);
+}
+
+.cs-empty-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.15;
+}
+
+.cs-empty-state p {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+}
+
+.cs-empty-state small {
+  font-size: 0.8125rem;
+  color: #9ca3af;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1280px) {
+  .cs-root {
+    grid-template-columns: 380px 1fr;
+    gap: 20px;
+  }
+  
+  .cs-status-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1024px) {
+  .cs-root {
+    grid-template-columns: 1fr;
+  }
+  
+  .cs-browser-pane {
+    max-height: 400px;
+  }
+  
+  .cs-detail-pane {
+    padding: 32px;
+  }
+  
+  .cs-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .cs-browser-header {
+    padding: 24px;
+  }
+  
+  .cs-detail-pane {
+    padding: 24px;
+  }
+  
+  .cs-detail-title h2 {
+    font-size: 1.5rem;
+  }
+  
+  .cs-form-actions {
+    grid-template-columns: 1fr;
+  }
+}

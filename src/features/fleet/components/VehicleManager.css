@@ -1,0 +1,257 @@
+.vm-container {
+  width: 100%;
+}
+
+.vm-action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  gap: 14px;
+}
+
+.vm-action-bar h2 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+}
+
+.vm-btn-primary {
+  background: #000;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #000;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+.vm-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rydo-shadow-md);
+}
+
+.vm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.vm-card {
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  padding: 22px;
+  border-radius: 18px;
+  box-shadow: var(--rydo-shadow-sm);
+  transition: 0.25s ease;
+}
+
+.vm-card:hover {
+  transform: translateY(-3px);
+  border-color: #111;
+  box-shadow: var(--rydo-shadow-md);
+}
+
+.vm-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.vm-reg {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+}
+
+.vm-status-pill {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.75rem;
+  border: 1px solid var(--rydo-border);
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+.vm-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vm-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 0.92rem;
+  color: #334155;
+}
+
+.vm-info-row span {
+  color: var(--rydo-text-muted);
+  font-weight: 700;
+}
+
+.vm-info-row strong {
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.vm-cat-tag {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--rydo-border);
+  background: #fff;
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: #0f172a;
+}
+
+.vm-appr {
+  font-weight: 900;
+  font-size: 0.82rem;
+}
+
+.vm-card-actions {
+  margin-top: 18px;
+}
+
+.vm-btn-manage {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--rydo-border);
+  background: #f9fafb;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.vm-btn-manage:hover {
+  background: #000;
+  border-color: #000;
+  color: #fff;
+}
+
+.vm-loader {
+  padding: 30px;
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  border-radius: 16px;
+  font-weight: 800;
+  color: #334155;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+/* Empty State */
+.vm-empty-state {
+  margin-top: 26px;
+  padding: 46px;
+  background: #fff;
+  border: 1px dashed var(--rydo-border);
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+.vm-empty-state h3 {
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.vm-empty-state p {
+  color: var(--rydo-text-muted);
+  margin-bottom: 18px;
+}
+
+.vm-btn-outline {
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #000;
+  background: transparent;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.vm-btn-outline:hover {
+  background: #000;
+  color: #fff;
+}
+
+
+.vm-actions-right{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.vm-filter{
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: white;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+}
+
+.vm-pill-group{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.vm-doc-pill{
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.vm-doc-pill.pending{
+  background: rgba(255, 165, 0, 0.12);
+}
+
+.vm-doc-pill.verified{
+  background: rgba(0, 255, 130, 0.12);
+}
+
+/* ---------- Button Contrast Fix ---------- */
+
+.vm-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+/* ✅ Upload Docs button */
+.vm-btn-outline {
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06); /* ✅ give visible bg */
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+/* ✅ hover effect */
+.vm-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ✅ for better visibility inside cards */
+.vm-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+

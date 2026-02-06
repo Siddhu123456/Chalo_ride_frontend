@@ -1,0 +1,161 @@
+/* Unique Class Names starting with 'al-' to prevent conflicts */
+
+.al-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+/* LEFT SIDE */
+.al-visual-pane {
+  flex: 1.2;
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2560&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  padding: 60px;
+}
+
+.al-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+}
+
+.al-brand {
+  color: #ffffff;
+  font-size: 4rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  margin: 0 0 10px 0;
+  line-height: 1;
+}
+
+.al-brand-badge {
+  font-size: 0.3em;
+  vertical-align: middle;
+  margin-left: 15px;
+  border: 1px solid #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  opacity: 0.8;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.al-hero-text {
+  color: #ffffff;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* RIGHT SIDE */
+.al-form-pane {
+  flex: 0.8;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.al-content-box {
+  width: 100%;
+  max-width: 380px;
+}
+
+.al-header {
+  margin-bottom: 32px;
+}
+
+.al-header h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+.al-header p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* FORM */
+.al-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.al-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.al-input-group label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #111;
+  letter-spacing: 0.5px;
+}
+
+.al-input-group input {
+  height: 50px;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  padding: 0 16px;
+  font-size: 1rem;
+  border-radius: 4px;
+  color: #000;
+  width: 100%;
+  font-family: monospace; /* Monospace for Keys */
+}
+
+.al-input-group input:focus {
+  outline: none;
+  background: #fff;
+  border-color: #000;
+}
+
+.al-submit-btn {
+  width: 100%;
+  height: 50px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.al-submit-btn:hover {
+  background: #333;
+}
+
+.al-footer {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #a1a1aa;
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .al-visual-pane { display: none; }
+  .al-form-pane { flex: 1; }
+}

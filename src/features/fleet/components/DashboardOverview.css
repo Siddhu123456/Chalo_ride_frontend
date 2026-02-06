@@ -1,0 +1,132 @@
+.do-container {
+  width: 100%;
+}
+
+.do-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+  margin-bottom: 26px;
+}
+
+.do-stat-card {
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  border-radius: 18px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: var(--rydo-shadow-sm);
+  transition: 0.25s ease;
+}
+
+.do-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--rydo-shadow-md);
+  border-color: #000;
+}
+
+.do-stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #f1f5f9;
+  display: grid;
+  place-items: center;
+  font-size: 1.4rem;
+}
+
+.do-stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.do-stat-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--rydo-text-muted);
+}
+
+.do-stat-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #0f172a;
+}
+
+.do-content-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 22px;
+}
+
+.do-main-card,
+.do-side-card {
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+.do-main-card h3,
+.do-side-card h3 {
+  font-size: 1.05rem;
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.do-placeholder-list {
+  border: 1px dashed var(--rydo-border);
+  border-radius: 16px;
+  padding: 26px;
+  background: #fafafa;
+}
+
+.do-empty-msg {
+  font-weight: 700;
+  color: var(--rydo-text-muted);
+}
+
+/* Actions */
+.do-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.do-action-btn {
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--rydo-border);
+  background: #f9fafb;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.do-action-btn:hover {
+  background: #000;
+  color: #fff;
+  border-color: #000;
+}
+
+.do-action-btn.logout {
+  background: #fff;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.do-action-btn.logout:hover {
+  background: #b91c1c;
+  color: #fff;
+  border-color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .do-content-grid {
+    grid-template-columns: 1fr;
+  }
+}

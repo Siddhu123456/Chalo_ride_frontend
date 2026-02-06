@@ -1,0 +1,153 @@
+/* src/features/admin/AdminShared.css */
+
+:root {
+  /* Premium Monochrome Palette */
+  --rydo-black: #000000;
+  --rydo-dark: #111111;
+  --rydo-gray: #f4f4f5;
+  --rydo-border: #e4e4e7;
+  --rydo-white: #ffffff;
+  --text-main: #18181b;
+  --text-muted: #71717a;
+}
+
+/* --- CARDS --- */
+.rydo-card {
+  background: var(--rydo-white);
+  border: 1px solid var(--rydo-border);
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--rydo-border);
+}
+
+.card-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--rydo-black);
+  letter-spacing: -0.01em;
+}
+
+.border-bottom {
+  border-bottom: 1px solid var(--rydo-border);
+}
+
+/* --- FORMS --- */
+.rydo-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--rydo-black);
+}
+
+input, select {
+  height: 48px;
+  padding: 0 16px;
+  border: 1px solid var(--rydo-border);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: var(--rydo-gray);
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  background: var(--rydo-white);
+  border-color: var(--rydo-black);
+  box-shadow: 0 0 0 1px var(--rydo-black);
+}
+
+/* --- BUTTONS --- */
+.rydo-btn {
+  height: 48px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rydo-btn.primary {
+  background: var(--rydo-black);
+  color: var(--rydo-white);
+  border: 1px solid var(--rydo-black);
+}
+
+.rydo-btn.primary:hover {
+  background: #27272a;
+}
+
+.rydo-btn.primary:disabled {
+  background: #a1a1aa;
+  border-color: #a1a1aa;
+  cursor: not-allowed;
+}
+
+.rydo-btn.secondary {
+  background: var(--rydo-white);
+  color: var(--rydo-black);
+  border: 1px solid var(--rydo-border);
+}
+
+.rydo-btn.secondary:hover {
+  border-color: var(--rydo-black);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--rydo-black);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.link-btn:hover {
+  color: #444;
+}
+
+/* --- ALERTS --- */
+.rydo-alert {
+  padding: 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.rydo-alert.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.rydo-alert.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }

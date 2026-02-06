@@ -1,0 +1,154 @@
+.du-container {
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  border-radius: 18px;
+  padding: 36px;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+.du-progress-bar {
+  margin-bottom: 26px;
+}
+
+.du-progress-text {
+  font-weight: 900;
+  color: #0f172a;
+  margin-bottom: 10px;
+  letter-spacing: -0.3px;
+}
+
+.du-track {
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.du-fill {
+  height: 100%;
+  background: #000;
+  border-radius: 99px;
+  transition: width 0.8s ease;
+}
+
+.du-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+.du-card {
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  transition: 0.2s ease;
+}
+
+.du-card:hover {
+  border-color: #000;
+  box-shadow: var(--rydo-shadow-md);
+  transform: translateY(-2px);
+}
+
+.du-card.done {
+  background: #f8fafc;
+  border-color: #bbf7d0;
+}
+
+.du-card-info h3 {
+  font-size: 1rem;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.du-card-info p {
+  color: var(--rydo-text-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.du-status-tag {
+  font-weight: 900;
+  font-size: 0.8rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #dcfce7;
+  border: 1px solid #bbf7d0;
+  color: #166534;
+}
+
+.du-upload-btn {
+  background: #000;
+  border: 1px solid #000;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.du-upload-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rydo-shadow-md);
+}
+
+/* Modal */
+.du-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4000;
+}
+
+.du-modal {
+  width: min(480px, 92vw);
+  background: #fff;
+  border-radius: 18px;
+  border: 1px solid var(--rydo-border);
+  box-shadow: var(--rydo-shadow-lg);
+  padding: 22px;
+}
+
+.du-modal h3 {
+  font-weight: 900;
+  margin-bottom: 14px;
+}
+
+.du-modal input[type='file'] {
+  width: 100%;
+  padding: 12px;
+  border: 1px dashed var(--rydo-border);
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.du-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.du-modal-actions button {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  border: 1px solid var(--rydo-border);
+  background: #fff;
+}
+
+.du-btn-primary {
+  background: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
+}

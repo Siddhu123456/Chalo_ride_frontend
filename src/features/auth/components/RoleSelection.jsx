@@ -1,48 +1,41 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { selectRole } from "../../../store/authSlice.js";
-import { fetchDriverProfile } from "../../../store/driverSlice.js";
+import { selectRole } from "../../../store/authSlice";
+import { fetchDriverProfile } from "../../../store/driverSlice";
 import "./RoleSelection.css";
 
-const Roles = ({ onFleetSelect, onBack }) => {
+const RoleSelection = ({ onBack }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { roles, user, loading } = useSelector((state) => state.auth);
 
   const handleRoleClick = async (role) => {
-    // 1️⃣ Select role
     await dispatch(selectRole({ user_id: user.user_id, role }));
 
-    // 2️⃣ Fleet Owner flow (unchanged)
     if (role === "FLEET_OWNER") {
-      onFleetSelect();
+      navigate("/dashboard");
       return;
     }
 
-    // 3️⃣ Driver flow (unchanged)
     if (role === "DRIVER") {
       const result = await dispatch(fetchDriverProfile());
 
       if (fetchDriverProfile.fulfilled.match(result)) {
         const profile = result.payload;
-
-        if (profile.approval_status === "APPROVED") {
-          navigate("/driver/dashboard");
-        } else {
-          navigate("/driver/docs");
-        }
+        navigate(
+          profile.approval_status === "APPROVED"
+            ? "/driver/dashboard"
+            : "/driver/docs"
+        );
       }
       return;
     }
 
-    // 4️⃣ Rider flow ✅
     if (role === "RIDER") {
-      navigate("/rider"); // RiderPage → redirects to /home
+      navigate("/rider");
     }
   };
-
-  const hasFleetOwner = roles.includes("FLEET_OWNER");
 
   return (
     <>
@@ -64,18 +57,6 @@ const Roles = ({ onFleetSelect, onBack }) => {
           </button>
         ))}
 
-        {!hasFleetOwner && (
-          <button className="role-card fleet-promo" onClick={onFleetSelect}>
-            <div className="fleet-promo-content">
-              <span className="role-name">Become a Fleet Owner</span>
-              <span className="role-desc">
-                Manage vehicles & drivers
-              </span>
-            </div>
-            <span className="role-arrow">↗</span>
-          </button>
-        )}
-
         <button className="back-link" onClick={onBack}>
           Use a different account
         </button>
@@ -84,4 +65,4 @@ const Roles = ({ onFleetSelect, onBack }) => {
   );
 };
 
-export default Roles;
+export default RoleSelection;

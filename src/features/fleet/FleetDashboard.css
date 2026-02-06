@@ -1,0 +1,225 @@
+/* ============================= */
+/* ✅ FLEET DASHBOARD SHELL */
+/* ============================= */
+
+/* --- ONBOARDING VIEW --- */
+.fd-onboarding-shell,
+.fd-onboarding-layout {
+  height: 100vh;
+  width: 100vw;
+  background: var(--rydo-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fd-utility-nav,
+.fd-navbar {
+  height: 72px;
+  background: #fff;
+  border-bottom: 1px solid var(--rydo-border);
+  padding: 0 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fd-nav-brand,
+.fd-navbar-brand,
+.fd-navbar-brand {
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #0f172a;
+}
+
+.fd-nav-brand span {
+  margin-left: 6px;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #000;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.fd-brand-badge {
+  font-size: 0.7rem;
+  background: #000;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 10px;
+}
+
+/* Logout button */
+.fd-nav-logout,
+.fd-btn-logout {
+  background: #000 !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: var(--rydo-shadow-sm);
+}
+
+.fd-nav-logout:hover,
+.fd-btn-logout:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--rydo-shadow-md);
+}
+
+/* Onboarding container */
+.fd-onboarding-viewport,
+.fd-onboarding-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 64px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.fd-hero-content,
+.fd-welcome-section {
+  margin-bottom: 32px;
+}
+
+.fd-badge-new {
+  display: inline-flex;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  background: #fff;
+  border: 1px solid var(--rydo-border);
+  box-shadow: var(--rydo-shadow-sm);
+  margin-bottom: 18px;
+}
+
+.fd-hero-content h1,
+.fd-welcome-section h1 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: -1.4px;
+  margin-bottom: 12px;
+  color: #0f172a;
+}
+
+.fd-hero-content p,
+.fd-welcome-section p {
+  color: var(--rydo-text-muted);
+  font-size: 1.05rem;
+  max-width: 700px;
+}
+
+/* --- VERIFIED DASHBOARD VIEW --- */
+.fd-dashboard-shell,
+.fd-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background: var(--rydo-bg);
+}
+
+.fd-main-viewport,
+.fd-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fd-top-utility-bar,
+.fd-topbar {
+  height: 72px;
+  background: #fff;
+  border-bottom: 1px solid var(--rydo-border);
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.fd-breadcrumb {
+  font-weight: 700;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.fd-system-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #0f172a;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid var(--rydo-border);
+}
+
+.fd-dot-active {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+}
+
+/* Main scroll area */
+.fd-scrollable-content,
+.fd-view-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px;
+}
+
+/* Loader */
+.fd-screen-loader {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  place-items: center;
+  background: var(--rydo-bg);
+}
+
+.rydo-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #000;
+  animation: rydoSpin 0.85s linear infinite;
+}
+
+@keyframes rydoSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .fd-top-utility-bar,
+  .fd-topbar {
+    padding: 0 18px;
+  }
+
+  .fd-scrollable-content,
+  .fd-view-container {
+    padding: 22px 18px;
+  }
+
+  .fd-onboarding-viewport,
+  .fd-onboarding-content {
+    padding: 36px 18px;
+  }
+}

@@ -1,0 +1,190 @@
+/* ==============================
+   Vehicle Docs Modal (Rydo Theme)
+================================= */
+
+.vd-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.72); /* deep dashboard overlay */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2500;
+  padding: 18px;
+}
+
+/* Modal shell */
+.vd-modal {
+  width: min(620px, 92vw);
+  border-radius: 20px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 23, 42, 0.92) 0%,
+    rgba(2, 6, 23, 0.92) 100%
+  );
+  box-shadow: 0 35px 120px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Header */
+.vd-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vd-head h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+}
+
+.vd-sub {
+  margin: 6px 0 0;
+  opacity: 0.72;
+  font-size: 13px;
+}
+
+.vd-close {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.vd-close:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-1px);
+}
+
+/* Banner */
+.vd-banner {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+
+.vd-banner.error {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.22);
+}
+
+.vd-banner.success {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.22);
+}
+
+/* Content */
+.vd-body {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Doc row */
+.vd-doc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.vd-doc-title {
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.vd-doc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.vd-chip {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.vd-chip.pending {
+  background: rgba(245, 158, 11, 0.14); /* amber */
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.vd-chip.done {
+  background: rgba(34, 197, 94, 0.14); /* green */
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* File input */
+.vd-doc-action input[type="file"] {
+  width: 220px;
+  max-width: 46vw;
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.vd-doc-action input[type="file"]::-webkit-file-upload-button {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  padding: 8px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  margin-right: 10px;
+}
+
+.vd-doc-action input[type="file"]::-webkit-file-upload-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Footer */
+.vd-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 6px;
+}
+
+.vd-btn {
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.vd-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+    
