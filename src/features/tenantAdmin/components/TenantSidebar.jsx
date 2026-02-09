@@ -1,5 +1,8 @@
 import React from 'react';
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import logo from '../../../assets/logo.png';
+import { logout } from "../../../store/authSlice";
 import './TenantSidebar.css';
 
 const TenantSidebar = ({ activeView, onViewChange, counts }) => {
@@ -9,6 +12,9 @@ const TenantSidebar = ({ activeView, onViewChange, counts }) => {
     { id: 'VEHICLES', label: 'Vehicles', count: counts.vehicles, icon: '🚗' },
     { id: 'CITIES', label: 'Regional Setup', count: null, icon: '🌍' },
   ];
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());        // optional but recommended

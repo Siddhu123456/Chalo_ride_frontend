@@ -17,6 +17,7 @@ import DriverManager from "./components/DriverManager";
 import AssignmentManager from "./components/AssignmentManager";
 import DocUploadModule from "./components/DocUploadModule";
 import AddVehicleModal from "./components/AddVehicleModal";
+import Financials from "./components/Financials";
 import logo from '../../assets/logo.png'; 
 
 import "./FleetDashboard.css";
@@ -33,7 +34,7 @@ const FleetDashboard = () => {
   const [activeTab, setActiveTab] = useState("OVERVIEW");
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
 
-  // ✅ 1. Role Guard: If Tenant Admin, stop fleet logic immediately
+  // 1. Role Guard: If Tenant Admin, stop fleet logic immediately
   const isTenantAdmin = useMemo(() => roles?.includes("TENANT_ADMIN"), [roles]);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const FleetDashboard = () => {
   }, [fleet, dispatch, isTenantAdmin]);
 
   useEffect(() => {
-    // ✅ Only redirect if NOT an admin and fleet is missing
+    // Only redirect if NOT an admin and fleet is missing
     if (!isTenantAdmin && hasExistingFleet === false) {
       navigate("/fleet-registration");
     }
@@ -62,7 +63,7 @@ const FleetDashboard = () => {
 
   const statusLabel = useMemo(() => fleet?.approval_status || "PENDING", [fleet]);
 
-  if (isTenantAdmin) return null; // ✅ Render nothing if this is an admin session
+  if (isTenantAdmin) return null; //Render nothing if this is an admin session
 
   if (loading && !fleet) {
     return (
@@ -97,7 +98,7 @@ const FleetDashboard = () => {
         <div className="fd-onboarding-content">
           <header className="fd-welcome-section">
             <div className="fd-onboard-tag">Verification Required</div>
-            {/* ✅ Greeting placed here, in the Hero section */}
+            {/* Greeting placed here, in the Hero section */}
             <h1>Welcome, {fleet.fleet_name}</h1>
             <p>Your fleet profile is currently <strong>{statusLabel}</strong>. Complete the verification below to activate your command center.</p>
           </header>
@@ -158,6 +159,7 @@ const FleetDashboard = () => {
           )}
           {activeTab === "DRIVERS" && <DriverManager fleetId={fleet?.fleet_id} />}
           {activeTab === "ASSIGNMENTS" && <AssignmentManager fleetId={fleet?.fleet_id} />}
+          {activeTab === "EARNINGS" && <Financials />}
         </div>
       </main>
 

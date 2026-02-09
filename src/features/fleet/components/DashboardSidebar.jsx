@@ -1,6 +1,8 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import logo from '../../../assets/logo.png';
+import { logout } from "../../../store/authSlice";
 import "./DashboardSidebar.css";
 
 const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
@@ -9,9 +11,10 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
     { id: "VEHICLES", label: "Fleet Assets", icon: "🚗" },
     { id: "DRIVERS", label: "Driver Roster", icon: "👥" },
     { id: "ASSIGNMENTS", label: "Assignments", icon: "🔑" },
-    { id: "EARNINGS", label: "Financials", icon: "💰", disabled: true },
+    { id: "EARNINGS", label: "Financials", icon: "💰" },
   ];
-
+  
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {

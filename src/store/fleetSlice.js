@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL = "http://localhost:8000/fleet-owner";
+const WALLET_API_URL = "http://localhost:8000/wallet";
 
 /* -----------------------------------------
    Helpers
@@ -260,6 +261,45 @@ export const fetchAssignments = createAsyncThunk(
 );
 
 /* -----------------------------------------
+   WALLET / FINANCIALS THUNKS
+------------------------------------------ */
+
+/**
+ * Fetch wallet details
+ * GET /wallet/me
+ */
+export const fetchWalletDetails = createAsyncThunk(
+  "fleet/fetchWallet",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${WALLET_API_URL}/me`, getHeaders());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch wallet"));
+    }
+  }
+);
+
+/**
+ * Fetch wallet transactions with pagination
+ * GET /wallet/transactions?page=1&limit=20
+ */
+export const fetchWalletTransactions = createAsyncThunk(
+  "fleet/fetchTransactions",
+  async ({ page = 1, limit = 20 }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${WALLET_API_URL}/transactions?page=${page}&limit=${limit}`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch transactions"));
+    }
+  }
+);
+
+/* -----------------------------------------
    SLICE
 ------------------------------------------ */
 
@@ -292,6 +332,15 @@ const fleetSlice = createSlice({
 
     selectedVehicleForDocs: null,
     selectedVehicleDocStatus: null,
+
+    // Wallet & Financials
+    wallet: null,
+    transactions: [],
+    transactionsPagination: {
+      page: 1,
+      limit: 20,
+      total: 0,
+    },
 
     loading: false,
     error: null,
@@ -369,6 +418,20 @@ const fleetSlice = createSlice({
 
       .addCase(assignDriverToVehicle.fulfilled, (state) => {
         state.successMsg = "Assignment confirmed";
+      })
+
+      // Wallet & Financials
+      .addCase(fetchWalletDetails.fulfilled, (state, action) => {
+        state.wallet = action.payload;
+      })
+
+      .addCase(fetchWalletTransactions.fulfilled, (state, action) => {
+        state.transactions = action.payload.transactions || [];
+        state.transactionsPagination = {
+          page: action.payload.page,
+          limit: action.payload.limit,
+          total: action.payload.total,
+        };
       })
 
       .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
