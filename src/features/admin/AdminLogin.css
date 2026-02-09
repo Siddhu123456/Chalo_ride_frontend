@@ -1,161 +1,285 @@
-/* Unique Class Names starting with 'al-' to prevent conflicts */
+/* AdminLogin.css - Production Level */
 
-.al-layout {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  font-family: 'Inter', sans-serif;
+:root {
+    --theme-white: #fff;
+    --theme-border: #a1a2a6;
+    --theme-font: #3b3e47;
+    --theme-button-bg: #fecc18;
+    --theme-button-font: #000000;
+    --theme-border-yellow: #fecc18;
 }
 
-/* LEFT SIDE */
+/* Main Layout */
+.al-layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f8f9fa;
+}
+
+/* LEFT PANE - Visual/Branding */
 .al-visual-pane {
-  flex: 1.2;
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2560&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  align-items: flex-end;
-  padding: 60px;
+    flex: 1;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.al-visual-pane::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(254, 204, 24, 0.1) 0%, transparent 70%);
+    animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.2); opacity: 0.5; }
 }
 
 .al-hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: left;
+    text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
 .al-brand {
-  color: #ffffff;
-  font-size: 4rem;
-  font-weight: 900;
-  letter-spacing: -2px;
-  margin: 0 0 10px 0;
-  line-height: 1;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--theme-white);
+    margin: 0 0 20px 0;
+    letter-spacing: 2px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .al-brand-badge {
-  font-size: 0.3em;
-  vertical-align: middle;
-  margin-left: 15px;
-  border: 1px solid #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  opacity: 0.8;
-  font-weight: 600;
-  letter-spacing: 1px;
+    display: inline-block;
+    margin-left: 16px;
+    padding: 8px 20px;
+    background: var(--theme-button-bg);
+    color: var(--theme-button-font);
+    font-size: 1rem;
+    font-weight: 800;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 16px rgba(254, 204, 24, 0.4);
 }
 
 .al-hero-text {
-  color: #ffffff;
-  font-size: 1.1rem;
-  opacity: 0.9;
-  font-weight: 400;
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: 0.5px;
 }
 
-/* RIGHT SIDE */
+/* RIGHT PANE - Form */
 .al-form-pane {
-  flex: 0.8;
-  background: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    background: var(--theme-white);
 }
 
 .al-content-box {
-  width: 100%;
-  max-width: 380px;
+    width: 100%;
+    max-width: 440px;
 }
 
 .al-header {
-  margin-bottom: 32px;
+    margin-bottom: 40px;
 }
 
 .al-header h2 {
-  font-size: 1.8rem;
-  font-weight: 800;
-  margin-bottom: 8px;
-  color: #000;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--theme-font);
+    margin: 0 0 12px 0;
+    letter-spacing: 0.5px;
 }
 
 .al-header p {
-  color: #666;
-  font-size: 0.9rem;
+    font-size: 1rem;
+    color: #777;
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* FORM */
+/* Form */
 .al-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+    margin-bottom: 32px;
 }
 
 .al-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  text-align: left;
+    margin-bottom: 24px;
 }
 
 .al-input-group label {
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #111;
-  letter-spacing: 0.5px;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--theme-font);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .al-input-group input {
-  height: 50px;
-  background: #f4f4f5;
-  border: 1px solid #e4e4e7;
-  padding: 0 16px;
-  font-size: 1rem;
-  border-radius: 4px;
-  color: #000;
-  width: 100%;
-  font-family: monospace; /* Monospace for Keys */
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    color: var(--theme-font);
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+}
+
+.al-input-group input::placeholder {
+    color: #999;
+    font-family: inherit;
 }
 
 .al-input-group input:focus {
-  outline: none;
-  background: #fff;
-  border-color: #000;
+    outline: none;
+    border-color: var(--theme-button-bg);
+    background: var(--theme-white);
+    box-shadow: 0 0 0 4px rgba(254, 204, 24, 0.1);
 }
 
+/* Submit Button */
 .al-submit-btn {
-  width: 100%;
-  height: 50px;
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 10px;
+    width: 100%;
+    padding: 18px;
+    background-color: var(--theme-button-bg);
+    color: var(--theme-button-font);
+    border: none;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(254, 204, 24, 0.4);
+    height: 60px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 1;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.al-submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #000000 0%, #2c3e50 100%);
+    transition: left 0.8s ease;
+    z-index: -1;
 }
 
 .al-submit-btn:hover {
-  background: #333;
+    background-color: transparent;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
 }
 
+.al-submit-btn:hover::before {
+    left: 0;
+}
+
+.al-submit-btn:active {
+    transform: scale(0.98) translateY(0);
+}
+
+/* Footer */
 .al-footer {
-  margin-top: 30px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #a1a1aa;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #999;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
 }
 
-/* Mobile */
+/* Responsive */
 @media (max-width: 1024px) {
-  .al-visual-pane { display: none; }
-  .al-form-pane { flex: 1; }
+    .al-layout {
+        flex-direction: column;
+    }
+
+    .al-visual-pane {
+        min-height: 40vh;
+        padding: 40px;
+    }
+
+    .al-brand {
+        font-size: 3rem;
+    }
+
+    .al-form-pane {
+        padding: 40px 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .al-visual-pane {
+        min-height: 30vh;
+        padding: 30px;
+    }
+
+    .al-brand {
+        font-size: 2.5rem;
+    }
+
+    .al-brand-badge {
+        font-size: 0.85rem;
+        padding: 6px 16px;
+    }
+
+    .al-hero-text {
+        font-size: 1.1rem;
+    }
+
+    .al-form-pane {
+        padding: 30px 20px;
+    }
+
+    .al-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .al-submit-btn {
+        height: 56px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .al-brand {
+        font-size: 2rem;
+    }
+
+    .al-brand-badge {
+        display: block;
+        margin: 16px auto 0;
+        width: fit-content;
+    }
 }

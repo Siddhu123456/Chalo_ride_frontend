@@ -2,17 +2,22 @@ import React, { useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { adminLogout } from '../../store/adminSlice';
-import './AdminLayout.css'; // Importing specific CSS
+import './AdminLayout.css';
+import logo from '../../assets/logo.png'; // adjust path if needed
 
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  const { isAuthenticated } = useSelector((state) => state.admin);
+
+  // ✅ SAFE SELECTOR
+  const isAuthenticated = useSelector(
+    (state) => state.admin?.isAuthenticated
+  );
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    // ✅ Redirect ONLY if explicitly false
+    if (isAuthenticated === false) {
       navigate('/admin/login');
     }
   }, [isAuthenticated, navigate]);
@@ -22,24 +27,30 @@ const AdminLayout = () => {
     navigate('/admin/login');
   };
 
-  const isActive = (path) => location.pathname.includes(path) ? 'active' : '';
+  const isActive = (path) =>
+    location.pathname.includes(path) ? 'active' : '';
 
-  if (!isAuthenticated) return null;
+  // ✅ Prevent premature unmount
+  if (isAuthenticated === undefined) return null;
 
   return (
     <div className="layout-wrapper">
       {/* SIDEBAR */}
       <aside className="layout-sidebar">
         <div className="sidebar-brand">
+          <img src={logo} alt="Rydo Logo" className="sidebar-logo" />
           Rydo<span className="sidebar-badge">ADMIN</span>
         </div>
-        
+
         <nav className="sidebar-nav">
           <div className="nav-label">PLATFORM</div>
-          <Link to="/admin/tenants" className={`nav-link ${isActive('/tenants')}`}>
+          <Link
+            to="/admin/tenants"
+            className={`nav-link ${isActive('/tenants')}`}
+          >
             Tenants & Regions
           </Link>
-          
+
           <div className="nav-label">SYSTEM</div>
           <button onClick={handleLogout} className="nav-link logout-btn">
             Logout
@@ -55,7 +66,7 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <main className="layout-main">
         <Outlet />
       </main>

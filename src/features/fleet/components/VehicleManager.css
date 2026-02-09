@@ -1,257 +1,457 @@
-.vm-container {
-  width: 100%;
+/* =====================================================
+   VEHICLE MANAGER
+   Production-Ready Styling
+   ===================================================== */
+
+:root {
+  --theme-white: #fff;
+  --theme-border: #a1a2a6;
+  --theme-font: #3b3e47;
+  --theme-button-bg: #fecc18;
+  --theme-button-font: #000000;
+  --theme-border-yellow: #fecc18;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+.vm-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* =====================================================
+   ACTION BAR
+   ===================================================== */
 .vm-action-bar {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
-  gap: 14px;
-}
-
-.vm-action-bar h2 {
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: -0.6px;
-}
-
-.vm-btn-primary {
-  background: #000;
-  color: #fff;
-  padding: 10px 16px;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 1.5rem 2rem;
+  background: var(--theme-white);
+  border: 1.5px solid var(--theme-border);
   border-radius: 12px;
-  border: 1px solid #000;
-  font-weight: 800;
+  box-shadow: var(--shadow-sm);
+}
+
+.vm-title-box {
+  flex: 1;
+}
+
+.vm-title-box h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.vm-title-box p {
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 400;
+}
+
+.vm-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* =====================================================
+   FILTER DROPDOWN
+   ===================================================== */
+.vm-filter {
+  padding: 0.75rem 1.25rem;
+  padding-right: 2.5rem;
+  border: 1.5px solid var(--theme-border);
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--theme-font);
+  background: var(--theme-white);
   cursor: pointer;
-  box-shadow: var(--rydo-shadow-sm);
+  transition: var(--transition-base);
+  font-family: inherit;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233b3e47' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.vm-filter:focus {
+  outline: none;
+  border-color: var(--theme-border-yellow);
+  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.1);
+}
+
+.vm-filter:hover {
+  border-color: var(--theme-border-yellow);
+}
+
+/* =====================================================
+   PRIMARY BUTTON
+   ===================================================== */
+.vm-btn-primary {
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-base);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.25);
+  font-family: inherit;
+  white-space: nowrap;
 }
 
 .vm-btn-primary:hover {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
   transform: translateY(-1px);
-  box-shadow: var(--rydo-shadow-md);
+  box-shadow: 0 5px 14px rgba(254, 204, 24, 0.35);
 }
 
+.vm-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+/* =====================================================
+   VEHICLE GRID
+   ===================================================== */
 .vm-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 22px;
+  gap: 1.5rem;
 }
 
+/* =====================================================
+   VEHICLE CARD
+   ===================================================== */
 .vm-card {
-  background: #fff;
-  border: 1px solid var(--rydo-border);
-  padding: 22px;
-  border-radius: 18px;
-  box-shadow: var(--rydo-shadow-sm);
-  transition: 0.25s ease;
+  background: var(--theme-white);
+  border: 1.5px solid var(--theme-border);
+  border-radius: 12px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.vm-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .vm-card:hover {
-  transform: translateY(-3px);
-  border-color: #111;
-  box-shadow: var(--rydo-shadow-md);
+  border-color: var(--theme-border-yellow);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
+.vm-card:hover::before {
+  opacity: 1;
+}
+
+/* =====================================================
+   CARD HEAD
+   ===================================================== */
 .vm-card-head {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e9ecef;
 }
 
 .vm-reg {
-  font-size: 1.05rem;
-  font-weight: 900;
-  letter-spacing: -0.4px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  letter-spacing: 0.5px;
 }
 
+.vm-pill-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+}
+
+/* =====================================================
+   PILLS & BADGES
+   ===================================================== */
+.vm-doc-pill,
 .vm-status-pill {
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-weight: 800;
+  padding: 0.4rem 0.875rem;
+  border-radius: 20px;
   font-size: 0.75rem;
-  border: 1px solid var(--rydo-border);
-  background: #f8fafc;
-  color: #0f172a;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
 }
 
+.vm-doc-pill.verified {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.vm-doc-pill.pending {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.vm-status-pill.active {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.vm-status-pill.inactive {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* =====================================================
+   CARD BODY
+   ===================================================== */
 .vm-card-body {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0.875rem;
 }
 
 .vm-info-row {
   display: flex;
   justify-content: space-between;
-  gap: 14px;
-  font-size: 0.92rem;
-  color: #334155;
+  align-items: center;
+  font-size: 0.9rem;
 }
 
-.vm-info-row span {
-  color: var(--rydo-text-muted);
-  font-weight: 700;
-}
-
-.vm-info-row strong {
-  font-weight: 900;
-  color: #0f172a;
+.vm-info-row > span:first-child {
+  color: #6c757d;
+  font-weight: 500;
 }
 
 .vm-cat-tag {
-  display: inline-flex;
-  padding: 5px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--rydo-border);
-  background: #fff;
-  font-weight: 800;
-  font-size: 0.8rem;
-  color: #0f172a;
+  background: linear-gradient(135deg, rgba(254, 204, 24, 0.15) 0%, rgba(254, 204, 24, 0.08) 100%);
+  color: var(--theme-font);
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: 1px solid rgba(254, 204, 24, 0.3);
 }
 
 .vm-appr {
-  font-weight: 900;
-  font-size: 0.82rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.85rem;
 }
 
+.vm-appr.approved {
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.vm-appr.pending {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.vm-appr.rejected {
+  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+/* =====================================================
+   CARD ACTIONS
+   ===================================================== */
 .vm-card-actions {
-  margin-top: 18px;
+  display: flex;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.vm-btn-manage,
+.vm-btn-outline {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-base);
+  border: none;
+  font-family: inherit;
 }
 
 .vm-btn-manage {
-  width: 100%;
-  padding: 11px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--rydo-border);
-  background: #f9fafb;
-  font-weight: 800;
-  cursor: pointer;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.2);
 }
 
 .vm-btn-manage:hover {
-  background: #000;
-  border-color: #000;
-  color: #fff;
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.3);
 }
 
-.vm-loader {
-  padding: 30px;
-  background: #fff;
-  border: 1px solid var(--rydo-border);
-  border-radius: 16px;
-  font-weight: 800;
-  color: #334155;
-  box-shadow: var(--rydo-shadow-sm);
+.vm-btn-outline {
+  background: transparent;
+  color: var(--theme-font);
+  border: 1.5px solid var(--theme-border);
 }
 
-/* Empty State */
+.vm-btn-outline:hover {
+  background: var(--theme-font);
+  color: var(--theme-white);
+  border-color: var(--theme-font);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* =====================================================
+   EMPTY STATE
+   ===================================================== */
 .vm-empty-state {
-  margin-top: 26px;
-  padding: 46px;
-  background: #fff;
-  border: 1px dashed var(--rydo-border);
-  border-radius: 18px;
   text-align: center;
-  box-shadow: var(--rydo-shadow-sm);
+  padding: 4rem 2rem;
+  background: var(--theme-white);
+  border: 1.5px dashed var(--theme-border);
+  border-radius: 12px;
 }
 
 .vm-empty-state h3 {
-  font-weight: 900;
-  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0 0 0.75rem 0;
 }
 
 .vm-empty-state p {
-  color: var(--rydo-text-muted);
-  margin-bottom: 18px;
+  font-size: 1rem;
+  color: #6c757d;
+  margin: 0 0 2rem 0;
 }
 
-.vm-btn-outline {
-  padding: 10px 16px;
-  border-radius: 12px;
-  border: 1px solid #000;
-  background: transparent;
-  font-weight: 900;
-  cursor: pointer;
+.vm-empty-state .vm-btn-outline {
+  display: inline-flex;
+  padding: 0.875rem 1.75rem;
 }
 
-.vm-btn-outline:hover {
-  background: #000;
-  color: #fff;
+/* =====================================================
+   LOADER
+   ===================================================== */
+.vm-loader {
+  text-align: center;
+  padding: 3rem 2rem;
+  font-size: 1.1rem;
+  color: #6c757d;
+  font-weight: 500;
 }
 
-
-.vm-actions-right{
-  display: flex;
-  gap: 12px;
-  align-items: center;
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 1024px) {
+  .vm-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
 }
 
-.vm-filter{
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: white;
-  font-weight: 600;
-  outline: none;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .vm-action-bar {
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .vm-actions-right {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .vm-filter,
+  .vm-btn-primary {
+    width: 100%;
+  }
+
+  .vm-title-box h2 {
+    font-size: 1.75rem;
+  }
+
+  .vm-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .vm-card {
+    padding: 1.5rem;
+  }
 }
 
-.vm-pill-group{
-  display: flex;
-  gap: 10px;
-  align-items: center;
+@media (max-width: 480px) {
+  .vm-action-bar {
+    padding: 1rem;
+  }
+
+  .vm-title-box h2 {
+    font-size: 1.5rem;
+  }
+
+  .vm-title-box p {
+    font-size: 0.9rem;
+  }
+
+  .vm-card-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .vm-pill-group {
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .vm-card-actions {
+    flex-direction: column;
+  }
+
+  .vm-empty-state {
+    padding: 3rem 1.5rem;
+  }
+
+  .vm-empty-state h3 {
+    font-size: 1.25rem;
+  }
 }
-
-.vm-doc-pill{
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.08);
-}
-
-.vm-doc-pill.pending{
-  background: rgba(255, 165, 0, 0.12);
-}
-
-.vm-doc-pill.verified{
-  background: rgba(0, 255, 130, 0.12);
-}
-
-/* ---------- Button Contrast Fix ---------- */
-
-.vm-card-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 14px;
-}
-
-/* ✅ Upload Docs button */
-.vm-btn-outline {
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06); /* ✅ give visible bg */
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 800;
-  cursor: pointer;
-  transition: 0.18s ease;
-}
-
-/* ✅ hover effect */
-.vm-btn-outline:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
-}
-
-/* ✅ for better visibility inside cards */
-.vm-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-

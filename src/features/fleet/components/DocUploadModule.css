@@ -1,154 +1,441 @@
-.du-container {
-  background: #fff;
-  border: 1px solid var(--rydo-border);
-  border-radius: 18px;
-  padding: 36px;
-  box-shadow: var(--rydo-shadow-sm);
+/* =====================================================
+   DOC UPLOAD MODULE
+   Production-Ready Styling
+   ===================================================== */
+
+:root {
+  --theme-white: #fff;
+  --theme-border: #a1a2a6;
+  --theme-font: #3b3e47;
+  --theme-button-bg: #fecc18;
+  --theme-button-font: #000000;
+  --theme-border-yellow: #fecc18;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* =====================================================
+   CONTAINER
+   ===================================================== */
+.du-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   PROGRESS BAR
+   ===================================================== */
 .du-progress-bar {
-  margin-bottom: 26px;
+  background: var(--theme-white);
+  border: 1.5px solid var(--theme-border);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
 }
 
 .du-progress-text {
-  font-weight: 900;
-  color: #0f172a;
-  margin-bottom: 10px;
-  letter-spacing: -0.3px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--theme-font);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .du-track {
-  height: 10px;
-  background: #f1f5f9;
-  border-radius: 99px;
+  width: 100%;
+  height: 16px;
+  background: #e9ecef;
+  border-radius: 20px;
   overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .du-fill {
   height: 100%;
-  background: #000;
-  border-radius: 99px;
-  transition: width 0.8s ease;
+  background: linear-gradient(90deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  border-radius: 20px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  box-shadow: 0 2px 6px rgba(254, 204, 24, 0.3);
 }
 
+.du-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* =====================================================
+   GRID
+   ===================================================== */
 .du-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
+/* =====================================================
+   DOCUMENT CARD
+   ===================================================== */
 .du-card {
-  background: #fff;
-  border: 1px solid var(--rydo-border);
-  border-radius: 14px;
-  padding: 18px;
+  background: var(--theme-white);
+  border: 1.5px solid var(--theme-border);
+  border-radius: 12px;
+  padding: 2rem;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  gap: 14px;
-  transition: 0.2s ease;
+  gap: 1.5rem;
+  transition: var(--transition-base);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+}
+
+.du-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
 }
 
 .du-card:hover {
-  border-color: #000;
-  box-shadow: var(--rydo-shadow-md);
+  border-color: var(--theme-border-yellow);
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
+.du-card:hover::before {
+  transform: scaleX(1);
+}
+
 .du-card.done {
-  background: #f8fafc;
-  border-color: #bbf7d0;
+  background: linear-gradient(135deg, #f0fdf4 0%, #d4edda 100%);
+  border-color: #c3e6cb;
+}
+
+.du-card.done::before {
+  background: linear-gradient(90deg, #28a745 0%, #20c997 100%);
+  transform: scaleX(1);
+}
+
+/* =====================================================
+   CARD INFO
+   ===================================================== */
+.du-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .du-card-info h3 {
-  font-size: 1rem;
-  font-weight: 900;
-  margin-bottom: 4px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+  line-height: 1.3;
 }
 
 .du-card-info p {
-  color: var(--rydo-text-muted);
-  font-weight: 600;
   font-size: 0.9rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 400;
 }
 
+.du-card.done .du-card-info h3 {
+  color: #155724;
+}
+
+.du-card.done .du-card-info p {
+  color: #1e7e34;
+}
+
+/* =====================================================
+   STATUS TAG
+   ===================================================== */
 .du-status-tag {
-  font-weight: 900;
-  font-size: 0.8rem;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: #dcfce7;
-  border: 1px solid #bbf7d0;
-  color: #166534;
+  padding: 0.5rem 1.25rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  display: inline-block;
+  align-self: flex-start;
+  box-shadow: 0 2px 6px rgba(40, 167, 69, 0.2);
 }
 
+/* =====================================================
+   UPLOAD BUTTON
+   ===================================================== */
 .du-upload-btn {
-  background: #000;
-  border: 1px solid #000;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-weight: 900;
+  padding: 0.875rem 1.5rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: var(--transition-base);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.25);
+  font-family: inherit;
+  align-self: flex-start;
 }
 
 .du-upload-btn:hover {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
   transform: translateY(-1px);
-  box-shadow: var(--rydo-shadow-md);
+  box-shadow: 0 5px 14px rgba(254, 204, 24, 0.35);
 }
 
-/* Modal */
+.du-upload-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+/* =====================================================
+   MODAL OVERLAY
+   ===================================================== */
 .du-modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 4000;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
 .du-modal {
-  width: min(480px, 92vw);
-  background: #fff;
-  border-radius: 18px;
-  border: 1px solid var(--rydo-border);
-  box-shadow: var(--rydo-shadow-lg);
-  padding: 22px;
+  background: var(--theme-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 500px;
+  padding: 2.5rem;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .du-modal h3 {
-  font-weight: 900;
-  margin-bottom: 14px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0 0 2rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--theme-border-yellow);
 }
 
-.du-modal input[type='file'] {
-  width: 100%;
-  padding: 12px;
-  border: 1px dashed var(--rydo-border);
-  border-radius: 14px;
-  background: #fafafa;
+.du-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
+.du-modal input[type="file"] {
+  padding: 1rem;
+  border: 2px dashed var(--theme-border);
+  border-radius: 8px;
+  background: #f8f9fa;
+  cursor: pointer;
+  transition: var(--transition-base);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.du-modal input[type="file"]:hover {
+  border-color: var(--theme-border-yellow);
+  background: var(--theme-white);
+}
+
+.du-modal input[type="file"]:focus {
+  outline: none;
+  border-color: var(--theme-button-bg);
+  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.1);
+}
+
+/* =====================================================
+   MODAL ACTIONS
+   ===================================================== */
 .du-modal-actions {
   display: flex;
+  gap: 1rem;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 16px;
 }
 
 .du-modal-actions button {
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-weight: 900;
+  padding: 0.875rem 1.75rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
-  border: 1px solid var(--rydo-border);
-  background: #fff;
+  transition: var(--transition-base);
+  font-family: inherit;
+  border: none;
+}
+
+.du-modal-actions button[type="button"] {
+  background: transparent;
+  color: var(--theme-font);
+  border: 1.5px solid var(--theme-border);
+}
+
+.du-modal-actions button[type="button"]:hover {
+  background: #f8f9fa;
+  border-color: var(--theme-font);
 }
 
 .du-btn-primary {
-  background: #000 !important;
-  border-color: #000 !important;
-  color: #fff !important;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.25);
+}
+
+.du-btn-primary:hover {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(254, 204, 24, 0.35);
+}
+
+.du-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 768px) {
+  .du-container {
+    gap: 2rem;
+  }
+
+  .du-progress-bar {
+    padding: 1.5rem;
+  }
+
+  .du-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .du-card {
+    padding: 1.5rem;
+  }
+
+  .du-modal {
+    width: 95%;
+    padding: 2rem;
+    margin: 1rem;
+  }
+
+  .du-modal h3 {
+    font-size: 1.25rem;
+  }
+
+  .du-modal-actions {
+    flex-direction: column;
+  }
+
+  .du-modal-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .du-progress-bar {
+    padding: 1.25rem;
+  }
+
+  .du-progress-text {
+    font-size: 0.9rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .du-track {
+    height: 12px;
+  }
+
+  .du-card {
+    padding: 1.25rem;
+  }
+
+  .du-card-info h3 {
+    font-size: 1.1rem;
+  }
+
+  .du-card-info p {
+    font-size: 0.85rem;
+  }
+
+  .du-upload-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .du-modal {
+    padding: 1.5rem;
+  }
 }

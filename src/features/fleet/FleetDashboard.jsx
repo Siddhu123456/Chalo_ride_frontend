@@ -17,6 +17,7 @@ import DriverManager from "./components/DriverManager";
 import AssignmentManager from "./components/AssignmentManager";
 import DocUploadModule from "./components/DocUploadModule";
 import AddVehicleModal from "./components/AddVehicleModal";
+import logo from '../../assets/logo.png'; 
 
 import "./FleetDashboard.css";
 
@@ -65,8 +66,9 @@ const FleetDashboard = () => {
 
   if (loading && !fleet) {
     return (
-      <div className="fd-screen-loader">
-        <div className="rydo-spinner"></div>
+      <div className="fd-navbar-brand">
+        <img src={logo} alt="ChaloRide Logo" className="fd-logo-img" />
+        <span className="fd-brand-badge">FLEET</span>
       </div>
     );
   }
@@ -94,10 +96,10 @@ const FleetDashboard = () => {
 
         <div className="fd-onboarding-content">
           <header className="fd-welcome-section">
-             <div className="fd-onboard-tag">Verification Required</div>
-             {/* ✅ Greeting placed here, in the Hero section */}
-             <h1>Welcome, {fleet.fleet_name}</h1>
-             <p>Your fleet profile is currently <strong>{statusLabel}</strong>. Complete the verification below to activate your command center.</p>
+            <div className="fd-onboard-tag">Verification Required</div>
+            {/* ✅ Greeting placed here, in the Hero section */}
+            <h1>Welcome, {fleet.fleet_name}</h1>
+            <p>Your fleet profile is currently <strong>{statusLabel}</strong>. Complete the verification below to activate your command center.</p>
           </header>
 
           {(error || successMsg) && (

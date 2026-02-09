@@ -1,190 +1,438 @@
-/* ==============================
-   Vehicle Docs Modal (Rydo Theme)
-================================= */
+/* =====================================================
+   VEHICLE DOCS MODAL
+   Production-Ready Styling
+   ===================================================== */
 
+:root {
+  --theme-white: #fff;
+  --theme-border: #a1a2a6;
+  --theme-font: #3b3e47;
+  --theme-button-bg: #fecc18;
+  --theme-button-font: #000000;
+  --theme-border-yellow: #fecc18;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =====================================================
+   OVERLAY
+   ===================================================== */
 .vd-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(3, 7, 18, 0.72); /* deep dashboard overlay */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 2500;
-  padding: 18px;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
 }
 
-/* Modal shell */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   MODAL
+   ===================================================== */
 .vd-modal {
-  width: min(620px, 92vw);
-  border-radius: 20px;
-  padding: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.92) 0%,
-    rgba(2, 6, 23, 0.92) 100%
-  );
-  box-shadow: 0 35px 120px rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-  color: rgba(255, 255, 255, 0.92);
+  background: var(--theme-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+  border: 2px solid var(--theme-border-yellow);
 }
 
-/* Header */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================================================
+   MODAL HEADER
+   ===================================================== */
 .vd-head {
+  padding: 2rem 2.5rem;
+  border-bottom: 2px solid var(--theme-border-yellow);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  gap: 1.5rem;
+  background: linear-gradient(135deg, #fafafa 0%, var(--theme-white) 100%);
+}
+
+.vd-head > div {
+  flex: 1;
 }
 
 .vd-head h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.2px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
 }
 
 .vd-sub {
-  margin: 6px 0 0;
-  opacity: 0.72;
-  font-size: 13px;
+  font-size: 0.95rem;
+  color: #6c757d;
+  margin: 0;
+  font-weight: 400;
+}
+
+.vd-sub strong {
+  color: var(--theme-font);
+  font-weight: 600;
 }
 
 .vd-close {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.92);
-  width: 38px;
-  height: 38px;
-  border-radius: 14px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: var(--theme-font);
   cursor: pointer;
-  transition: 0.18s ease;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: var(--transition-base);
+  opacity: 0.6;
+  flex-shrink: 0;
 }
 
-.vd-close:hover {
-  background: rgba(255, 255, 255, 0.09);
-  transform: translateY(-1px);
+.vd-close:hover:not(:disabled) {
+  background: #f8f9fa;
+  opacity: 1;
 }
 
-/* Banner */
+.vd-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+/* =====================================================
+   BANNER
+   ===================================================== */
 .vd-banner {
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  font-weight: 700;
-  font-size: 13px;
-  border: 1px solid transparent;
+  margin: 1.5rem 2.5rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .vd-banner.error {
-  background: rgba(239, 68, 68, 0.14);
-  border-color: rgba(239, 68, 68, 0.22);
+  background: #fff5f5;
+  border-left: 4px solid #dc3545;
+  color: #721c24;
 }
 
 .vd-banner.success {
-  background: rgba(34, 197, 94, 0.14);
-  border-color: rgba(34, 197, 94, 0.22);
+  background: #f0fdf4;
+  border-left: 4px solid #28a745;
+  color: #155724;
 }
 
-/* Content */
+/* =====================================================
+   MODAL BODY
+   ===================================================== */
 .vd-body {
-  margin-top: 14px;
+  padding: 2rem 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 1.5rem;
 }
 
-/* Doc row */
+/* =====================================================
+   DOCUMENT ROW
+   ===================================================== */
 .vd-doc-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 14px;
-  padding: 14px 14px;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border: 1.5px solid #e9ecef;
+  border-radius: 10px;
+  transition: var(--transition-base);
 }
 
-.vd-doc-title {
-  font-weight: 800;
-  font-size: 14px;
+.vd-doc-row:hover {
+  background: var(--theme-white);
+  border-color: var(--theme-border-yellow);
+  box-shadow: var(--shadow-sm);
 }
 
+/* =====================================================
+   DOC INFO
+   ===================================================== */
 .vd-doc-info {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 0.625rem;
+  flex: 1;
 }
 
+.vd-doc-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+}
+
+/* =====================================================
+   CHIP
+   ===================================================== */
 .vd-chip {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
   width: fit-content;
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.vd-chip.pending {
-  background: rgba(245, 158, 11, 0.14); /* amber */
-  color: rgba(255, 255, 255, 0.9);
 }
 
 .vd-chip.done {
-  background: rgba(34, 197, 94, 0.14); /* green */
-  color: rgba(255, 255, 255, 0.9);
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }
 
-/* File input */
+.vd-chip.pending {
+  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* =====================================================
+   DOC ACTION (FILE INPUT)
+   ===================================================== */
+.vd-doc-action {
+  flex-shrink: 0;
+}
+
 .vd-doc-action input[type="file"] {
-  width: 220px;
-  max-width: 46vw;
-  color: rgba(255, 255, 255, 0.9);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 10px;
-  border-radius: 14px;
+  padding: 0.75rem 1.25rem;
+  border: 1.5px solid var(--theme-border);
+  border-radius: 8px;
+  background: var(--theme-white);
   cursor: pointer;
+  transition: var(--transition-base);
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--theme-font);
 }
 
-.vd-doc-action input[type="file"]::-webkit-file-upload-button {
-  background: rgba(255, 255, 255, 0.08);
-  color: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  padding: 8px 10px;
-  border-radius: 12px;
+.vd-doc-action input[type="file"]:hover:not(:disabled) {
+  border-color: var(--theme-border-yellow);
+  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.1);
+}
+
+.vd-doc-action input[type="file"]:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vd-doc-action input[type="file"]::file-selector-button {
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: 800;
-  margin-right: 10px;
+  transition: var(--transition-base);
+  font-family: inherit;
 }
 
-.vd-doc-action input[type="file"]::-webkit-file-upload-button:hover {
-  background: rgba(255, 255, 255, 0.12);
+.vd-doc-action input[type="file"]::file-selector-button:hover {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
+  transform: translateY(-1px);
 }
 
-/* Footer */
+/* =====================================================
+   FOOTER
+   ===================================================== */
 .vd-footer {
   display: flex;
   justify-content: flex-end;
-  padding-top: 6px;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
 }
 
 .vd-btn {
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.95);
-  font-weight: 900;
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.18s ease;
+  transition: var(--transition-base);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.25);
+  font-family: inherit;
 }
 
-.vd-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
+.vd-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
   transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(254, 204, 24, 0.35);
 }
-    
+
+.vd-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+.vd-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =====================================================
+   SCROLLBAR STYLING
+   ===================================================== */
+.vd-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.vd-modal::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.vd-modal::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 4px;
+}
+
+.vd-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-button-bg);
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 768px) {
+  .vd-modal {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .vd-head {
+    padding: 1.5rem 1.75rem;
+    flex-direction: column;
+  }
+
+  .vd-head h3 {
+    font-size: 1.5rem;
+  }
+
+  .vd-close {
+    align-self: flex-end;
+  }
+
+  .vd-banner {
+    margin: 1.25rem 1.75rem;
+  }
+
+  .vd-body {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .vd-doc-row {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .vd-doc-action {
+    width: 100%;
+  }
+
+  .vd-doc-action input[type="file"] {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .vd-head {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .vd-head h3 {
+    font-size: 1.25rem;
+  }
+
+  .vd-sub {
+    font-size: 0.9rem;
+  }
+
+  .vd-banner {
+    margin: 1rem 1.5rem;
+    padding: 0.875rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .vd-body {
+    padding: 1.25rem 1.5rem;
+    gap: 1.25rem;
+  }
+
+  .vd-doc-row {
+    padding: 1rem;
+  }
+
+  .vd-doc-title {
+    font-size: 1rem;
+  }
+
+  .vd-footer {
+    padding-top: 1.25rem;
+  }
+
+  .vd-btn {
+    width: 100%;
+  }
+}

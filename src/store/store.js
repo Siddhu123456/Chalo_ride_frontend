@@ -7,10 +7,12 @@ import riderReducer from "./riderSlice";
 import fareReducer from "./fareSlice";
 import tripReducer from "./tripSlice";
 import locationReducer from "./locationSlice";
+import adminReducer from "./adminSlice";
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    admin: adminReducer, 
     fleet: fleetReducer,
     driver: driverReducer,
 

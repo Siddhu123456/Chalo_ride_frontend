@@ -1,139 +1,452 @@
-.modal-overlay,
-.av-overlay {
+/* =====================================================
+   ADD VEHICLE MODAL
+   Production-Ready Styling
+   ===================================================== */
+
+:root {
+  --theme-white: #fff;
+  --theme-border: #a1a2a6;
+  --theme-font: #3b3e47;
+  --theme-button-bg: #fecc18;
+  --theme-button-font: #000000;
+  --theme-border-yellow: #fecc18;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =====================================================
+   MODAL OVERLAY
+   ===================================================== */
+.modal-overlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5000;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
 }
 
-.modal-box,
-.av-modal {
-  width: min(560px, 92vw);
-  background: #fff;
-  border-radius: 18px;
-  border: 1px solid var(--rydo-border);
-  box-shadow: var(--rydo-shadow-lg);
-  overflow: hidden;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* =====================================================
+   MODAL BOX
+   ===================================================== */
+.modal-box {
+  background: var(--theme-white);
+  border-radius: 12px;
+  box-shadow: var(--shadow-lg);
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease-out;
+  border: 2px solid var(--theme-border-yellow);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .modal-box.large {
-  width: min(640px, 94vw);
+  max-width: 650px;
 }
 
-.modal-header,
-.av-header {
-  padding: 18px 20px;
-  border-bottom: 1px solid var(--rydo-border);
+/* =====================================================
+   MODAL HEADER
+   ===================================================== */
+.modal-header {
+  padding: 1.75rem 2rem;
+  border-bottom: 2px solid var(--theme-border-yellow);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background: linear-gradient(135deg, #fafafa 0%, var(--theme-white) 100%);
 }
 
 .modal-header h3 {
-  font-weight: 900;
-  letter-spacing: -0.4px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+  letter-spacing: -0.3px;
 }
 
-.close-btn,
-.av-close {
+/* =====================================================
+   CLOSE BUTTON
+   ===================================================== */
+.close-btn {
   background: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 2rem;
+  color: var(--theme-font);
   cursor: pointer;
-  color: #64748b;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: var(--transition-base);
+  opacity: 0.6;
+  line-height: 1;
+  padding: 0;
 }
 
-.modal-body,
-.av-form,
-.av-docs {
-  padding: 20px;
+.close-btn:hover:not(:disabled) {
+  background: #f8f9fa;
+  opacity: 1;
 }
 
+.close-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+/* =====================================================
+   MODAL BODY
+   ===================================================== */
+.modal-body {
+  padding: 2rem;
+}
+
+/* =====================================================
+   AUTH ALERT (ERROR/SUCCESS)
+   ===================================================== */
+.auth-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-alert.error {
+  background: #fff5f5;
+  border-left: 4px solid #dc3545;
+  color: #721c24;
+}
+
+.auth-alert.success {
+  background: #f0fdf4;
+  border-left: 4px solid #28a745;
+  color: #155724;
+}
+
+/* =====================================================
+   REGISTRATION FORM
+   ===================================================== */
 .registration-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 1.5rem;
+}
+
+/* =====================================================
+   FORM ROW
+   ===================================================== */
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .form-row label {
-  font-weight: 900;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--theme-font);
+  letter-spacing: 0.2px;
 }
 
 .form-row input,
 .form-row select {
-  margin-top: 8px;
-  padding: 12px;
-  border: 1px solid var(--rydo-border);
-  border-radius: 12px;
-  font-weight: 700;
-  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1.5px solid var(--theme-border);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--theme-font);
+  background: var(--theme-white);
+  transition: var(--transition-base);
+  font-family: inherit;
 }
 
+.form-row input:focus,
+.form-row select:focus {
+  outline: none;
+  border-color: var(--theme-border-yellow);
+  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.1);
+}
+
+.form-row input::placeholder {
+  color: #adb5bd;
+}
+
+.form-row select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233b3e47' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+}
+
+/* =====================================================
+   SPLIT FLEX ROW (FOR SIDE-BY-SIDE FIELDS)
+   ===================================================== */
 .split-flex-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  flex-direction: row;
+  gap: 1rem;
 }
 
+.split-flex-row .form-row {
+  flex: 1;
+}
+
+/* =====================================================
+   MODAL ACTIONS (BUTTON CONTAINER)
+   ===================================================== */
 .modal-actions {
   display: flex;
+  gap: 1rem;
   justify-content: flex-end;
-  margin-top: 6px;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
 }
 
+/* =====================================================
+   PRIMARY BUTTON
+   ===================================================== */
 .rydo-btn-pri {
-  background: #000;
-  color: #fff;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid #000;
-  font-weight: 900;
+  padding: 0.875rem 1.75rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
   cursor: pointer;
-  width: 100%;
+  transition: var(--transition-base);
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.25);
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rydo-btn-pri:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(254, 204, 24, 0.35);
+}
+
+.rydo-btn-pri:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
 }
 
 .rydo-btn-pri:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
 }
 
-/* Docs list step */
+/* =====================================================
+   DOCS LIST (STEP 2 GUIDANCE)
+   ===================================================== */
 .docs-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  text-align: center;
+  padding: 1rem;
 }
 
-.doc-card {
-  padding: 14px;
-  border: 1px solid var(--rydo-border);
-  border-radius: 14px;
-  background: #fafafa;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
+.docs-list p {
+  font-size: 1rem;
+  color: var(--theme-font);
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
 }
 
-.doc-name {
-  font-weight: 900;
+.docs-list p:first-child {
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
+.docs-list strong {
+  color: var(--theme-font);
+  font-weight: 700;
+}
+
+/* =====================================================
+   SUBMIT BUTTON (LARGE)
+   ===================================================== */
 .rydo-submit-btn {
-  background: #000;
-  color: #fff;
-  padding: 12px 14px;
-  border-radius: 14px;
-  border: 1px solid #000;
-  font-weight: 900;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
+  color: var(--theme-button-font);
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  margin-top: 8px;
+  transition: var(--transition-base);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(254, 204, 24, 0.3);
+  font-family: inherit;
+  width: 100%;
+}
+
+.rydo-submit-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(254, 204, 24, 0.4);
+}
+
+.rydo-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
+}
+
+.rydo-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =====================================================
+   SCROLLBAR STYLING
+   ===================================================== */
+.modal-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-box::-webkit-scrollbar-track {
+  background: #f8f9fa;
+}
+
+.modal-box::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 4px;
+}
+
+.modal-box::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-button-bg);
+}
+
+/* =====================================================
+   RESPONSIVE DESIGN
+   ===================================================== */
+@media (max-width: 768px) {
+  .modal-box {
+    width: 95%;
+    margin: 1rem;
+  }
+
+  .modal-box.large {
+    max-width: 95%;
+  }
+
+  .modal-header {
+    padding: 1.5rem 1.75rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.35rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .split-flex-row {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .rydo-btn-pri {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .modal-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem;
+  }
+
+  .registration-form {
+    gap: 1.25rem;
+  }
+
+  .form-row label {
+    font-size: 0.85rem;
+  }
+
+  .form-row input,
+  .form-row select {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.95rem;
+  }
+
+  .docs-list p {
+    font-size: 0.95rem;
+  }
+
+  .docs-list p:first-child {
+    font-size: 1rem;
+  }
+
+  .rydo-submit-btn {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .rydo-btn-pri {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import logo from '../../../assets/logo.png';
 import "./DashboardSidebar.css";
 
 const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
@@ -13,7 +14,8 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
   return (
     <aside className="ds-sidebar">
       <div className="ds-brand-section">
-        Rydo<span className="ds-badge">FLEET</span>
+        <img src={logo} alt="ChaloRide Logo" className="ds-logo-img" />
+        <span className="ds-badge">FLEET</span>
       </div>
 
       <div className="ds-user-card">

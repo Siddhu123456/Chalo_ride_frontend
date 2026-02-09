@@ -8,23 +8,20 @@ import RoleSelection from '../components/RoleSelection';
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isPreAuth, setIsPreAuth] = useState(false);
+  const [phase, setPhase] = useState("AUTH"); // AUTH | ROLE
 
   const { token } = useSelector(state => state.auth);
-  const isAuthenticated = Boolean(token);
 
+  /**
+   * 🔁 On logout (token removed):
+   * Always reset back to login
+   */
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!token) {
+      setPhase("AUTH");
       setIsLogin(true);
-      setIsPreAuth(false);
     }
-  }, [isAuthenticated]);
-
-  const handleToggleButtonClick = () => {
-    if (!isPreAuth && !isAuthenticated) {
-      setIsLogin(prev => !prev);
-    }
-  };
+  }, [token]);
 
   return (
     <div className="auth-wrapper">
@@ -38,39 +35,51 @@ const AuthPage = () => {
         </div>
 
         <div className="form-card">
-          <div className="form-toggle">
-            <button
-              className={
-                (!isPreAuth && isLogin) || isPreAuth ? 'active' : ''
-              }
-              onClick={handleToggleButtonClick}
-            >
-              {!isPreAuth ? 'Take a Ride' : 'Select Role'}
-            </button>
 
-            <button
-              className={
-                (!isPreAuth && !isLogin) ? 'active' : ''
-              }
-              onClick={handleToggleButtonClick}
-            >
-              Register
-            </button>
-          </div>
+          {/* 🔹 TOGGLE ONLY FOR LOGIN / REGISTER */}
+          {phase === "AUTH" && (
+            <div className="form-toggle">
+              <button
+                className={isLogin ? 'active' : ''}
+                onClick={() => setIsLogin(true)}
+              >
+                Take a Ride
+              </button>
 
-          {/* Login / Register */}
-          {!isPreAuth && !isAuthenticated && (
+              <button
+                className={!isLogin ? 'active' : ''}
+                onClick={() => setIsLogin(false)}
+              >
+                Register
+              </button>
+            </div>
+          )}
+
+          {/* 🔹 LOGIN / REGISTER */}
+          {phase === "AUTH" && (
             isLogin ? (
-              <Login onLoginSuccess={() => setIsPreAuth(true)} />
+              <Login
+                onLoginSuccess={() => {
+                  // ✅ move to role selection (NO TOKEN YET)
+                  setPhase("ROLE");
+                }}
+              />
             ) : (
               <Register onRegisterSuccess={() => setIsLogin(true)} />
             )
           )}
 
-          {/* Role Selection */}
-          {isPreAuth && !isAuthenticated && (
-            <RoleSelection onBack={() => setIsPreAuth(false)} />
+          {/* 🔹 ROLE SELECTION (NO TOGGLE HERE) */}
+          {phase === "ROLE" && (
+            <RoleSelection
+              onBack={() => {
+                // optional: allow going back to login
+                setPhase("AUTH");
+                setIsLogin(true);
+              }}
+            />
           )}
+
         </div>
       </div>
     </div>

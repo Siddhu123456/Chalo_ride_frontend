@@ -22,7 +22,7 @@ const AdminLogin = () => {
       {/* LEFT SIDE: Visual Pane */}
       <div className="al-visual-pane">
         <div className="al-hero-content">
-          <h1 className="al-brand">Rydo<span className="al-brand-badge">ADMIN</span></h1>
+          <h1 className="al-brand">ChaloRide<span className="al-brand-badge">ADMIN</span></h1>
           <p className="al-hero-text">Platform Configuration Console.</p>
         </div>
       </div>

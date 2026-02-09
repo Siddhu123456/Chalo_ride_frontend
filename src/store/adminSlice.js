@@ -50,7 +50,7 @@ export const fetchTenantAdmins = createAsyncThunk(
   'admin/fetchTenantAdmins',
   async (tenantId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${API_URL}/tenants/${tenantId}/admins`, getHeaders());
+      const response = await axios.get(`${API_URL}/tenant-admin/${tenantId}/admins`, getHeaders());
       return response.data.admins; // API returns { tenant_id, admins: [] }
     } catch (err) {
       return rejectWithValue(extractErrorMessage(err));
@@ -63,7 +63,7 @@ export const assignTenantAdmin = createAsyncThunk(
   'admin/assignTenantAdmin',
   async ({ tenantId, payload }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${API_URL}/tenants/${tenantId}/admins`, payload, getHeaders());
+      const response = await axios.post(`${API_URL}/tenant-admin/${tenantId}/admins`, payload, getHeaders());
       return response.data;
     } catch (err) {
       return rejectWithValue(extractErrorMessage(err));
@@ -76,7 +76,7 @@ export const removeTenantAdmin = createAsyncThunk(
   'admin/removeTenantAdmin',
   async ({ tenantId, userId }, { rejectWithValue }) => {
     try {
-      await axios.delete(`${API_URL}/tenants/${tenantId}/admins/${userId}`, getHeaders());
+      await axios.delete(`${API_URL}/tenant-admin/${tenantId}/admins/${userId}`, getHeaders());
       return userId; // Return the ID so we can filter it out of state
     } catch (err) {
       return rejectWithValue(extractErrorMessage(err));
