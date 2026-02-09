@@ -110,7 +110,6 @@
 .form-card p {
     color: #666;
     font-size: 1rem;
-    margin-bottom: 2.5rem;
     text-align: center;
     line-height: 1.5;
 }
@@ -348,7 +347,7 @@
     letter-spacing: 0.8px;
     color: #f0f0f0;
 }
-/* 🔒 Fleet owner: disable hover effect */
+/* Fleet owner: disable hover effect */
 .fleet-locked:hover {
   background: inherit !important;
   color: inherit !important;
@@ -360,7 +359,7 @@
   transition: none !important;
 }
 .form-toggle button.active {
-  pointer-events: none;   /* 🔒 disables click */
+  pointer-events: none;   /* disables click */
   cursor: default;
 }
 

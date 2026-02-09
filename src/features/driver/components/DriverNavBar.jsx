@@ -31,7 +31,7 @@ const DriverNavBar = () => {
         <div className="driver-profile">
           <img
             src="https://via.placeholder.com/40"
-            alt="Driver Profile"
+            alt={driverName[0]}
             className="profile-avatar"
           />
           <span className="driver-name">{driverName}</span>

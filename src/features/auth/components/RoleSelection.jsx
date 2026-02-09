@@ -11,10 +11,18 @@ const RoleSelection = ({ onBack }) => {
   const { roles, user, loading } = useSelector((state) => state.auth);
 
   const handleRoleClick = async (role) => {
-    await dispatch(selectRole({ user_id: user.user_id, role }));
+    const result = await dispatch(
+      selectRole({ user_id: user.user_id, role })
+    );
+
+    if (selectRole.fulfilled.match(result)) {
+      // STORE AUTH DATA
+      localStorage.setItem("access_token", result.payload.token);
+      localStorage.setItem("role", role);
+    }
 
     if (role === "FLEET_OWNER") {
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
       return;
     }
 
@@ -27,13 +35,18 @@ const RoleSelection = ({ onBack }) => {
           profile.approval_status === "APPROVED"
             ? "/driver/dashboard"
             : "/driver/docs"
-        );
+        , { replace: true });
       }
       return;
     }
 
+    if(role === "TENANT_ADMIN") {
+      navigate("/tenant-admin-dashboard", { replace: true });
+      return;
+    }
+
     if (role === "RIDER") {
-      navigate("/rider");
+      navigate("/rider", { replace: true });
     }
   };
 

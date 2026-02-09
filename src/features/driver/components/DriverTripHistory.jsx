@@ -12,26 +12,26 @@ import {
   Truck,
 } from "lucide-react";
 
-import { fetchRiderTripHistory } from "../../../store/riderSlice";
-import "./RiderTripHistory.css";
+import { fetchDriverTrips } from "../../../store/driverSlice";
+import "./DriverTripHistory.css"; // KEEP SAME CSS
 
-const RiderTripHistory = () => {
+const DriverTripHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
 
   const dispatch = useDispatch();
 
   const {
-    tripHistory = [],
-    loadingTripHistory,
-    error,
-  } = useSelector((state) => state.rider);
+    tripHistory,
+    loading,
+    error
+  } = useSelector((state) => state.driver);
 
   useEffect(() => {
-    dispatch(fetchRiderTripHistory());
+    dispatch(fetchDriverTrips({ page: 1, limit: 20 }));
   }, [dispatch]);
 
-  const trips = tripHistory;
+  const trips = tripHistory.list || [];
 
   /* ---------------- HELPERS ---------------- */
 
@@ -82,7 +82,6 @@ const RiderTripHistory = () => {
     const matchesSearch =
       trip.pickup_address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       trip.drop_address?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      trip.tenant_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       trip.trip_id?.toLowerCase().includes(searchTerm.toLowerCase());
 
     const matchesFilter =
@@ -99,7 +98,7 @@ const RiderTripHistory = () => {
       <div className="history-header">
         <div>
           <h1 className="history-page-title">Trip History</h1>
-          <p className="history-subtitle">Review your past rides</p>
+          <p className="history-subtitle">Review your completed trips</p>
         </div>
       </div>
 
@@ -109,7 +108,7 @@ const RiderTripHistory = () => {
           <Search size={20} />
           <input
             type="text"
-            placeholder="Search by location, tenant, or trip ID..."
+            placeholder="Search by location or trip ID..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -130,7 +129,7 @@ const RiderTripHistory = () => {
 
       {/* Trip List */}
       <div className="trips-list">
-        {loadingTripHistory ? (
+        {loading ? (
           <div className="no-trips">
             <p>Loading trips...</p>
           </div>
@@ -140,7 +139,7 @@ const RiderTripHistory = () => {
           </div>
         ) : filteredTrips.length === 0 ? (
           <div className="no-trips">
-            <p>No trips found matching your criteria</p>
+            <p>No trips found</p>
           </div>
         ) : (
           filteredTrips.map((trip) => (
@@ -149,7 +148,6 @@ const RiderTripHistory = () => {
               <div className="trip-header">
                 <div className="trip-meta">
                   <span className="trip-id">#{trip.trip_id}</span>
-                  <span className="trip-tenant">{trip.tenant_name}</span>
                 </div>
                 {getStatusBadge(trip.status)}
               </div>
@@ -202,8 +200,8 @@ const RiderTripHistory = () => {
                   <div className="detail-text">
                     <span className="detail-label">Date & Time</span>
                     <span className="detail-value">
-                      {formatDate(trip.created_at)} •{" "}
-                      {formatTime(trip.created_at)}
+                      {formatDate(trip.completed_at)} •{" "}
+                      {formatTime(trip.completed_at)}
                     </span>
                   </div>
                 </div>
@@ -228,4 +226,4 @@ const RiderTripHistory = () => {
   );
 };
 
-export default RiderTripHistory;
+export default DriverTripHistory;

@@ -30,41 +30,22 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.navbar-links {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* Changed from space-around for a tighter look, or keep space-around if preferred */
-    gap: 40px; /* Increased gap for better breathability */
-    width: 40%;
+.navbar-actions {
+  margin-left: auto;
 }
 
-.navbar-link {
-    text-decoration: none;
-    color: #666666;
-    font-weight: 500;
-    font-size: 1.1em;
-    padding: 8px 0; /* Removed side padding to make underline animation fit text width */
-    position: relative; /* Needed for the underline effect */
-    transition: color 0.3s ease, transform 0.3s ease;
+.platform-admin-btn {
+  background: var(--theme-button-bg, #fecc18);
+  color: #000;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* The Animated Underline Effect */
-.navbar-link::after {
-    content: '';
-    position: absolute;
-    width: 0;
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: #333333; /* Uses your theme hover color */
-    transition: width 0.3s ease-in-out;
-}
-
-.navbar-link:hover {
-    color: #333333;
-    transform: translateY(-2px); /* Subtle lift without scale to prevent blur */
-}
-
-.navbar-link:hover::after {
-    width: 100%; /* Expands the line on hover */
+.platform-admin-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

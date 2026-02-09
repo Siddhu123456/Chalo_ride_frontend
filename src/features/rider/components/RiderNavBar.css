@@ -36,6 +36,7 @@
     transition: all 0.3s ease;
     padding: 0.5rem 1rem;
     border-radius: 25px;
+    justify-content: center;
 }
 
 .rider-profile:hover {

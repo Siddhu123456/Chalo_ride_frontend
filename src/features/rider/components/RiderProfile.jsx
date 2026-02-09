@@ -1,18 +1,35 @@
-import React from 'react';
-import { User, Phone, Mail, MapPin, Calendar } from 'lucide-react';
-import './RiderProfile.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { User, Phone, Mail, MapPin, Calendar } from "lucide-react";
+import {
+  fetchRiderProfile,
+  fetchRiderStatistics
+} from "../../../store/riderSlice";
+import "./RiderProfile.css";
 
 const RiderProfile = () => {
-  const profile = {
-    user_id: "USR001",
-    full_name: "Rahul Sharma",
-    phone: "+91 98765 43210",
-    email: "rahul.sharma@example.com",
-    gender: "Male",
-    country_code: "+91",
-    status: "active",
-    joined_on: "2024-01-15"
-  };
+  const dispatch = useDispatch();
+
+  const {
+    profile,
+    statistics,
+    loadingProfile,
+    loadingStatistics
+  } = useSelector((state) => state.rider);
+
+  useEffect(() => {
+    dispatch(fetchRiderProfile());
+    dispatch(fetchRiderStatistics());
+  }, [dispatch]);
+
+
+  if (loadingProfile || loadingStatistics || !profile || !statistics) {
+    return (
+      <div className="rider-profile-container">
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="rider-profile-container">
@@ -30,7 +47,8 @@ const RiderProfile = () => {
             <h2>{profile.full_name}</h2>
             <p className="user-id">ID: {profile.user_id}</p>
             <span className={`status-badge ${profile.status}`}>
-              {profile.status.charAt(0).toUpperCase() + profile.status.slice(1)}
+              {profile.status.charAt(0).toUpperCase() +
+                profile.status.slice(1)}
             </span>
           </div>
         </div>
@@ -38,7 +56,7 @@ const RiderProfile = () => {
         {/* Profile Details Section */}
         <div className="profile-details-section">
           <h3 className="section-title">Personal Information</h3>
-          
+
           <div className="detail-grid">
             <div className="detail-item">
               <div className="detail-icon">
@@ -86,11 +104,13 @@ const RiderProfile = () => {
               </div>
               <div className="detail-content">
                 <label>Member Since</label>
-                <p>{new Date(profile.joined_on).toLocaleDateString('en-US', { 
-                  year: 'numeric', 
-                  month: 'long', 
-                  day: 'numeric' 
-                })}</p>
+                <p>
+                  {new Date(profile.joined_on).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric"
+                  })}
+                </p>
               </div>
             </div>
           </div>
@@ -101,21 +121,30 @@ const RiderProfile = () => {
           <h3 className="section-title">Ride Statistics</h3>
           <div className="stats-grid">
             <div className="stat-card">
-              <div className="stat-value">47</div>
+              <div className="stat-value">
+                {statistics.total_rides}
+              </div>
               <div className="stat-label">Total Rides</div>
             </div>
+
             <div className="stat-card">
-              <div className="stat-value">₹3,240</div>
+              <div className="stat-value">
+                ₹{statistics.total_spent.toFixed(2)}
+              </div>
               <div className="stat-label">Total Spent</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-value">4.8</div>
+
+            {/* <div className="stat-card">
+              <div className="stat-value">—</div>
               <div className="stat-label">Avg Rating</div>
             </div>
+
             <div className="stat-card">
-              <div className="stat-value">234 km</div>
+              <div className="stat-value">
+                {statistics.distance_traveled_km} km
+              </div>
               <div className="stat-label">Distance Traveled</div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

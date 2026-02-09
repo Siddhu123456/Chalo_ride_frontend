@@ -1,19 +1,30 @@
-import React from 'react';
-import logo from '../../../assets/logo.png';
-import './NavBar.css';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "../../../assets/logo.png";
+import "./NavBar.css";
 
 const NavBar = () => {
-    return (
-        <nav className="navbar">
-            <img src={logo} alt="App Logo" className="navbar-logo" />
+  const navigate = useNavigate();
 
-            <div className="navbar-links">
-                <a href="#home" className="navbar-link">Home</a>
-                <a href="#about" className="navbar-link">About</a>
-                <a href="#contact" className="navbar-link">Contact</a>
-            </div>
-        </nav>
-    );
-}
+  const handlePlatformAdminLogin = () => {
+    navigate("/admin/login");
+  };
+
+  return (
+    <nav className="navbar">
+      <img src={logo} alt="App Logo" className="navbar-logo" />
+
+      {/* Platform Admin Login */}
+      <div className="navbar-actions">
+        <button
+          className="platform-admin-btn"
+          onClick={handlePlatformAdminLogin}
+        >
+          Platform Admin Login
+        </button>
+      </div>
+    </nav>
+  );
+};
 
 export default NavBar;

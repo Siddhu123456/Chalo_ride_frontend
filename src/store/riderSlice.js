@@ -25,7 +25,7 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
    ASYNC THUNKS
 ------------------------------------------ */
 
-// 📍 Detect rider city
+//  Detect rider city
 export const fetchRiderCity = createAsyncThunk(
   "rider/fetchCity",
   async ({ lat, lng }, { rejectWithValue }) => {
@@ -41,7 +41,7 @@ export const fetchRiderCity = createAsyncThunk(
   }
 );
 
-// 👤 Rider profile
+// Rider profile
 export const fetchRiderProfile = createAsyncThunk(
   "rider/fetchProfile",
   async (_, { rejectWithValue }) => {
@@ -57,7 +57,7 @@ export const fetchRiderProfile = createAsyncThunk(
   }
 );
 
-// 📊 Rider statistics
+//  Rider statistics
 export const fetchRiderStatistics = createAsyncThunk(
   "rider/fetchStatistics",
   async (_, { rejectWithValue }) => {
@@ -73,6 +73,24 @@ export const fetchRiderStatistics = createAsyncThunk(
   }
 );
 
+// Rider trip history
+export const fetchRiderTripHistory = createAsyncThunk(
+  "rider/trips/history",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/trips/history`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(
+        getErrorMsg(err, "Trip history fetch failed")
+      );
+    }
+  }
+);
+
 /* -----------------------------------------
    SLICE
 ------------------------------------------ */
@@ -83,13 +101,16 @@ const riderSlice = createSlice({
     city: null,
     profile: null,
     statistics: null,
+    tripHistory: [],     // NEW
 
     loadingCity: false,
     loadingProfile: false,
     loadingStatistics: false,
+    loadingTripHistory: false, // NEW
 
     error: null,
   },
+
 
   reducers: {},
 
@@ -132,7 +153,21 @@ const riderSlice = createSlice({
       .addCase(fetchRiderStatistics.rejected, (state, action) => {
         state.loadingStatistics = false;
         state.error = action.payload;
+      })
+
+      // ───────── Trip History ─────────
+      .addCase(fetchRiderTripHistory.pending, (state) => {
+        state.loadingTripHistory = true;
+      })
+      .addCase(fetchRiderTripHistory.fulfilled, (state, action) => {
+        state.loadingTripHistory = false;
+        state.tripHistory = action.payload;
+      })
+      .addCase(fetchRiderTripHistory.rejected, (state, action) => {
+        state.loadingTripHistory = false;
+        state.error = action.payload;
       });
+
   },
 });
 

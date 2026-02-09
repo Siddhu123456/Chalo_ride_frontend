@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import logo from '../../../assets/logo.png';
 import "./DashboardSidebar.css";
 
@@ -10,6 +11,16 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
     { id: "ASSIGNMENTS", label: "Assignments", icon: "🔑" },
     { id: "EARNINGS", label: "Financials", icon: "💰", disabled: true },
   ];
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());        // optional but recommended
+    localStorage.clear();
+
+    navigate("/auth", { replace: true });
+  };
+
 
   return (
     <aside className="ds-sidebar">
@@ -43,10 +54,7 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
       <div className="ds-footer">
         <button
           className="ds-logout-btn"
-          onClick={() => {
-            localStorage.clear();
-            window.location.href = "/login";
-          }}
+          onClick={handleLogout}
         >
           Log Out
         </button>

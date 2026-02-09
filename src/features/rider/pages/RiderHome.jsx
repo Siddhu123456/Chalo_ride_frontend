@@ -59,14 +59,18 @@ const reverseGeocode = async (lat, lng) => {
 };
 
 /* -----------------------------------------
-   Map Click Handler
+   Map Click Handler (LOCKABLE)
 ------------------------------------------ */
-const MapClickHandler = ({ onPick }) => {
-  useMapEvents({
-    click(e) {
-      onPick(e.latlng);
-    },
-  });
+const MapClickHandler = ({ onPick, enabled }) => {
+  useMapEvents(
+    enabled
+      ? {
+          click(e) {
+            onPick(e.latlng);
+          },
+        }
+      : {}
+  );
   return null;
 };
 
@@ -89,9 +93,16 @@ const RiderHome = () => {
   const trip = useSelector((state) => state.trip);
 
   /* -----------------------------------------
+     Map Lock Logic
+  ------------------------------------------ */
+  const isMapLocked = step !== "location";
+
+  /* -----------------------------------------
      Map Click Logic
   ------------------------------------------ */
   const handleMapPick = async ({ lat, lng }) => {
+    if (isMapLocked) return;
+
     const address = await reverseGeocode(lat, lng);
 
     if (activePick === "pickup") {
@@ -125,15 +136,7 @@ const RiderHome = () => {
      Confirm Booking → Request Trip
   ------------------------------------------ */
   const handleBookingConfirm = async () => {
-    if (!pickup || !drop || !selectedRide || !cityId) {
-      console.error("❌ Missing booking data", {
-        pickup,
-        drop,
-        selectedRide,
-        cityId,
-      });
-      return;
-    }
+    if (!pickup || !drop || !selectedRide || !cityId) return;
 
     const payload = {
       tenant_id: selectedRide.tenant_id,
@@ -152,8 +155,6 @@ const RiderHome = () => {
         selectedRide.breakup?.total_fare ?? selectedRide.price
       ),
     };
-
-    console.log("🚀 Sending trip request:", payload);
 
     const result = await dispatch(requestTrip(payload));
 
@@ -227,20 +228,27 @@ const RiderHome = () => {
           center={[17.385, 78.4867]}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
+          dragging={!isMapLocked}
+          scrollWheelZoom={!isMapLocked}
+          doubleClickZoom={!isMapLocked}
+          touchZoom={!isMapLocked}
+          boxZoom={!isMapLocked}
+          keyboard={!isMapLocked}
         >
           <TileLayer
             attribution="&copy; OpenStreetMap"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <MapClickHandler onPick={handleMapPick} />
+          <MapClickHandler
+            onPick={handleMapPick}
+            enabled={!isMapLocked}
+          />
 
           {pickup && (
             <Marker
               position={[pickup.lat, pickup.lng]}
-              icon={
-                activePick === "pickup" ? activePickupIcon : pickupIcon
-              }
+              icon={activePick === "pickup" ? activePickupIcon : pickupIcon}
             >
               <Tooltip permanent>Pickup</Tooltip>
             </Marker>

@@ -23,7 +23,7 @@ const RiderNavBar = () => {
         <div className="rider-profile">
           <img
             src="https://via.placeholder.com/40"
-            alt="Rider Profile"
+            alt={riderName[0]}
             className="profile-avatar"
           />
           <span className="rider-name">{riderName}</span>

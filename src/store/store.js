@@ -8,6 +8,7 @@ import fareReducer from "./fareSlice";
 import tripReducer from "./tripSlice";
 import locationReducer from "./locationSlice";
 import adminReducer from "./adminSlice";
+import tenantAdminReducer from "./tenantAdminSlice";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     admin: adminReducer, 
     fleet: fleetReducer,
     driver: driverReducer,
+    tenantAdmin: tenantAdminReducer, // tenant dashboard, tenant users
 
     rider: riderReducer,     // navbar, profile, stats
     fare: fareReducer,       // fare discovery

@@ -1,9 +1,9 @@
-import React from "react"; 
-import { NavLink } from "react-router-dom"; 
+import React from "react";
+import { NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { logout } from "../../../store/authSlice"; 
+import { logout } from "../../../store/authSlice";
 import logo from "../../../assets/logo.png";
 import "./SideMenu.css";
 
@@ -19,10 +19,12 @@ const SideMenu = () => {
   // const docsNeedAttention = demoDocStatus && Object.values(demoDocStatus).some(doc => doc === 'Pending' || doc === 'Rejected');
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/auth");
-    console.log("Driver logged out!");
+    dispatch(logout());        // optional but recommended
+    localStorage.clear();
+
+    navigate("/auth", { replace: true });
   };
+
 
   return (
     <div className="side-menu">
@@ -34,13 +36,11 @@ const SideMenu = () => {
       <nav className="menu-items">
         {/* Dashboard */}
         <NavLink to="/driver/dashboard" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-          <i className="menu-icon">📊</i>
           Dashboard
         </NavLink>
 
         {/* Trip Offers - Potentially highlight if there are new offers */}
         <NavLink to="/driver/offers" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-          <i className="menu-icon">🤝</i>
           Trip Offers
           {/* Example: {offers.length > 0 && <span className="new-offers-badge">{offers.length}</span>} */}
         </NavLink>
@@ -50,31 +50,26 @@ const SideMenu = () => {
           to="/driver/trips/active"
           className={({ isActive }) => `menu-item ${isActive ? 'active' : ''} ${!demoCurrentShift.activeTrip ? 'disabled' : ''}`}
         >
-          <i className="menu-icon">📍</i>
           Active Trip
         </NavLink>
 
         {/* Trip History - General history of all trips */}
-        <NavLink to="/driver/trips/history" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-          <i className="menu-icon">📜</i>
+        <NavLink to="/driver/tripHistory" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
           Trip History
         </NavLink>
 
         {/* Assigned Vehicle */}
         <NavLink to="/driver/vehicle" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-          <i className="menu-icon">🚐</i>
           Assigned Vehicle
         </NavLink>
 
         {/* Profile */}
         <NavLink to="/driver/profile" className={({ isActive }) => `menu-item ${isActive ? 'active' : ''}`}>
-          <i className="menu-icon">👤</i>
           Profile
         </NavLink>
 
         {/* Log Out Button - positioned at the bottom */}
         <button onClick={handleLogout} className="menu-item logout-btn">
-          <i className="menu-icon">👋</i>
           Log Out
         </button>
       </nav>

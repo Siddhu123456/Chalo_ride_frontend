@@ -22,6 +22,11 @@
     width: 100%;
 }
 
+.map-section.locked {
+  cursor: not-allowed;
+}
+
+
 .control-section {
     width: 420px;
     min-width: 420px;

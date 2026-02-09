@@ -10,13 +10,13 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // ✅ SAFE SELECTOR
+  //  SAFE SELECTOR
   const isAuthenticated = useSelector(
     (state) => state.admin?.isAuthenticated
   );
 
   useEffect(() => {
-    // ✅ Redirect ONLY if explicitly false
+    // Redirect ONLY if explicitly false
     if (isAuthenticated === false) {
       navigate('/admin/login');
     }
@@ -24,13 +24,13 @@ const AdminLayout = () => {
 
   const handleLogout = () => {
     dispatch(adminLogout());
-    navigate('/admin/login');
+    navigate('/admin/login', { replace: true });
   };
 
   const isActive = (path) =>
     location.pathname.includes(path) ? 'active' : '';
 
-  // ✅ Prevent premature unmount
+  // Prevent premature unmount
   if (isAuthenticated === undefined) return null;
 
   return (

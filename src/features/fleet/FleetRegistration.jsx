@@ -1,13 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   applyForFleet,
   checkFleetStatus,
   fetchFleetTenants
-} from '../../store/fleetSlice';
-import logo from '../../assets/logo.png';
-import './Fleet.css';
+} from "../../store/fleetSlice";
+import { logout } from "../../store/authSlice";
+import logo from "../../assets/logo.png";
+import "./Fleet.css";
 
 const FleetRegistration = () => {
   const dispatch = useDispatch();
@@ -17,47 +18,49 @@ const FleetRegistration = () => {
     availableTenants,
     hasExistingFleet,
     loading,
-    error
+    error,
+    fleetApplied
   } = useSelector((state) => state.fleet);
+
   const { roles, user } = useSelector((state) => state.auth);
 
   const [formData, setFormData] = useState({
-    tenant_id: '',
-    fleet_name: ''
+    tenant_id: "",
+    fleet_name: ""
   });
 
-  // Role Guard
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+
+  // Only for UI restriction (NO redirects)
   const isTenantAdmin = useMemo(
     () => roles?.includes("TENANT_ADMIN"),
     [roles]
   );
 
+  // Check fleet status once
   useEffect(() => {
-    if (isTenantAdmin) return;
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    } else {
+    if (!isTenantAdmin) {
       dispatch(checkFleetStatus());
     }
-  }, [dispatch, navigate, isTenantAdmin]);
+  }, [dispatch, isTenantAdmin]);
 
+  // Fetch tenants only when required
   useEffect(() => {
     if (
       !isTenantAdmin &&
-      hasExistingFleet === true &&
-      window.location.pathname === '/fleet-registration'
+      hasExistingFleet === false &&
+      user?.user_id
     ) {
-      navigate('/dashboard');
-    }
-  }, [hasExistingFleet, navigate, isTenantAdmin]);
-
-  useEffect(() => {
-    if (!isTenantAdmin && hasExistingFleet === false && user?.user_id) {
       dispatch(fetchFleetTenants(user.user_id));
     }
-  }, [hasExistingFleet, dispatch, isTenantAdmin, user]);
+  }, [dispatch, hasExistingFleet, isTenantAdmin, user]);
+
+  // Show dialog after successful registration
+  useEffect(() => {
+    if (fleetApplied) {
+      setShowSuccessDialog(true);
+    }
+  }, [fleetApplied]);
 
   const handleApply = (e) => {
     e.preventDefault();
@@ -67,21 +70,27 @@ const FleetRegistration = () => {
       return;
     }
 
-    const tenantIdNum = parseInt(formData.tenant_id, 10);
-    if (isNaN(tenantIdNum)) {
-      alert("Invalid city selection.");
-      return;
-    }
-
     dispatch(
       applyForFleet({
-        tenant_id: tenantIdNum,
+        tenant_id: Number(formData.tenant_id),
         fleet_name: formData.fleet_name.trim()
       })
     );
   };
 
-  if (isTenantAdmin) return null;
+  const handleDialogConfirm = () => {
+    dispatch(logout());
+    localStorage.clear();
+    navigate("/auth", { replace: true });
+  };
+
+  if (isTenantAdmin) {
+    return (
+      <div className="fleet-reg-layout">
+        <p>You are not allowed to register a fleet.</p>
+      </div>
+    );
+  }
 
   if (loading && hasExistingFleet === null) {
     return (
@@ -97,101 +106,114 @@ const FleetRegistration = () => {
   }
 
   return (
-    <div className="fleet-reg-layout">
-      {/* Left Hero Section */}
-      <div
-        className="fleet-reg-hero"
-        style={{
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2560&auto=format&fit=crop)'
-        }}
-      >
-        <div className="fleet-reg-hero-content">
-          <div className="fleet-reg-hero-text">
+    <>
+      <div className="fleet-reg-layout">
+        {/* Hero Section */}
+        <div
+          className="fleet-reg-hero"
+          style={{
+            backgroundImage:
+              "url(https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2560&auto=format&fit=crop)"
+          }}
+        >
+          <div className="fleet-reg-hero-content">
             <h1 className="fleet-reg-hero-title">Fleet Registration</h1>
             <p className="fleet-reg-hero-subtitle">
               Register your fleet. Choose your city. Get approved to operate.
             </p>
           </div>
         </div>
-      </div>
 
-      {/* Right Form Section */}
-      <div className="fleet-reg-form-pane">
-        <div className="fleet-reg-form-container">
-          <div className="fleet-reg-top-brand">
-            <img
-              src={logo}
-              alt="ChaloRide Logo"
-              className="fleet-reg-top-logo"
-            />
-            <span className="fleet-reg-top-badge">FLEET</span>
-          </div>
-
-          <header className="fleet-reg-form-header">
-            <h2>Partner Application</h2>
-            <p>Start your journey as a Fleet Owner.</p>
-          </header>
-
-          {error && (
-            <div className="auth-alert error">
-              {typeof error === 'string' ? error : JSON.stringify(error)}
+        {/* Form Section */}
+        <div className="fleet-reg-form-pane">
+          <div className="fleet-reg-form-container">
+            <div className="fleet-reg-top-brand">
+              <img src={logo} alt="ChaloRide Logo" className="fleet-reg-top-logo"/>
+              <span className="fleet-reg-top-badge">FLEET</span>
             </div>
-          )}
 
-          <form onSubmit={handleApply} className="registration-form">
-            <div className="form-row">
-              <label>Operating Tenant</label>
-              <select
-                value={formData.tenant_id}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    tenant_id: e.target.value
-                  })
-                }
-                required
-              >
-                <option value="">Select Tenant...</option>
-                {availableTenants?.length > 0 ? (
-                  availableTenants.map((t) => (
+            <header className="fleet-reg-form-header">
+              <h2>Partner Application</h2>
+              <p>Start your journey as a Fleet Owner.</p>
+            </header>
+
+            {error && (
+              <div className="auth-alert error">
+                {typeof error === "string" ? error : JSON.stringify(error)}
+              </div>
+            )}
+
+            <form onSubmit={handleApply} className="registration-form">
+              <div className="form-row">
+                <label>Operating Tenant</label>
+                <select
+                  value={formData.tenant_id}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      tenant_id: e.target.value
+                    })
+                  }
+                  required
+                >
+                  <option value="">Select Tenant...</option>
+                  {availableTenants?.map((t) => (
                     <option key={t.tenant_id} value={t.tenant_id}>
-                      {t.name} ({t.default_currency})
+                      {t.name}
                     </option>
-                  ))
-                ) : (
-                  <option disabled>Loading cities...</option>
-                )}
-              </select>
-            </div>
+                  ))}
+                </select>
+              </div>
 
-            <div className="form-row">
-              <label>Fleet / Business Name</label>
-              <input
-                type="text"
-                placeholder="e.g. Metro Cabs LLC"
-                value={formData.fleet_name}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    fleet_name: e.target.value
-                  })
-                }
-                required
-              />
-            </div>
+              <div className="form-row">
+                <label>Fleet / Business Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Metro Cabs LLC"
+                  value={formData.fleet_name}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      fleet_name: e.target.value
+                    })
+                  }
+                  required
+                />
+              </div>
 
-            <button
-              type="submit"
-              className="rydo-submit-btn"
-              disabled={loading}
-            >
-              {loading ? 'Processing...' : 'Submit Application'}
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="rydo-submit-btn"
+                disabled={loading}
+              >
+                {loading ? "Processing..." : "Submit Application"}
+              </button>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* SUCCESS DIALOG */}
+      {showSuccessDialog && (
+        <div className="fleet-dialog-backdrop">
+          <div className="fleet-dialog">
+            <h2>Registration Submitted</h2>
+            <p>
+              Your fleet registration has been submitted successfully.
+              <br />
+              Please login again to upload documents for verification.
+            </p>
+
+            <button
+              className="fleet-dialog-btn"
+              onClick={handleDialogConfirm}
+            >
+              Login Again
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

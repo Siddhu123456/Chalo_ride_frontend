@@ -1,198 +1,281 @@
-/* --- TENANT SIDEBAR --- */
+/* ==========================================
+   TENANT SIDEBAR - PRODUCTION STYLES
+   ========================================== */
+
+:root {
+  --theme-white: #fff;
+  --theme-border: #a1a2a6;
+  --theme-font: #3b3e47;
+  --theme-button-bg: #fecc18;
+  --theme-button-font: #000000;
+  --theme-border-yellow: #fecc18;
+}
+
 .ts-sidebar {
   width: 280px;
-  background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
-  color: var(--rydo-white);
+  height: 100vh;
+  background: var(--theme-white);
+  border-right: 2px solid var(--theme-border);
   display: flex;
   flex-direction: column;
-  padding: 40px 24px;
-  flex-shrink: 0;
-  border-right: 1px solid #1a1a1a;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.ts-sidebar::before {
-  content: '';
-  position: absolute;
-  top: 0;
+  position: fixed;
   left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at top left, rgba(37, 99, 235, 0.05) 0%, transparent 50%);
-  pointer-events: none;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.04);
 }
 
-/* --- BRAND --- */
+/* Brand Section */
 .ts-brand {
-  font-size: 1.75rem;
-  font-weight: 900;
-  margin-bottom: 56px;
-  letter-spacing: -1.5px;
-  color: var(--rydo-white);
+  padding: 32px 24px;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--theme-font);
+  border-bottom: 2px solid var(--theme-border);
+  letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
 }
 
 .ts-brand span {
-  font-size: 0.625rem;
-  background: #2a2a2a;
-  color: #888;
-  padding: 3px 8px;
-  border-radius: var(--radius);
-  margin-left: 10px;
-  vertical-align: middle;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--theme-button-font);
+  background: var(--theme-button-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
   letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(254, 204, 24, 0.2);
 }
 
-/* --- NAVIGATION --- */
+/* Navigation Container */
 .ts-nav {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  padding: 24px 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.ts-nav-label {
-  font-size: 0.625rem;
-  font-weight: 800;
-  color: #404040;
-  text-transform: uppercase;
-  margin: 24px 0 12px 16px;
-  letter-spacing: 1.2px;
+.ts-nav::-webkit-scrollbar {
+  width: 4px;
 }
 
-.ts-nav-item {
+.ts-nav::-webkit-scrollbar-track {
   background: transparent;
-  border: none;
-  color: #737373;
-  text-align: left;
-  padding: 14px 16px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  cursor: pointer;
-  transition: var(--transition);
+}
+
+.ts-nav::-webkit-scrollbar-thumb {
+  background: var(--theme-border);
+  border-radius: 2px;
+}
+
+/* Navigation Label */
+.ts-nav-label {
+  padding: 0 24px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--theme-border);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* Navigation Items */
+.ts-nav-item {
+  width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
+  padding: 14px 24px;
+  border: none;
+  background: transparent;
+  color: var(--theme-font);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
+  text-align: left;
+  font-family: inherit;
+  border-left: 3px solid transparent;
+}
+
+.ts-nav-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--theme-border-yellow);
+  transform: scaleY(0);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .ts-nav-item:hover {
-  color: var(--rydo-white);
-  background: linear-gradient(135deg, #1a1a1a 0%, #262626 100%);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.15);
+  background: rgba(254, 204, 24, 0.06);
+  color: var(--theme-font);
+}
+
+.ts-nav-item:active {
+  transform: translateX(2px);
 }
 
 .ts-nav-item.active {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-  color: var(--rydo-black);
-  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2), 0 2px 8px rgba(0, 0, 0, 0.15);
-  position: relative;
+  background: linear-gradient(90deg, rgba(254, 204, 24, 0.12) 0%, rgba(254, 204, 24, 0.02) 100%);
+  color: var(--theme-button-font);
+  font-weight: 600;
 }
 
 .ts-nav-item.active::before {
-  content: '';
-  position: absolute;
-  left: -24px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 4px;
-  height: 70%;
-  background: linear-gradient(180deg, var(--rydo-accent) 0%, #1d4ed8 100%);
-  border-radius: 0 2px 2px 0;
+  transform: scaleY(1);
 }
 
 .ts-icon {
-  font-size: 1.125rem;
-  opacity: 0.8;
+  font-size: 20px;
+  line-height: 1;
+  min-width: 24px;
+  text-align: center;
+  filter: grayscale(0.3);
+  transition: filter 0.2s ease;
 }
 
 .ts-nav-item.active .ts-icon {
-  opacity: 1;
+  filter: grayscale(0);
 }
 
+/* Badge */
 .ts-badge {
   margin-left: auto;
-  font-size: 0.6875rem;
-  background: #262626;
-  color: #a3a3a3;
-  padding: 3px 10px;
-  border-radius: 12px;
+  background: var(--theme-button-bg);
+  color: var(--theme-button-font);
+  font-size: 12px;
   font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 12px;
   min-width: 24px;
   text-align: center;
+  box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
+  animation: pulse-badge 2s ease-in-out infinite;
 }
 
-.ts-nav-item.active .ts-badge {
-  background: var(--rydo-black);
-  color: var(--rydo-white);
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 3px 8px rgba(254, 204, 24, 0.35);
+  }
 }
 
-/* --- LOGOUT BUTTON --- */
+/* Logout Button */
 .ts-logout {
-  background: #1a1a1a;
-  color: #ef4444;
-  border: 1px solid #262626;
-  padding: 14px 16px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 0.9375rem;
+  margin: 16px 24px 24px;
+  padding: 14px 20px;
+  border: 2px solid var(--theme-border);
+  background: var(--theme-white);
+  color: var(--theme-font);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: auto;
-  transition: var(--transition);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.ts-logout::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(254, 204, 24, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.ts-logout:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .ts-logout:hover {
-  background: #262626;
-  border-color: #404040;
-  color: #f87171;
+  border-color: var(--theme-border-yellow);
+  color: var(--theme-button-font);
+  background: var(--theme-white);
 }
 
-/* --- RESPONSIVE --- */
-@media (max-width: 1024px) {
-  .ts-sidebar {
-    width: 240px;
-    padding: 32px 16px;
-  }
-  
-  .ts-brand {
-    font-size: 1.5rem;
-    margin-bottom: 40px;
-  }
-  
-  .ts-nav-item {
-    padding: 12px 14px;
-    font-size: 0.875rem;
-  }
+.ts-logout:active {
+  transform: scale(0.98);
 }
 
+/* Responsive Design */
 @media (max-width: 768px) {
   .ts-sidebar {
-    width: 80px;
-    padding: 24px 12px;
+    width: 240px;
   }
-  
-  .ts-brand span,
-  .ts-nav-label,
-  .ts-nav-item span:not(.ts-icon) {
+
+  .ts-brand {
+    padding: 24px 20px;
+    font-size: 24px;
+  }
+
+  .ts-nav-item {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+
+  .ts-icon {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ts-sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 2px solid var(--theme-border);
+  }
+
+  .ts-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 12px;
+    gap: 8px;
+    display: flex;
+  }
+
+  .ts-nav-label {
     display: none;
   }
-  
-  .ts-brand {
-    font-size: 1.25rem;
-    text-align: center;
-  }
-  
+
   .ts-nav-item {
-    justify-content: center;
+    padding: 12px 16px;
+    min-width: auto;
+    flex-shrink: 0;
+    border-left: none;
+    border-bottom: 3px solid transparent;
   }
-  
-  .ts-badge {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    padding: 2px 6px;
-    font-size: 0.625rem;
+
+  .ts-nav-item::before {
+    display: none;
+  }
+
+  .ts-nav-item.active {
+    border-bottom-color: var(--theme-border-yellow);
+  }
+
+  .ts-logout {
+    margin: 12px 20px 20px;
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../../../assets/logo.png';
 import './TenantSidebar.css';
 
 const TenantSidebar = ({ activeView, onViewChange, counts }) => {
@@ -9,14 +10,25 @@ const TenantSidebar = ({ activeView, onViewChange, counts }) => {
     { id: 'CITIES', label: 'Regional Setup', count: null, icon: '🌍' },
   ];
 
+  const handleLogout = () => {
+    dispatch(logout());        // optional but recommended
+    localStorage.clear();
+
+    navigate("/auth", { replace: true });
+  };
+
+
   return (
     <aside className="ts-sidebar">
-      <div className="ts-brand">Rydo<span>TENANT</span></div>
-      
+      <div className="ts-brand">
+        <img src={logo} alt="ChaloRide Logo" className="menu-logo" />
+        <span>TENANT</span>
+      </div>
+
       <nav className="ts-nav">
         <div className="ts-nav-label">Verification Queue</div>
         {menuItems.map(item => (
-          <button 
+          <button
             key={item.id}
             className={`ts-nav-item ${activeView === item.id ? 'active' : ''}`}
             onClick={() => onViewChange(item.id)}
@@ -28,7 +40,7 @@ const TenantSidebar = ({ activeView, onViewChange, counts }) => {
         ))}
       </nav>
 
-      <button className="ts-logout" onClick={() => {localStorage.clear(); window.location.href='/login'}}>
+      <button className="ts-logout" onClick={handleLogout}>
         Sign Out
       </button>
     </aside>
