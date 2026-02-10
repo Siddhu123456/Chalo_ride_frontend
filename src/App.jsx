@@ -50,7 +50,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin"
-          element={<AdminLayout />}          
+          element={<AdminLayout />}
         >
           <Route index element={<Navigate to="tenants" replace />} />
           <Route path="tenants" element={<TenantManager />} />
@@ -86,9 +86,17 @@ function App() {
           <Route path="offers" element={<TripOffers />} />
           <Route path="trips/active" element={<ActiveTrip />} />
           <Route path="vehicle" element={<AssignedVehicle />} />
-          <Route path="docs" element={<DriverDocsPage />} />
           <Route path="tripHistory" element={<DriverTripHistory />} />
         </Route>
+
+        <Route
+          path="/driver/docs"
+          element={
+            <ProtectedRoute allowedRoles={["DRIVER"]}>
+              <DriverDocsPage />
+            </ProtectedRoute>
+          }
+        />
 
         {/* FLEET */}
         <Route

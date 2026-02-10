@@ -80,7 +80,7 @@ const FleetDashboard = () => {
       <div className="fd-onboarding-layout">
         <nav className="fd-navbar">
           <div className="fd-navbar-brand">
-            Rydo<span className="fd-brand-badge">FLEET</span>
+            ChaloRide<span className="fd-brand-badge">FLEET</span>
           </div>
           <div className="fd-navbar-actions">
             <button

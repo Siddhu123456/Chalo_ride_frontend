@@ -31,8 +31,8 @@ const VerificationPortal = ({ type, data, title }) => {
         <div className="vp-pane-header">{title}</div>
         <div className="vp-scroll">
           {data.map((item, idx) => {
-            const id = typeof item === 'object' ? (item.fleet_id || item.driver_id) : item;
-            const name = item.fleet_name || item.full_name || `Asset #${item}`;
+            const id = typeof item === 'object' ? (item.fleet_id || item.driver_id) : item.vehicle_id;
+            const name = item.fleet_name || item.full_name || `Asset #${item.vehicle_model}`;
             return (
               <div 
                 key={idx} 
@@ -71,7 +71,7 @@ const VerificationPortal = ({ type, data, title }) => {
                   >
                     View Image / PDF
                   </button>
-                  {/* ✅ ACTIONS ONLY SHOW IF PENDING */}
+                  {/*ACTIONS ONLY SHOW IF PENDING */}
                   {doc.verification_status === 'PENDING' && (
                     <div className="vp-actions">
                       <button 

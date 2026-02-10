@@ -38,13 +38,13 @@ export const verifyDocument = createAsyncThunk('tenant/verifyDoc', async ({ type
   } catch (err) { return rejectWithValue(err.response?.data?.detail); }
 });
 
-// ✅ FIXED EXPORT NAME
+//  FIXED EXPORT NAME
 export const fetchTenantCities = createAsyncThunk('tenant/fetchTenantCities', async (tenantId, { rejectWithValue }) => {
   try { return (await axios.get(`${API_URL}/tenants/${tenantId}/cities`, getHeaders())).data; }
   catch (err) { return rejectWithValue(err.response?.data?.detail); }
 });
 
-// ✅ FIXED EXPORT NAME
+// FIXED EXPORT NAME
 export const bulkAddCities = createAsyncThunk('tenant/bulkAddCities', async ({ tenantId, countryCode, cities }, { rejectWithValue, dispatch }) => {
   try {
     const res = await axios.post(`${API_URL}/tenants/${tenantId}/countries/${countryCode}/cities`, { cities }, getHeaders());

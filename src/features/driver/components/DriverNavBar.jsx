@@ -7,16 +7,21 @@ const DriverNavBar = () => {
     (state) => state.driver
   );
 
+  const auth = useSelector(state => state.auth);
+
+console.log("AUTH STATE:", auth);
+
   const driverName = profile?.full_name || "Driver";
   const tenantName = dashboardSummary?.tenant?.tenant_name;
   const fleetName = dashboardSummary?.fleet?.fleet_name;
 
+  console.log(tenantName);
   return (
     <nav className="driver-navbar">
       <div className="driver-navbar-left">
         <span className="welcome-message">
           {tenantName && (
-            <span className="tenant-name"> · {tenantName}</span>
+            <span className="tenant-name"> ·{tenantName || "ChaloRide"}</span>
           )}
         </span>
       </div>

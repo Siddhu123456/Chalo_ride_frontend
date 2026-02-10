@@ -1,396 +1,446 @@
 :root {
-    --theme-white: #fff;
-    --theme-border: #e0e0e0; /* Lighter border for cleaner look */
-    --theme-font: #3b3e47;
-    --theme-button-bg: #fecc18; /* Brand Yellow */
-    --theme-light-bg: #f8f8f8;
-    --color-success: #28a745;
-    --color-success-bg: rgba(40, 167, 69, 0.1);
-    --color-pending-bg: #fff3cd;
-    --color-pending-text: #856404;
-    --color-shadow: rgba(0, 0, 0, 0.08); /* Soft shadow */
-    --navbar-height: 70px;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-/* ===========================
-   Page Layout
-   =========================== */
-
-.driver-layout {
-    min-height: 100vh;
-    background-color: var(--theme-light-bg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-/* ===========================
-   Driver Navbar (Fixed)
-   =========================== */
-
-/* ===========================
-   Driver Docs Page – Navbar (Scoped)
-   Applies ONLY inside DriverDocsPage
-   =========================== */
-
-.driver-layout > .driver-navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--navbar-height);
-    background-color: var(--theme-white);
-    border-bottom: 1px solid var(--theme-border);
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-    display: flex;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-
-/* ===========================
-   Docs Content Area
-   =========================== */
-
-.driver-docs-content {
-    width : 100%;
-    padding: 2rem;
-    padding-top: calc(var(--navbar-height) + 2.5rem); /* Extra breathing room */
-    background-color: var(--theme-light-bg);
-    min-height: 100vh;
-}
-
-.docs-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem; /* Increased gap for cleaner separation */
-}
-
-/* ===========================
-   Header & Progress Section
-   =========================== */
-
-.docs-header {
-    background-color: var(--theme-white);
-    padding: 2rem 2.5rem;
-    border-radius: 16px; /* Softer corners */
-    border: 1px solid var(--theme-white);
-    box-shadow: 0 8px 30px var(--color-shadow); /* Floating effect */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-    transition: transform 0.3s ease;
-}
-
-.docs-header:hover {
-    transform: translateY(-2px); /* Micro-interaction */
-}
-
-.header-text {
-    flex: 1;
-    min-width: 280px;
-}
-
-.page-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--theme-font);
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.5px;
-}
-
-.page-subtitle {
-    font-size: 1.05rem;
-    color: #666;
-    margin: 0;
-    line-height: 1.5;
-}
-
-/* Progress Bar */
-.progress-container {
-    width: 350px;
-    background: var(--theme-light-bg);
-    padding: 1.25rem;
-    border-radius: 12px;
-    border: 1px solid var(--theme-border);
-}
-
-.progress-stats {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--theme-font);
-    margin-bottom: 0.75rem;
-}
-
-.progress-value {
-    color: #666;
-    background: #e9ecef;
-    padding: 2px 8px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-}
-
-.progress-track {
-    width: 100%;
-    height: 12px;
-    background-color: #e0e0e0;
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background-color: var(--theme-button-bg);
-    border-radius: 6px;
-    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    background-image: linear-gradient(
-        45deg, 
-        rgba(255, 255, 255, 0.15) 25%, 
-        transparent 25%, 
-        transparent 50%, 
-        rgba(255, 255, 255, 0.15) 50%, 
-        rgba(255, 255, 255, 0.15) 75%, 
-        transparent 75%, 
-        transparent
-    );
-    background-size: 1rem 1rem;
-}
-
-/* ===========================
-   Sections
-   =========================== */
-
-.docs-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.section-heading {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--theme-font);
-    padding-left: 1rem;
-    border-left: 6px solid var(--theme-button-bg);
-    display: flex;
-    align-items: center;
-    height: 1.5rem;
-}
-
-/* ===========================
-   Docs Grid & Cards
-   =========================== */
-
-.docs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-}
-
-/* Card Styling (Crucial for the Look) */
-.doc-card {
-    background-color: var(--theme-white);
-    border-radius: 12px;
-    padding: 1.5rem;
-    position: relative;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 1px solid transparent; /* Prevent jump on hover */
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-}
-
-/* Pending State */
-.card-pending {
-    border: 2px dashed #d1d1d1;
-    background-color: #ffffff;
-}
-
-.card-pending:hover {
-    border-color: var(--theme-button-bg);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.card-pending:hover .doc-icon-wrapper {
-    background-color: var(--theme-button-bg);
-    color: black;
-    transform: scale(1.1);
-}
-
-/* Uploaded State */
-.card-uploaded {
-    border: 1px solid var(--theme-border);
-    background-color: #fafafa;
-}
-
-.card-uploaded:hover {
-    box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-}
-
-/* Internal Card Elements */
-.doc-card-inner {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.doc-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.2rem;
-    transition: all 0.3s ease;
-}
-
-.icon-neutral { background-color: #f1f3f5; color: #666; }
-.icon-success { background-color: var(--color-success-bg); color: var(--color-success); }
-
-.doc-name {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--theme-font);
-    margin-bottom: 0.5rem;
-}
-
-.doc-desc {
-    font-size: 0.9rem;
-    color: #888;
-    line-height: 1.4;
-    margin-bottom: 1.5rem;
-}
-
-.doc-footer {
-    width: 100%;
-    margin-top: auto;
-}
-
-.action-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #007bff; /* Or use theme color if preferred */
-    text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 2px solid transparent;
-    transition: border 0.3s ease;
-}
-
-.card-pending:hover .action-text {
-    border-bottom-color: #007bff;
-}
-
-/* Status Badges */
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.status-badge.approved { background-color: var(--color-success-bg); color: var(--color-success); }
-.status-badge.pending { background-color: var(--color-pending-bg); color: var(--color-pending-text); }
-
-/* ===========================
-   Completion Banner
-   =========================== */
-
-.completion-banner {
-    background-color: var(--color-success);
-    color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    box-shadow: 0 10px 20px rgba(40, 167, 69, 0.25);
-    animation: slideUp 0.5s ease-out;
-}
-
-@keyframes slideUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.completion-icon {
-    background: rgba(255,255,255,0.2);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-}
-
-.completion-text h4 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    margin-bottom: 0.4rem;
-}
-
-.completion-text p {
-    font-size: 1rem;
-    opacity: 0.95;
-    margin: 0;
-}
-
-/* ===========================
-   Responsive Design
-   =========================== */
-
-@media (max-width: 900px) {
-    .docs-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
+        --theme-white: #fff;
+        --theme-border: #e0e0e0;
+        --theme-font: #3b3e47;
+        --theme-button-bg: #fecc18;
+        --theme-light-bg: #f8f8f8;
+        --color-success: #28a745;
+        --color-success-bg: rgba(40, 167, 69, 0.1);
+        --color-pending-bg: #fff3cd;
+        --color-pending-text: #856404;
+        --color-shadow: rgba(0, 0, 0, 0.08);
+        --navbar-height: 70px;
     }
 
-    .progress-container {
-        width: 100%; /* Full width on smaller screens */
+    * {
+        box-sizing: border-box;
+    }
+
+    /* ===========================
+    Page Layout
+    =========================== */
+
+    .driver-layout {
+        min-height: 100vh;
+        background-color: var(--theme-light-bg);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* ===========================
+    Driver Navbar (Fixed)
+    =========================== */
+
+    .driver-layout > .driver-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--navbar-height);
+        background-color: var(--theme-white);
+        border-bottom: 1px solid var(--theme-border);
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        display: flex;
+        align-items: center;
+        padding: 0 2rem;
+    }
+
+    /* ===========================
+    Docs Content Area
+    =========================== */
+
+    .driver-docs-content {
+        width : 100%;
+        padding: 2rem;
+        padding-top: calc(var(--navbar-height) + 2.5rem);
+        background-color: var(--theme-light-bg);
+        min-height: 100vh;
+    }
+
+    .docs-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+
+    /* ===========================
+    Header & Progress Section
+    =========================== */
+
+    .docs-header {
+        background-color: var(--theme-white);
+        padding: 2rem 2.5rem;
+        border-radius: 16px;
+        border: 1px solid var(--theme-white);
+        box-shadow: 0 8px 30px var(--color-shadow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        transition: transform 0.3s ease;
+    }
+
+    .docs-header:hover {
+        transform: translateY(-2px);
     }
 
     .header-text {
-        width: 100%;
-    }
-}
-
-@media (max-width: 600px) {
-    .driver-docs-content {
-        padding: 1rem;
-        padding-top: calc(var(--navbar-height) + 1.5rem);
+        flex: 1;
+        min-width: 280px;
     }
 
     .page-title {
-        font-size: 1.6rem;
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--theme-font);
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
     }
-    
-    .docs-grid {
-        grid-template-columns: 1fr; /* Stack cards */
+
+    .page-subtitle {
+        font-size: 1.05rem;
+        color: #666;
+        margin: 0;
+        line-height: 1.5;
     }
-    
-    .completion-banner {
+
+    /* Progress Bar */
+    .progress-container {
+        width: 350px;
+        background: var(--theme-light-bg);
+        padding: 1.25rem;
+        border-radius: 12px;
+        border: 1px solid var(--theme-border);
+    }
+
+    .progress-stats {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--theme-font);
+        margin-bottom: 0.75rem;
+    }
+
+    .progress-value {
+        color: #666;
+        background: #e9ecef;
+        padding: 2px 8px;
+        border-radius: 6px;
+        font-size: 0.85rem;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 12px;
+        background-color: #e0e0e0;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background-color: var(--theme-button-bg);
+        border-radius: 6px;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        background-image: linear-gradient(
+            45deg, 
+            rgba(255, 255, 255, 0.15) 25%, 
+            transparent 25%, 
+            transparent 50%, 
+            rgba(255, 255, 255, 0.15) 50%, 
+            rgba(255, 255, 255, 0.15) 75%, 
+            transparent 75%, 
+            transparent
+        );
+        background-size: 1rem 1rem;
+    }
+
+    /* ===========================
+    Sections
+    =========================== */
+
+    .docs-section {
+        display: flex;
         flex-direction: column;
-        text-align: center;
+        gap: 1.5rem;
     }
+
+    .section-heading {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--theme-font);
+        padding-left: 1rem;
+        border-left: 6px solid var(--theme-button-bg);
+        display: flex;
+        align-items: center;
+        height: 1.5rem;
+    }
+
+    /* CHANGE: Rejected section heading — red accent bar + red text to signal urgency */
+    .section-heading--rejected {
+        color: #b02a37;
+        border-left-color: #dc3545;
+    }
+
+    /* ===========================
+    Docs Grid & Cards
+    =========================== */
+
+    .docs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .doc-card {
+        background-color: var(--theme-white);
+        border-radius: 12px;
+        padding: 1.5rem;
+        position: relative;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+
+    /* Pending State */
+    .card-pending {
+        border: 2px dashed #d1d1d1;
+        background-color: #ffffff;
+    }
+
+    .card-pending:hover {
+        border-color: var(--theme-button-bg);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .card-pending:hover .doc-icon-wrapper {
+        background-color: var(--theme-button-bg);
+        color: black;
+        transform: scale(1.1);
+    }
+
+    /* Uploaded State */
+    .card-uploaded {
+        border: 1px solid var(--theme-border);
+        background-color: #fafafa;
+    }
+
+    .card-uploaded:hover {
+        box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+    }
+
+    /* Internal Card Elements */
+    .doc-card-inner {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .doc-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .icon-neutral { background-color: #f1f3f5; color: #666; }
+    .icon-success { background-color: var(--color-success-bg); color: var(--color-success); }
+
+    /* CHANGE: Red icon background for rejected state */
+    .icon-rejected {
+        background-color: #f8d7da;
+        color: #dc3545;
+    }
+
+    .doc-name {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--theme-font);
+        margin-bottom: 0.5rem;
+    }
+
+    .doc-desc {
+        font-size: 0.9rem;
+        color: #888;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+    }
+
+    .doc-footer {
+        width: 100%;
+        margin-top: auto;
+    }
+
+    .action-text {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #007bff;
+        text-decoration: none;
+        padding-bottom: 2px;
+        border-bottom: 2px solid transparent;
+        transition: border 0.3s ease;
+    }
+
+    .card-pending:hover .action-text {
+        border-bottom-color: #007bff;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-badge.approved { background-color: var(--color-success-bg); color: var(--color-success); }
+    .status-badge.pending { background-color: var(--color-pending-bg); color: var(--color-pending-text); }
+
+    /* ===========================
+    Completion Banner
+    =========================== */
+
+    .completion-banner {
+        background-color: var(--color-success);
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        box-shadow: 0 10px 20px rgba(40, 167, 69, 0.25);
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .completion-icon {
+        background: rgba(255,255,255,0.2);
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+    }
+
+    .completion-text h4 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+    }
+
+    .completion-text p {
+        font-size: 1rem;
+        opacity: 0.95;
+        margin: 0;
+    }
+
+    /* ===========================
+    Responsive Design
+    =========================== */
+
+    @media (max-width: 900px) {
+        .docs-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .progress-container {
+            width: 100%;
+        }
+
+        .header-text {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .driver-docs-content {
+            padding: 1rem;
+            padding-top: calc(var(--navbar-height) + 1.5rem);
+        }
+
+        .page-title {
+            font-size: 1.6rem;
+        }
+        
+        .docs-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .completion-banner {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+
+/* ===========================
+   REJECTED DOCUMENT STATE
+   =========================== */
+
+.card-rejected {
+  border: 2px solid #dc3545;
+  background-color: #fff5f5;
+}
+
+.card-rejected .doc-name {
+  color: #b02a37;
+}
+
+.card-rejected .doc-desc {
+  color: #842029;
+}
+
+.status-badge.rejected {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.card-rejected .action-text {
+  color: #dc3545;
+  font-weight: 700;
+}
+
+.card-rejected:hover {
+  box-shadow: 0 10px 22px rgba(220, 53, 69, 0.25);
+  transform: translateY(-3px);
+}
+
+/* CHANGE: Rejected card hover re-upload icon emphasis */
+.card-rejected:hover .doc-icon-wrapper {
+    background-color: #dc3545;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+/* CHANGE: Rejected card re-upload action text underline on hover */
+.card-rejected:hover .action-text {
+    border-bottom: 2px solid #dc3545;
 }

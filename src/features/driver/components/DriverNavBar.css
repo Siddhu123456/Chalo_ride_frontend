@@ -42,6 +42,13 @@
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
     border-radius: 1.5625rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.driver-profile img {
+    align-self: center;
 }
 
 .driver-profile:hover {

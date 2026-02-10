@@ -57,7 +57,7 @@ const TenantDashboard = () => {
           {activeView === 'VEHICLES' && (
             <VerificationPortal type="vehicles" data={pendingVehicles} title="Vehicle Queue" />
           )}
-          {/* ✅ FIXED: Changed from 'REGIONS' to 'CITIES' to match sidebar */}
+          {/*  FIXED: Changed from 'REGIONS' to 'CITIES' to match sidebar */}
           {activeView === 'CITIES' && <CitySetup />}
         </section>
       </main>
