@@ -1,22 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPendingFleets, fetchPendingDrivers, fetchPendingVehicles, clearTenantState, resetActiveDocs } from '../../store/tenantAdminSlice';
+import {
+  fetchPendingFleets,
+  fetchPendingDrivers,
+  fetchPendingVehicles,
+  fetchTenantAdminProfile,
+  clearTenantState,
+  resetActiveDocs,
+} from '../../store/tenantAdminSlice';
 import TenantSidebar from './components/TenantSidebar';
 import VerificationPortal from './components/VerificationPortal';
 import CitySetup from './components/CitySetup';
 import './TenantDashboard.css';
 
-const TenantDashboard = () => {
-  const dispatch = useDispatch();
-  const [activeView, setActiveView] = useState('FLEETS');
-  const { pendingFleets, pendingDrivers, pendingVehicles, successMsg, error } = useSelector(state => state.tenantAdmin);
+const VIEW_LABELS = {
+  FLEETS:   'Fleet Verification',
+  DRIVERS:  'Driver Verification',
+  VEHICLES: 'Vehicle Verification',
+  CITIES:   'Regional Setup',
+};
 
+const TenantDashboard = () => {
+  const dispatch    = useDispatch();
+  const [activeView, setActiveView] = useState('FLEETS');
+
+  const {
+    pendingFleets,
+    pendingDrivers,
+    pendingVehicles,
+    profile,
+    profileLoading,
+    profileError,   // isolated — won't collide with global error
+    successMsg,
+    error,          // global operation errors (verify, fetch queues, etc.)
+  } = useSelector((state) => state.tenantAdmin);
+
+  /* ── Bootstrap on mount ── */
   useEffect(() => {
+    dispatch(fetchTenantAdminProfile());
     dispatch(fetchPendingFleets());
     dispatch(fetchPendingDrivers());
     dispatch(fetchPendingVehicles());
   }, [dispatch]);
 
+  /* ── Auto-dismiss global alerts after 4 s ── */
   useEffect(() => {
     if (successMsg || error) {
       const timer = setTimeout(() => dispatch(clearTenantState()), 4000);
@@ -34,30 +61,81 @@ const TenantDashboard = () => {
       <TenantSidebar
         activeView={activeView}
         onViewChange={handleViewChange}
+        profile={profile}
+        profileLoading={profileLoading}
+        profileError={profileError}
         counts={{
-          fleets: pendingFleets.length,
-          drivers: pendingDrivers.length,
-          vehicles: pendingVehicles.length
+          fleets:   pendingFleets.length,
+          drivers:  pendingDrivers.length,
+          vehicles: pendingVehicles.length,
         }}
       />
+
       <main className="td-main-container">
+
+        {/* ── Top Utility Bar ── */}
         <header className="td-top-utility">
-          <div className="td-breadcrumb">System Admin / <strong>{activeView}</strong></div>
-          <div className="td-status-indicator"><span className="dot"></span> Operations Live</div>
+          <div className="td-breadcrumb">
+            <span className="td-breadcrumb-tenant">
+              {profile ? profile.tenant_name : '…'}
+            </span>
+            <span className="td-breadcrumb-sep">›</span>
+            <strong>{VIEW_LABELS[activeView]}</strong>
+          </div>
+
+          <div className="td-admin-identity">
+            {profileLoading && <div className="td-profile-shimmer" />}
+            {!profileLoading && profile && (
+              <>
+                <div className="td-admin-avatar">
+                  {profile.full_name?.charAt(0)?.toUpperCase() ?? '?'}
+                </div>
+                <div className="td-admin-info">
+                  <span className="td-admin-name">{profile.full_name}</span>
+                  <span className="td-admin-role">Tenant Admin</span>
+                </div>
+              </>
+            )}
+            {!profileLoading && !profile && profileError && (
+              <span className="td-admin-error" title={profileError}>
+                ⚠ Profile unavailable
+              </span>
+            )}
+          </div>
+
+          <div className="td-status-indicator">
+            <span className="dot" />
+            Operations Live
+          </div>
         </header>
+
+        {/* ── Global operation alerts ── */}
         {successMsg && <div className="td-alert success">{successMsg}</div>}
-        {error && <div className="td-alert error">{error}</div>}
+        {error      && <div className="td-alert error">{error}</div>}
+
+        {/* ── Main View ── */}
         <section className="td-view-area">
           {activeView === 'FLEETS' && (
-            <VerificationPortal type="fleets" data={pendingFleets} title="Fleet Queue" />
+            <VerificationPortal
+              type="fleets"
+              data={pendingFleets}
+              title="Fleet Queue"
+            />
           )}
           {activeView === 'DRIVERS' && (
-            <VerificationPortal type="drivers" data={pendingDrivers} title="Driver Queue" />
+            <VerificationPortal
+              type="drivers"
+              data={pendingDrivers}
+              title="Driver Queue"
+            />
           )}
           {activeView === 'VEHICLES' && (
-            <VerificationPortal type="vehicles" data={pendingVehicles} title="Vehicle Queue" />
+            <VerificationPortal
+              type="vehicles"
+              data={pendingVehicles}
+              title="Vehicle Queue"
+            />
           )}
-          {/*  FIXED: Changed from 'REGIONS' to 'CITIES' to match sidebar */}
           {activeView === 'CITIES' && <CitySetup />}
         </section>
       </main>

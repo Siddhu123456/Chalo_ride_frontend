@@ -23,63 +23,191 @@
   top: 0;
   z-index: 1000;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
 }
 
-/* Brand Section */
+/* ── Brand Section ── */
+
 .ts-brand {
-  padding: 32px 24px;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--theme-font);
+  padding: 20px 22px;
   border-bottom: 2px solid var(--theme-border);
-  letter-spacing: -0.5px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  flex-shrink: 0;
 }
 
-.ts-brand span {
-  font-size: 11px;
-  font-weight: 700;
+.menu-logo {
+  height: 34px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-logo:hover { transform: scale(1.05); }
+
+.ts-role-badge {
+  font-size: 10px;
+  font-weight: 800;
   color: var(--theme-button-font);
   background: var(--theme-button-bg);
   padding: 4px 10px;
   border-radius: 6px;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(254, 204, 24, 0.2);
+  letter-spacing: 0.8px;
+  box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
 }
 
-/* Navigation Container */
+/* ── Profile Card ── */
+
+.ts-profile-card {
+  padding: 18px 22px;
+  border-bottom: 2px solid var(--theme-border);
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  background: linear-gradient(135deg, #fffef7 0%, #fff 100%);
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  min-height: 88px;
+}
+
+.ts-profile-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--theme-border-yellow) 0%, #ffd54f 100%);
+}
+
+.ts-profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd93d 100%);
+  color: var(--theme-button-font);
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.3);
+  border: 2px solid rgba(254, 204, 24, 0.35);
+  letter-spacing: -0.5px;
+}
+
+.ts-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+}
+
+.ts-profile-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--theme-font);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.ts-profile-tenant {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--theme-border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.ts-profile-countries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.ts-country-tag {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--theme-button-font);
+  background: var(--theme-button-bg);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+/* ── Shimmer Loading ── */
+
+.ts-profile-loading {
+  align-items: center;
+}
+
+.ts-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: ts-shimmer 1.4s ease infinite;
+  border-radius: 6px;
+}
+
+@keyframes ts-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.ts-shimmer-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.ts-shimmer-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ts-shimmer-line {
+  height: 12px;
+  border-radius: 4px;
+}
+
+.ts-shimmer-line-lg { width: 80%; }
+.ts-shimmer-line-sm { width: 55%; }
+
+/* ── Navigation Container ── */
+
 .ts-nav {
   flex: 1;
-  padding: 24px 0;
+  padding: 16px 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.ts-nav::-webkit-scrollbar {
-  width: 4px;
-}
-
-.ts-nav::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.ts-nav::-webkit-scrollbar-thumb {
-  background: var(--theme-border);
-  border-radius: 2px;
-}
+.ts-nav::-webkit-scrollbar { width: 4px; }
+.ts-nav::-webkit-scrollbar-track { background: transparent; }
+.ts-nav::-webkit-scrollbar-thumb { background: var(--theme-border); border-radius: 2px; }
 
 /* Navigation Label */
 .ts-nav-label {
-  padding: 0 24px 12px;
-  font-size: 11px;
+  padding: 12px 24px 8px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--theme-border);
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 8px;
+  letter-spacing: 1.2px;
 }
 
 /* Navigation Items */
@@ -88,11 +216,11 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 24px;
+  padding: 13px 24px;
   border: none;
   background: transparent;
   color: var(--theme-font);
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -119,9 +247,7 @@
   color: var(--theme-font);
 }
 
-.ts-nav-item:active {
-  transform: translateX(2px);
-}
+.ts-nav-item:active { transform: translateX(2px); }
 
 .ts-nav-item.active {
   background: linear-gradient(90deg, rgba(254, 204, 24, 0.12) 0%, rgba(254, 204, 24, 0.02) 100%);
@@ -129,113 +255,102 @@
   font-weight: 600;
 }
 
-.ts-nav-item.active::before {
-  transform: scaleY(1);
-}
+.ts-nav-item.active::before { transform: scaleY(1); }
 
 .ts-icon {
-  font-size: 20px;
+  font-size: 18px;
   line-height: 1;
-  min-width: 24px;
+  min-width: 22px;
   text-align: center;
   filter: grayscale(0.3);
   transition: filter 0.2s ease;
 }
 
-.ts-nav-item.active .ts-icon {
-  filter: grayscale(0);
-}
+.ts-nav-item.active .ts-icon { filter: grayscale(0); }
 
 /* Badge */
 .ts-badge {
   margin-left: auto;
   background: var(--theme-button-bg);
   color: var(--theme-button-font);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 3px 9px;
-  border-radius: 12px;
-  min-width: 24px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  min-width: 22px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
   animation: pulse-badge 2s ease-in-out infinite;
 }
 
 @keyframes pulse-badge {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 3px 8px rgba(254, 204, 24, 0.35);
-  }
+  0%, 100% { transform: scale(1);    box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25); }
+  50%       { transform: scale(1.06); box-shadow: 0 3px 8px rgba(254, 204, 24, 0.38); }
 }
 
-/* Logout Button */
+/* ── Logout Button ── */
+
 .ts-logout {
-  margin: 16px 24px 24px;
-  padding: 14px 20px;
+  margin: 12px 18px 20px;
+  padding: 13px 20px;
   border: 2px solid var(--theme-border);
   background: var(--theme-white);
   color: var(--theme-font);
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
   position: relative;
   overflow: hidden;
+}
+
+.ts-logout-icon {
+  font-size: 16px;
+  transform: rotate(90deg);
+  display: inline-block;
+  transition: transform 0.2s ease;
 }
 
 .ts-logout::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
   border-radius: 50%;
   background: rgba(254, 204, 24, 0.1);
   transform: translate(-50%, -50%);
   transition: width 0.3s ease, height 0.3s ease;
 }
 
-.ts-logout:hover::before {
-  width: 300px;
-  height: 300px;
-}
+.ts-logout:hover::before { width: 300px; height: 300px; }
 
 .ts-logout:hover {
   border-color: var(--theme-border-yellow);
   color: var(--theme-button-font);
-  background: var(--theme-white);
 }
 
-.ts-logout:active {
-  transform: scale(0.98);
-}
+.ts-logout:hover .ts-logout-icon { transform: rotate(90deg) translateX(2px); }
 
-/* Responsive Design */
+.ts-logout:active { transform: scale(0.98); }
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
 @media (max-width: 768px) {
-  .ts-sidebar {
-    width: 240px;
-  }
-
-  .ts-brand {
-    padding: 24px 20px;
-    font-size: 24px;
-  }
-
-  .ts-nav-item {
-    padding: 12px 20px;
-    font-size: 14px;
-  }
-
-  .ts-icon {
-    font-size: 18px;
-  }
+  .ts-sidebar { width: 240px; }
+  .ts-brand { padding: 16px 18px; }
+  .menu-logo { height: 28px; }
+  .ts-profile-card { padding: 14px 18px; }
+  .ts-nav-item { padding: 12px 18px; font-size: 13px; }
+  .ts-icon { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
@@ -255,27 +370,20 @@
     display: flex;
   }
 
-  .ts-nav-label {
-    display: none;
-  }
+  .ts-nav-label { display: none; }
 
   .ts-nav-item {
-    padding: 12px 16px;
+    padding: 10px 14px;
     min-width: auto;
     flex-shrink: 0;
     border-left: none;
     border-bottom: 3px solid transparent;
+    font-size: 12px;
   }
 
-  .ts-nav-item::before {
-    display: none;
-  }
+  .ts-nav-item::before { display: none; }
+  .ts-nav-item.active { border-bottom-color: var(--theme-border-yellow); }
 
-  .ts-nav-item.active {
-    border-bottom-color: var(--theme-border-yellow);
-  }
-
-  .ts-logout {
-    margin: 12px 20px 20px;
-  }
+  .ts-profile-card { padding: 12px 16px; }
+  .ts-logout { margin: 10px 16px 16px; }
 }
