@@ -8,7 +8,7 @@ const VerificationPortal = ({ type, data, title }) => {
   const { activeDocs, loading } = useSelector((state) => state.tenantAdmin);
   const [selectedId, setSelectedId] = useState(null);
 
-  /* Derive a stable numeric ID from whatever entity shape the backend returns */
+  
   const resolveId = (item) =>
     typeof item === 'object'
       ? (item.fleet_id ?? item.driver_id ?? item.vehicle_id ?? null)
@@ -27,7 +27,7 @@ const VerificationPortal = ({ type, data, title }) => {
         type,
         docId,
         approve:  isApprove,
-        entityId: selectedId,   // passed so the thunk re-fetches docs after verify
+        entityId: selectedId,   
       })
     );
   };
@@ -35,7 +35,7 @@ const VerificationPortal = ({ type, data, title }) => {
   return (
     <div className="vp-container">
 
-      {/* ── Left: Pending Entity List ── */}
+      
       <div className="vp-list-pane">
         <div className="vp-pane-header">{title}</div>
         <div className="vp-scroll">
@@ -64,7 +64,7 @@ const VerificationPortal = ({ type, data, title }) => {
         </div>
       </div>
 
-      {/* ── Right: Document Inspection Pane ── */}
+      
       <div className="vp-inspect-pane">
         {!selectedId ? (
           <div className="vp-placeholder">
@@ -110,7 +110,7 @@ const VerificationPortal = ({ type, data, title }) => {
                       View Image / PDF
                     </button>
 
-                    {/* Approve / Reject only for PENDING documents */}
+                    
                     {doc.verification_status === 'PENDING' && (
                       <div className="vp-actions">
                         <button

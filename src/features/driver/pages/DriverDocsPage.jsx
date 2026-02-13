@@ -25,29 +25,29 @@ const DriverDocsPage = () => {
 
   const [uploadProgress, setUploadProgress] = useState({});
 
-  /* ================= LOGOUT HANDLER ================= */
+  
   const handleLogout = () => {
-    dispatch(logout());        // optional but recommended
+    dispatch(logout());        
     localStorage.clear();
 
     navigate("/auth", { replace: true });
   };
   
-  /* ================= INITIAL LOAD ================= */
+  
   useEffect(() => {
     dispatch(fetchDriverProfile());
     dispatch(fetchDriverDocStatus());
     dispatch(fetchDriverDashboardSummary());
   }, [dispatch]);
 
-  /* ================= REDIRECT IF APPROVED ================= */
+  
   useEffect(() => {
     if (profile?.approval_status === "APPROVED") {
       navigate("/driver/dashboard", { replace: true });
     }
   }, [profile, navigate]);
 
-  /* ================= LOADING ================= */
+  
   if (!docStatus || !profile) {
     return (
       <div className="docs-loading">
@@ -56,7 +56,7 @@ const DriverDocsPage = () => {
     );
   }
 
-  /* ================= PROGRESS ================= */
+  
   const totalRequired =
     docStatus.missing.length + docStatus.uploaded.length;
 
@@ -67,7 +67,7 @@ const DriverDocsPage = () => {
       ? 100
       : Math.round((uploadedCount / totalRequired) * 100);
 
-  /* ================= UPLOAD HANDLER ================= */
+  
   const handleUpload = async (type, file) => {
     if (!file || file.type !== "application/pdf") {
       alert("Only PDF files are allowed");
@@ -91,8 +91,8 @@ const DriverDocsPage = () => {
     }
   };
 
-  /* ================= SPLIT UPLOADED DOCS BY STATUS ================= */
-  // CHANGE: Separate rejected docs from the rest for a dedicated section
+  
+  
   const rejectedDocs = docStatus.uploaded.filter(
     (doc) => doc.verification_status === "REJECTED"
   );
@@ -107,7 +107,7 @@ const DriverDocsPage = () => {
       <div className="driver-docs-content">
         <div className="docs-container">
 
-          {/* ================= HEADER ================= */}
+          
           <div className="docs-header">
             <div className="header-text">
               <h1 className="page-title">Driver Verification</h1>
@@ -132,7 +132,7 @@ const DriverDocsPage = () => {
               </div>
             </div>
 
-            {/* CHANGE: Logout button anchored to the right of the header */}
+            
             <div className="header-actions">
               <button className="logout-btn" onClick={handleLogout}>
                 <svg
@@ -154,8 +154,8 @@ const DriverDocsPage = () => {
             </div>
           </div>
 
-          {/* ================= REJECTED DOCUMENTS ================= */}
-          {/* CHANGE: Dedicated section for rejected docs with attention-grabbing heading */}
+          
+          
           {rejectedDocs.length > 0 && (
             <div className="docs-section">
               <h3 className="section-heading section-heading--rejected">
@@ -167,17 +167,17 @@ const DriverDocsPage = () => {
                   <DocumentUploadCard
                     key={doc.document_id}
                     type={doc.document_type}
-                    status={doc.verification_status}   // "REJECTED"
-                    uploaded={false}                   // CHANGE: rejected = not accepted
+                    status={doc.verification_status}   
+                    uploaded={false}                   
                     uploading={uploadProgress[doc.document_type] || false}
-                    onUpload={handleUpload}            // CHANGE: always allow re-upload
+                    onUpload={handleUpload}            
                   />
                 ))}
               </div>
             </div>
           )}
 
-          {/* ================= MISSING DOCUMENTS ================= */}
+          
           {docStatus.missing.length > 0 && (
             <div className="docs-section">
               <h3 className="section-heading">Pending Uploads</h3>
@@ -197,7 +197,7 @@ const DriverDocsPage = () => {
             </div>
           )}
 
-          {/* ================= UPLOADED DOCUMENTS ================= */}
+          
           {nonRejectedUploadedDocs.length > 0 && (
             <div className="docs-section">
               <h3 className="section-heading">Uploaded Documents</h3>
@@ -206,7 +206,7 @@ const DriverDocsPage = () => {
                 {nonRejectedUploadedDocs.map((doc) => {
                   const status = doc.verification_status;
                   const isApproved = status === "APPROVED";
-                  // CHANGE: explicit check — only PENDING gets re-upload here
+                  
                   const isReuploadable = status === "PENDING";
 
                   return (
@@ -224,9 +224,9 @@ const DriverDocsPage = () => {
             </div>
           )}
 
-          {/* ================= ALL SUBMITTED ================= */}
+          
           {docStatus.missing.length === 0 &&
-            rejectedDocs.length === 0 &&        // CHANGE: hide banner if any rejections exist
+            rejectedDocs.length === 0 &&        
             profile.approval_status !== "APPROVED" && (
               <div className="completion-banner">
                 <div className="completion-icon"></div>

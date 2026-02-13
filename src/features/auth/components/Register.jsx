@@ -35,7 +35,7 @@ const Register = ({ onRegisterSuccess }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Restrict phone to digits only and max 10
+    
     if (name === 'phone') {
       const onlyDigits = value.replace(/\D/g, '');
       if (onlyDigits.length <= 10) {

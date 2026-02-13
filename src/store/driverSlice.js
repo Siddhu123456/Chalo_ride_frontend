@@ -9,9 +9,7 @@ const authHeader = () => ({
   }
 });
 
-/* =========================================================
-   PROFILE
-========================================================= */
+
 export const fetchDriverProfile = createAsyncThunk(
   "driver/profile",
   async (_, { rejectWithValue }) => {
@@ -24,9 +22,7 @@ export const fetchDriverProfile = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   DASHBOARD
-========================================================= */
+
 export const fetchDriverDashboardSummary = createAsyncThunk(
   "driver/dashboardSummary",
   async (_, { rejectWithValue }) => {
@@ -39,9 +35,7 @@ export const fetchDriverDashboardSummary = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   DOCUMENTS
-========================================================= */
+
 export const fetchDriverDocStatus = createAsyncThunk(
   "driver/docStatus",
   async (_, { rejectWithValue }) => {
@@ -66,9 +60,7 @@ export const uploadDriverDocument = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   SHIFT
-========================================================= */
+
 export const fetchCurrentShift = createAsyncThunk(
   "driver/currentShift",
   async (_, { rejectWithValue }) => {
@@ -108,9 +100,7 @@ export const endShift = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   DRIVER LOCATION
-========================================================= */
+
 export const updateDriverLocation = createAsyncThunk(
   "driver/updateLocation",
   async (payload, { rejectWithValue }) => {
@@ -127,9 +117,7 @@ export const updateDriverLocation = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   TRIPS (RECENT)
-========================================================= */
+
 export const fetchDriverTrips = createAsyncThunk(
   "driver/tripHistory",
   async ({ page = 1, limit = 5 }, { rejectWithValue }) => {
@@ -148,9 +136,7 @@ export const fetchDriverTrips = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   VEHICLE
-========================================================= */
+
 export const fetchCurrentVehicleAssignment = createAsyncThunk(
   "driver/currentVehicleAssignment",
   async (_, { rejectWithValue }) => {
@@ -167,9 +153,7 @@ export const fetchCurrentVehicleAssignment = createAsyncThunk(
   }
 );
 
-/* =========================================================
-   OFFERS
-========================================================= */
+
 export const fetchOffers = createAsyncThunk(
   "driver/fetchOffers",
   async (_, { rejectWithValue }) => {
@@ -199,9 +183,7 @@ export const respondOffer = createAsyncThunk(
 );
 
 
-/* =========================================================
-   OTP
-========================================================= */
+
 export const generateOtp = createAsyncThunk(
   "driver/generateOtp",
   async (tripId, { rejectWithValue }) => {
@@ -211,7 +193,7 @@ export const generateOtp = createAsyncThunk(
         {},
         authHeader()
       );
-      return res.data; // { trip_id, otp_code, expires_at }
+      return res.data; 
     } catch (e) {
       return rejectWithValue("Failed to generate OTP");
     }
@@ -227,16 +209,14 @@ export const verifyOtp = createAsyncThunk(
         { otp_code },
         authHeader()
       );
-      return res.data; // { trip_id, status }
+      return res.data; 
     } catch {
       return rejectWithValue("Invalid OTP");
     }
   }
 );
 
-/* =========================================================
-   COMPLETE TRIP
-========================================================= */
+
 export const completeTrip = createAsyncThunk(
   "driver/completeTrip",
   async (tripId, { rejectWithValue }) => {
@@ -246,7 +226,7 @@ export const completeTrip = createAsyncThunk(
         {},
         authHeader()
       );
-      return res.data; // { fare }
+      return res.data; 
     } catch {
       return rejectWithValue("Failed to complete trip");
     }
@@ -254,9 +234,7 @@ export const completeTrip = createAsyncThunk(
 );
 
 
-/* =========================================================
-   SLICE
-========================================================= */
+
 const driverSlice = createSlice({
   name: "driver",
 

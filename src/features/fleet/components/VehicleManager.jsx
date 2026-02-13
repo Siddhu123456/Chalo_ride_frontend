@@ -104,13 +104,13 @@ const VehicleManager = ({ fleetId, onAdd }) => {
               </div>
 
               <div className="vm-card-actions">
-                {/* ✅ Approved vehicles */}
+                
                 {isVerified ? (
                   <button className="vm-btn-manage" type="button">
                     Manage Asset
                   </button>
                 ) : (
-                  /* ✅ Pending/Rejected vehicles ALWAYS show upload */
+                  
                   <button
                     className="vm-btn-outline"
                     type="button"
@@ -135,7 +135,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
         </div>
       )}
 
-      {/* ✅ Upload Docs Modal */}
+      
       {selectedVehicleForDocs && <VehicleDocsModal />}
     </div>
   );

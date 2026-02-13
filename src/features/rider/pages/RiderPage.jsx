@@ -23,10 +23,10 @@ const RiderPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // 1Fetch rider profile
+    
     dispatch(fetchRiderProfile());
 
-    //  Detect city using browser location
+    
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => {

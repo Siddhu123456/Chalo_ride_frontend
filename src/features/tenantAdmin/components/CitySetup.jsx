@@ -11,7 +11,7 @@ import {
 } from '../../../store/tenantAdminSlice';
 import './CitySetup.css';
 
-/* ─── Vehicle categories matching backend VehicleCategoryEnum ─── */
+
 const CATEGORIES = ['BIKE', 'AUTO', 'CAB'];
 
 const CAT_META = {
@@ -40,21 +40,19 @@ const emptyFares = () =>
     },
   }), {});
 
-/* ─── Panel states ─── */
+
 const PANEL = {
   IDLE:      'IDLE',
   VIEW:      'VIEW',
-  ADD_STEP1: 'ADD_STEP1',   // Pick country (from profile list)
-  ADD_STEP2: 'ADD_STEP2',   // Pick city + enter fares
+  ADD_STEP1: 'ADD_STEP1',   
+  ADD_STEP2: 'ADD_STEP2',   
 };
 
-/* ============================================================
-   COMPONENT
-   ============================================================ */
+
 const CitySetup = () => {
   const dispatch = useDispatch();
 
-  /* Profile carries tenant_id + countries list */
+  
   const profile  = useSelector((s) => s.tenantAdmin.profile);
   const {
     cities,
@@ -65,31 +63,31 @@ const CitySetup = () => {
   } = useSelector((s) => s.tenantAdmin);
 
   const tenantId       = profile?.tenant_id;
-  const tenantCountries = profile?.countries ?? [];  // e.g. ['IN', 'US']
+  const tenantCountries = profile?.countries ?? [];  
 
-  /* ── panel / selection ── */
+  
   const [panel,        setPanel]        = useState(PANEL.IDLE);
   const [selectedCity, setSelectedCity] = useState(null);
   const [search,       setSearch]       = useState('');
 
-  /* ── add-city form ── */
+  
   const [countryCode,  setCountryCode]  = useState('');
   const [pickedCity,   setPickedCity]   = useState(null);
   const [newFares,     setNewFares]     = useState(emptyFares());
   const [addError,     setAddError]     = useState('');
 
-  /* ── edit-fare state ── */
+  
   const [editFares,    setEditFares]    = useState({});
   const [savingCat,    setSavingCat]    = useState(null);
 
-  /* ── initial load: tenant cities ── */
+  
   useEffect(() => {
     if (tenantId) {
       dispatch(fetchTenantCities(tenantId));
     }
   }, [tenantId, dispatch]);
 
-  /* ── sync edit form when fare configs load ── */
+  
   useEffect(() => {
     console.log("cityFareConfigs:", cityFareConfigs);
     if (!cityFareConfigs.length) return;
@@ -107,9 +105,7 @@ const CitySetup = () => {
     setEditFares(map);
   }, [cityFareConfigs]);
 
-  /* ────────────────────────────────────────────────────────
-     HANDLERS — City selection (VIEW panel)
-  ──────────────────────────────────────────────────────── */
+  
   const handleCityClick = (city) => {
     setSelectedCity(city);
     setPanel(PANEL.VIEW);
@@ -118,9 +114,7 @@ const CitySetup = () => {
     dispatch(fetchCityFareConfigs({ tenantId, cityId: city.city_id }));
   };
 
-  /* ────────────────────────────────────────────────────────
-     HANDLERS — Add flow: Step 1 (pick country from profile)
-  ──────────────────────────────────────────────────────── */
+  
   const openAddFlow = () => {
     setPanel(PANEL.ADD_STEP1);
     setCountryCode('');
@@ -131,7 +125,7 @@ const CitySetup = () => {
     dispatch(clearAvailableCities());
   };
 
-  /* When admin picks a country tile, fetch available cities */
+  
   const handleSelectCountry = (code) => {
     setCountryCode(code);
     setPickedCity(null);
@@ -144,9 +138,7 @@ const CitySetup = () => {
       .catch((msg) => setAddError(msg || 'Failed to fetch available cities.'));
   };
 
-  /* ────────────────────────────────────────────────────────
-     HANDLERS — Add flow: Step 2 (pick city + set fares)
-  ──────────────────────────────────────────────────────── */
+  
   const handleNewFareChange = (cat, key, val) => {
     setNewFares((prev) => ({ ...prev, [cat]: { ...prev[cat], [key]: val } }));
   };
@@ -195,9 +187,7 @@ const CitySetup = () => {
       .catch((msg) => setAddError(msg || 'Failed to onboard city.'));
   };
 
-  /* ────────────────────────────────────────────────────────
-     HANDLERS — Edit fare config
-  ──────────────────────────────────────────────────────── */
+  
   const handleEditFareChange = (cat, key, val) => {
     setEditFares((prev) => ({ ...prev, [cat]: { ...prev[cat], [key]: val } }));
   };
@@ -220,15 +210,13 @@ const CitySetup = () => {
     })).finally(() => setSavingCat(null));
   };
 
-  /* ────────────────────────────────────────────────────────
-     DERIVED DATA
-  ──────────────────────────────────────────────────────── */
+  
   const filteredCities = cities.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase()) ||
     (c.country_code || '').toLowerCase().includes(search.toLowerCase())
   );
 
-  /* Group cities, but only show countries the tenant owns */
+  
   const grouped = filteredCities.reduce((acc, c) => {
     const key = c.country_code || 'Unknown';
     if (!acc[key]) acc[key] = [];
@@ -238,12 +226,10 @@ const CitySetup = () => {
 
   const isAddFlow = panel === PANEL.ADD_STEP1 || panel === PANEL.ADD_STEP2;
 
-  /* ============================================================
-     RENDER — Right Panel
-  ============================================================ */
+  
   const renderRightPanel = () => {
 
-    /* ── IDLE ── */
+    
     if (panel === PANEL.IDLE) {
       return (
         <div className="cs-idle">
@@ -270,7 +256,7 @@ const CitySetup = () => {
       );
     }
 
-    /* ── ADD STEP 1: Pick country from tenant's countries ── */
+    
     if (panel === PANEL.ADD_STEP1) {
       return (
         <div className="cs-panel-form">
@@ -335,7 +321,7 @@ const CitySetup = () => {
       );
     }
 
-    /* ── ADD STEP 2: Pick city + set fare configs ── */
+    
     if (panel === PANEL.ADD_STEP2) {
       return (
         <div className="cs-panel-form">
@@ -351,7 +337,7 @@ const CitySetup = () => {
             </div>
           </div>
 
-          {/* Active country badge */}
+          
           <div className="cs-country-badge">
             <span className="cs-country-badge-flag">🌍</span>
             <span className="cs-country-badge-code">{countryCode.toUpperCase()}</span>
@@ -364,7 +350,7 @@ const CitySetup = () => {
           </div>
 
           <form onSubmit={handleAddSubmit} className="cs-form">
-            {/* City picker */}
+            
             <div className="cs-field-group">
               <label className="cs-label">
                 Select City <span className="cs-required">*</span>
@@ -392,7 +378,7 @@ const CitySetup = () => {
               )}
             </div>
 
-            {/* Fare configs — only shown when a city is selected */}
+            
             {pickedCity && (
               <div className="cs-field-group">
                 <label className="cs-label">
@@ -459,11 +445,11 @@ const CitySetup = () => {
       );
     }
 
-    /* ── VIEW: selected city fare configs ── */
+    
     if (panel === PANEL.VIEW && selectedCity) {
       return (
         <div className="cs-panel-view">
-          {/* City header */}
+          
           <div className="cs-view-header">
             <div className="cs-view-title-block">
               <h2 className="cs-view-city-name">{selectedCity.name}</h2>
@@ -476,7 +462,7 @@ const CitySetup = () => {
             <span className="cs-badge-active">Active</span>
           </div>
 
-          {/* City info grid */}
+          
           <div className="cs-info-grid">
             <div className="cs-info-card">
               <span className="cs-info-label">City ID</span>
@@ -496,7 +482,7 @@ const CitySetup = () => {
             </div>
           </div>
 
-          {/* Fare config section */}
+          
           <div className="cs-section">
             <div className="cs-section-head">
               <h4>Fare Configurations</h4>
@@ -574,13 +560,11 @@ const CitySetup = () => {
     return null;
   };
 
-  /* ============================================================
-     MAIN RENDER
-  ============================================================ */
+  
   return (
     <div className="cs-root">
 
-      {/* ── LEFT: City Browser ── */}
+      
       <div className="cs-left">
         <div className="cs-left-header">
           <div className="cs-left-top">
@@ -665,7 +649,7 @@ const CitySetup = () => {
         </div>
       </div>
 
-      {/* ── RIGHT: Panel ── */}
+      
       <div className="cs-right">{renderRightPanel()}</div>
     </div>
   );

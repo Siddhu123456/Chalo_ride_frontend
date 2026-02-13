@@ -81,7 +81,7 @@ export const verifyDocument = createAsyncThunk(
         { approve },
         getHeaders()
       );
-      // Re-fetch docs for the entity so the list reflects the new status
+      
       if (entityId) {
         dispatch(fetchEntityDocs({ type, id: entityId }));
       }
@@ -191,10 +191,7 @@ export const fetchVerifiedFleets = createAsyncThunk(
   }
 );
 
-/**
- * Fetch wallet details
- * GET /wallet/me
- */
+
 export const fetchTenantWallet = createAsyncThunk(
   'tenantAdmin/fetchWallet',
   async (_, { rejectWithValue }) => {
@@ -207,10 +204,7 @@ export const fetchTenantWallet = createAsyncThunk(
   }
 );
 
-/**
- * Fetch wallet transactions with pagination
- * GET /wallet/transactions?page=1&limit=20
- */
+
 export const fetchTenantWalletTransactions = createAsyncThunk(
   'tenantAdmin/fetchWalletTransactions',
   async ({ page = 1, limit = 20 }, { rejectWithValue }) => {
@@ -226,14 +220,9 @@ export const fetchTenantWalletTransactions = createAsyncThunk(
   }
 );
 
-/* ─────────────────────────────────────────────────────────────
-   SETTLEMENT THUNKS
-───────────────────────────────────────────────────────────── */
 
-/**
- * Get pending commission for a specific fleet
- * GET /tenant/settlements/fleet/{fleet_id}/pending-commission
- */
+
+
 export const fetchFleetPendingCommission = createAsyncThunk(
   'tenantAdmin/fetchFleetPendingCommission',
   async (fleetId, { rejectWithValue }) => {
@@ -249,10 +238,7 @@ export const fetchFleetPendingCommission = createAsyncThunk(
   }
 );
 
-/**
- * Get unsettled trips for a specific fleet
- * GET /tenant/settlements/fleet/{fleet_id}/unsettled-trips
- */
+
 export const fetchFleetUnsettledTrips = createAsyncThunk(
   'tenantAdmin/fetchFleetUnsettledTrips',
   async (fleetId, { rejectWithValue }) => {
@@ -268,10 +254,7 @@ export const fetchFleetUnsettledTrips = createAsyncThunk(
   }
 );
 
-/**
- * Create a settlement for a fleet
- * POST /tenant/settlements/fleet/{fleet_id}
- */
+
 export const createFleetSettlement = createAsyncThunk(
   'tenantAdmin/createFleetSettlement',
   async (fleetId, { rejectWithValue, dispatch }) => {
@@ -281,7 +264,7 @@ export const createFleetSettlement = createAsyncThunk(
         {},
         getHeaders()
       );
-      // Refresh data after creating settlement
+      
       dispatch(fetchFleetSettlementHistory(fleetId));
       dispatch(fetchFleetPendingCommission(fleetId));
       dispatch(fetchTenantWallet());
@@ -292,10 +275,7 @@ export const createFleetSettlement = createAsyncThunk(
   }
 );
 
-/**
- * Get settlement history for a specific fleet
- * GET /tenant/settlements/fleet/{fleet_id}/history
- */
+
 export const fetchFleetSettlementHistory = createAsyncThunk(
   'tenantAdmin/fetchFleetSettlementHistory',
   async (fleetId, { rejectWithValue }) => {
@@ -311,10 +291,7 @@ export const fetchFleetSettlementHistory = createAsyncThunk(
   }
 );
 
-/**
- * Get settlement details
- * GET /tenant/settlements/{settlement_id}
- */
+
 export const fetchSettlementDetails = createAsyncThunk(
   'tenantAdmin/fetchSettlementDetails',
   async (settlementId, { rejectWithValue }) => {
@@ -330,10 +307,7 @@ export const fetchSettlementDetails = createAsyncThunk(
   }
 );
 
-/**
- * Get trips in a settlement
- * GET /tenant/settlements/{settlement_id}/trips
- */
+
 export const fetchSettlementTrips = createAsyncThunk(
   'tenantAdmin/fetchSettlementTrips',
   async (settlementId, { rejectWithValue }) => {
@@ -349,14 +323,9 @@ export const fetchSettlementTrips = createAsyncThunk(
   }
 );
 
-/* ─────────────────────────────────────────────────────────────
-   SLICE
-───────────────────────────────────────────────────────────── */
 
-/*
-  Action types that manage their own loading/error and must be
-  excluded from the global addMatcher sweep.
-*/
+
+
 const EXCLUDED_FROM_GLOBAL_MATCHER = [
   'tenantAdmin/fetchProfile',
   'tenantAdmin/fetchCityFareConfigs',
@@ -368,26 +337,26 @@ const isExcluded = (actionType) =>
 const tenantAdminSlice = createSlice({
   name: 'tenantAdmin',
   initialState: {
-    /* ── Profile (isolated loading/error) ── */
+    
     profile: null,
     profileLoading: false,
     profileError: null,
 
-    /* ── Verification queues ── */
+    
     pendingFleets: [],
     pendingDrivers: [],
     pendingVehicles: [],
-    activeDocs: [],          // documents for currently-selected entity
+    activeDocs: [],          
 
-    /* ── Verified fleets for financials ── */
-    verifiedFleets: [],      // approved fleets for settlement management
+    
+    verifiedFleets: [],      
 
-    /* ── City / Fare ── */
+    
     cities: [],
     availableCities: [],
     cityFareConfigs: [],
 
-    /* ── Wallet & Financials ── */
+    
     wallet: null,
     transactions: [],
     transactionsPagination: {
@@ -396,7 +365,7 @@ const tenantAdminSlice = createSlice({
       total: 0,
     },
 
-    /* ── Settlements ── */
+    
     selectedFleetId: null,
     fleetPendingCommission: null,
     fleetUnsettledTrips: [],
@@ -404,7 +373,7 @@ const tenantAdminSlice = createSlice({
     selectedSettlementDetails: null,
     selectedSettlementTrips: [],
 
-    /* ── Global UI ── */
+    
     loading: false,
     fareLoading: false,
     error: null,
@@ -427,7 +396,7 @@ const tenantAdminSlice = createSlice({
     },
     setSelectedFleetId(state, action) {
       state.selectedFleetId = action.payload;
-      // Clear previous fleet data
+      
       state.fleetPendingCommission = null;
       state.fleetUnsettledTrips = [];
       state.fleetSettlementHistory = [];
@@ -441,7 +410,7 @@ const tenantAdminSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      /* ── Profile — fully isolated ── */
+      
       .addCase(fetchTenantAdminProfile.pending, (s) => {
         s.profileLoading = true;
         s.profileError = null;
@@ -455,7 +424,7 @@ const tenantAdminSlice = createSlice({
         s.profileError = a.payload ?? 'Failed to load profile';
       })
 
-      /* ── Verification queues ── */
+      
       .addCase(fetchPendingFleets.fulfilled, (s, a) => { s.pendingFleets = a.payload; })
       .addCase(fetchPendingDrivers.fulfilled, (s, a) => { s.pendingDrivers = a.payload; })
       .addCase(fetchPendingVehicles.fulfilled, (s, a) => { s.pendingVehicles = a.payload; })
@@ -473,7 +442,7 @@ const tenantAdminSlice = createSlice({
         }
       })
 
-      /* ── Cities ── */
+      
       .addCase(fetchTenantCities.fulfilled, (s, a) => { s.cities = a.payload; })
       .addCase(fetchAvailableCities.fulfilled, (s, a) => { s.availableCities = a.payload; })
 
@@ -482,7 +451,7 @@ const tenantAdminSlice = createSlice({
         s.successMsg = 'City onboarded successfully with fare configurations.';
       })
 
-      /* ── Fare configs (isolated loading) ── */
+      
       .addCase(fetchCityFareConfigs.pending, (s) => { s.fareLoading = true; })
       .addCase(fetchCityFareConfigs.fulfilled, (s, a) => {
         s.cityFareConfigs = a.payload;
@@ -498,7 +467,7 @@ const tenantAdminSlice = createSlice({
         s.successMsg = 'Fare config updated successfully.';
       })
 
-      /* ── Wallet ── */
+      
       .addCase(fetchTenantWallet.fulfilled, (s, a) => {
         s.wallet = a.payload;
       })
@@ -512,7 +481,7 @@ const tenantAdminSlice = createSlice({
         };
       })
 
-      /* ── Settlements ── */
+      
       .addCase(fetchFleetPendingCommission.fulfilled, (s, a) => {
         s.fleetPendingCommission = a.payload;
       })

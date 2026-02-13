@@ -1,4 +1,4 @@
-/* RiderTripHistory.css */
+
 
 .trip-history-container {
   padding: 30px 40px;
@@ -7,7 +7,7 @@
   margin: 0;
 }
 
-/* Header */
+
 .history-header {
   display: flex;
   justify-content: space-between;
@@ -28,7 +28,7 @@
   font-size: 1rem;
 }
 
-/* Controls */
+
 .history-controls {
   display: flex;
   gap: 16px;
@@ -101,7 +101,7 @@
   background: transparent;
 }
 
-/* Trips List */
+
 .trips-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
@@ -122,7 +122,7 @@
   color: #777;
 }
 
-/* Trip Card */
+
 .trip-card {
   background: white;
   border-radius: 16px;
@@ -138,7 +138,7 @@
   border-color: var(--theme-button-bg);
 }
 
-/* Trip Header */
+
 .trip-header {
   display: flex;
   justify-content: space-between;
@@ -187,7 +187,7 @@
   color: #dc3545;
 }
 
-/* Trip Route */
+
 .trip-route {
   margin-bottom: 20px;
 }
@@ -249,7 +249,7 @@
   margin-bottom: 20px;
 }
 
-/* Trip Details */
+
 .trip-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -314,7 +314,7 @@
   color: var(--theme-button-bg);
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .trip-history-container {
     padding: 24px 30px;

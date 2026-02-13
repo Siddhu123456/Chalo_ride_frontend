@@ -1,4 +1,4 @@
-/* src/features/fleet/FleetDashboard.css */
+
 
 .fd-layout {
   display: flex;
@@ -9,7 +9,7 @@
   overflow: hidden;
 }
 
-/* --- SIDEBAR --- */
+
 .fd-sidebar {
   width: 260px;
   background: #000000;
@@ -40,7 +40,7 @@
   font-weight: 600;
 }
 
-/* User Profile */
+
 .fd-user-profile {
   display: flex;
   align-items: center;
@@ -65,7 +65,7 @@
 .fd-username { color: #fff; font-size: 0.9rem; font-weight: 600; }
 .fd-role { font-size: 0.75rem; color: #666; }
 
-/* Nav Buttons */
+
 .fd-nav {
   display: flex;
   flex-direction: column;
@@ -92,7 +92,7 @@
 .fd-nav-item.logout { margin-top: auto; color: #ef4444; }
 .fd-nav-item.logout:hover { background: #222; }
 
-/* --- MAIN CONTENT --- */
+
 .fd-content {
   flex: 1;
   padding: 40px;
@@ -129,7 +129,7 @@
 
 .fd-btn-primary:hover { background: #333; }
 
-/* --- CARDS GRID --- */
+
 .fd-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -188,7 +188,7 @@
 }
 .fd-btn-text:hover { text-decoration: underline; }
 
-/* Loading State */
+
 .fd-loading {
   display: flex;
   height: 100vh;

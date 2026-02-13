@@ -1,22 +1,22 @@
-/* RiderHome.css - FIXED - Proper map sizing */
+
 
 .rider-home-layout {
     display: flex;
-    height: calc(100vh - 70px); /* Full height minus navbar */
+    height: calc(100vh - 70px); 
     width: 100%;
     background-color: #f8f9fa;
-    overflow: hidden; /* Prevent overflow */
+    overflow: hidden; 
 }
 
 .map-section {
     flex: 1;
     height: 100%;
-    min-height: 0; /* Important: allows flex child to shrink */
+    min-height: 0; 
     position: relative;
     overflow: hidden;
 }
 
-/* Leaflet container sizing */
+
 .map-section .leaflet-container {
     height: 100%;
     width: 100%;
@@ -36,10 +36,10 @@
     border-left: 1px solid #e9ecef;
     overflow-y: auto;
     background-color: #f8f9fa;
-    flex-shrink: 0; /* Don't shrink the control panel */
+    flex-shrink: 0; 
 }
 
-/* Custom scrollbar */
+
 .control-section::-webkit-scrollbar {
     width: 6px;
 }
@@ -57,7 +57,7 @@
     background: var(--theme-button-bg);
 }
 
-/* Responsive */
+
 @media (max-width: 1280px) {
     .control-section {
         width: 380px;
@@ -90,7 +90,7 @@
 
 @media (max-width: 768px) {
     .rider-home-layout {
-        height: calc(100vh - 60px - 70px); /* navbar + bottom nav */
+        height: calc(100vh - 60px - 70px); 
     }
 
     .map-section {

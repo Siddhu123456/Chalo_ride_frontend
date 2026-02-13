@@ -15,7 +15,7 @@
 .driver-dashboard {
     padding: 2rem;
     background-color: var(--theme-light-bg);
-    min-height: calc(100vh - var(--navbar-height)); /* Ensure it fills height below navbar */
+    min-height: calc(100vh - var(--navbar-height)); 
     box-sizing: border-box;
 }
 
@@ -32,9 +32,7 @@
     margin-bottom: 2rem;
 }
 
-/* ==============================
-   General Card Styles
-   ============================== */
+
 
 .card {
     background-color: var(--theme-white);
@@ -59,9 +57,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-/* ==============================
-   Summary Cards
-   ============================== */
+
 
 .summary-cards {
     display: grid;
@@ -96,9 +92,7 @@
     font-weight: 700;
 }
 
-/* ==============================
-   Dashboard Sections Row (Recent Trips & Sidebar)
-   ============================== */
+
 
 .dashboard-sections-row {
     display: flex;
@@ -106,7 +100,7 @@
 }
 
 .recent-trips-card {
-    flex: 2; /* Takes more space */
+    flex: 2; 
 }
 
 .recent-trips-list {
@@ -174,9 +168,7 @@
     text-align: right;
 }
 
-/* ==============================
-   View All Button (Animated)
-   ============================== */
+
 .view-all-btn {
     display: block;
     width: 100%;
@@ -189,7 +181,7 @@
     font-weight: 600;
     cursor: pointer;
     
-    /* Animation Properties */
+    
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -200,21 +192,21 @@
     content: '';
     position: absolute;
     top: 0;
-    left: -100%; /* Start off-screen left */
+    left: -100%; 
     width: 100%;
     height: 100%;
-    background-color: #000; /* Black hover background */
+    background-color: #000; 
     transition: left 0.5s ease;
-    z-index: -1; /* Behind text */
+    z-index: -1; 
 }
 
 .view-all-btn:hover {
-    color: #fff !important; /* Force text white on hover */
+    color: #fff !important; 
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }
 
 .view-all-btn:hover::before {
-    left: 0; /* Slide in */
+    left: 0; 
 }
 
 .view-all-btn:active {
@@ -222,12 +214,10 @@
 }
 
 
-/* ==============================
-   Dashboard Sidebar Cards (Shift & Documents)
-   ============================== */
+
 
 .dashboard-sidebar-cards {
-    flex: 1; /* Takes remaining space */
+    flex: 1; 
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -279,9 +269,7 @@
     margin: 0.2rem 0;
 }
 
-/* ==============================
-   Shift Toggle Button (Animated)
-   ============================== */
+
 .shift-toggle-btn {
     width: 100%;
     padding: 0.8rem 1.5rem;
@@ -292,7 +280,7 @@
     cursor: pointer;
     color: var(--theme-white);
 
-    /* Animation Properties */
+    
     position: relative;
     overflow: hidden;
     z-index: 1;
@@ -332,9 +320,7 @@
     transform: scale(0.98);
 }
 
-/* ==============================
-   Responsive Adjustments
-   ============================== */
+
 
 @media (max-width: 1200px) {
     .dashboard-sections-row {
@@ -401,6 +387,6 @@
         font-size: 1.5rem;
     }
     .summary-cards {
-        grid-template-columns: 1fr 1fr; /* Two columns on very small screens */
+        grid-template-columns: 1fr 1fr; 
     }
 }

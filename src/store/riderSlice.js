@@ -3,9 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/rider";
 
-/* -----------------------------------------
-   Helpers
------------------------------------------- */
+
 const getHeaders = () => {
   const token = localStorage.getItem("token");
   return {
@@ -21,11 +19,9 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
-/* -----------------------------------------
-   ASYNC THUNKS
------------------------------------------- */
 
-//  Detect rider city
+
+
 export const fetchRiderCity = createAsyncThunk(
   "rider/fetchCity",
   async ({ lat, lng }, { rejectWithValue }) => {
@@ -41,7 +37,7 @@ export const fetchRiderCity = createAsyncThunk(
   }
 );
 
-// Rider profile
+
 export const fetchRiderProfile = createAsyncThunk(
   "rider/fetchProfile",
   async (_, { rejectWithValue }) => {
@@ -57,7 +53,7 @@ export const fetchRiderProfile = createAsyncThunk(
   }
 );
 
-//  Rider statistics
+
 export const fetchRiderStatistics = createAsyncThunk(
   "rider/fetchStatistics",
   async (_, { rejectWithValue }) => {
@@ -73,7 +69,7 @@ export const fetchRiderStatistics = createAsyncThunk(
   }
 );
 
-// Rider trip history
+
 export const fetchRiderTripHistory = createAsyncThunk(
   "rider/trips/history",
   async (_, { rejectWithValue }) => {
@@ -91,9 +87,7 @@ export const fetchRiderTripHistory = createAsyncThunk(
   }
 );
 
-/* -----------------------------------------
-   SLICE
------------------------------------------- */
+
 const riderSlice = createSlice({
   name: "rider",
 
@@ -101,12 +95,12 @@ const riderSlice = createSlice({
     city: null,
     profile: null,
     statistics: null,
-    tripHistory: [],     // NEW
+    tripHistory: [],     
 
     loadingCity: false,
     loadingProfile: false,
     loadingStatistics: false,
-    loadingTripHistory: false, // NEW
+    loadingTripHistory: false, 
 
     error: null,
   },
@@ -116,7 +110,7 @@ const riderSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // ───────── City ─────────
+      
       .addCase(fetchRiderCity.pending, (state) => {
         state.loadingCity = true;
       })
@@ -129,7 +123,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ───────── Profile ─────────
+      
       .addCase(fetchRiderProfile.pending, (state) => {
         state.loadingProfile = true;
       })
@@ -142,7 +136,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ───────── Statistics ─────────
+      
       .addCase(fetchRiderStatistics.pending, (state) => {
         state.loadingStatistics = true;
       })
@@ -155,7 +149,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      // ───────── Trip History ─────────
+      
       .addCase(fetchRiderTripHistory.pending, (state) => {
         state.loadingTripHistory = true;
       })

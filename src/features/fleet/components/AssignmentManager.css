@@ -1,7 +1,4 @@
-/* =====================================================
-   ASSIGNMENT MANAGER
-   Production-Ready Styling
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -15,18 +12,14 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   CONTAINER
-   ===================================================== */
+
 .am-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* =====================================================
-   HEADER
-   ===================================================== */
+
 .am-header {
   text-align: center;
   padding: 2rem;
@@ -51,9 +44,7 @@
   font-weight: 400;
 }
 
-/* =====================================================
-   BANNER
-   ===================================================== */
+
 .am-banner {
   padding: 1rem 1.5rem;
   border-radius: 8px;
@@ -108,18 +99,14 @@
   opacity: 1;
 }
 
-/* =====================================================
-   MAIN GRID
-   ===================================================== */
+
 .am-main-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
 }
 
-/* =====================================================
-   CARD BASE
-   ===================================================== */
+
 .am-card {
   background: var(--theme-white);
   border: 1.5px solid var(--theme-border);
@@ -140,9 +127,7 @@
   border-bottom: 2px solid var(--theme-border-yellow);
 }
 
-/* =====================================================
-   SELECTION CARD (LEFT)
-   ===================================================== */
+
 .selection-card {
   min-height: 500px;
 }
@@ -156,7 +141,7 @@
   padding-right: 0.5rem;
 }
 
-/* Custom Scrollbar */
+
 .am-list::-webkit-scrollbar {
   width: 6px;
 }
@@ -175,9 +160,7 @@
   background: var(--theme-button-bg);
 }
 
-/* =====================================================
-   VEHICLE ITEM
-   ===================================================== */
+
 .am-item {
   display: flex;
   justify-content: space-between;
@@ -260,9 +243,7 @@
   transform: translateX(4px);
 }
 
-/* =====================================================
-   EMPTY STATE (LEFT)
-   ===================================================== */
+
 .am-empty-left {
   text-align: center;
   padding: 3rem 1.5rem;
@@ -275,25 +256,19 @@
   font-weight: 500;
 }
 
-/* =====================================================
-   ACTION CARD (RIGHT)
-   ===================================================== */
+
 .action-card {
   min-height: 500px;
 }
 
-/* =====================================================
-   ASSIGNMENT FORM
-   ===================================================== */
+
 .am-assignment-form {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
 }
 
-/* =====================================================
-   CONTEXT BOX
-   ===================================================== */
+
 .am-context-box {
   background: linear-gradient(135deg, #f8f9fa 0%, var(--theme-white) 100%);
   border-left: 3px solid var(--theme-button-bg);
@@ -315,9 +290,7 @@
   color: var(--theme-font);
 }
 
-/* =====================================================
-   FORM FIELD
-   ===================================================== */
+
 .am-field {
   display: flex;
   flex-direction: column;
@@ -367,9 +340,7 @@
   opacity: 0.6;
 }
 
-/* =====================================================
-   ERROR TEXT
-   ===================================================== */
+
 .am-error-text {
   font-size: 0.9rem;
   color: #dc3545;
@@ -381,9 +352,7 @@
   border-radius: 6px;
 }
 
-/* =====================================================
-   SUBMIT BUTTON
-   ===================================================== */
+
 .am-submit-btn {
   padding: 1rem 2rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
@@ -418,9 +387,7 @@
   transform: none;
 }
 
-/* =====================================================
-   PLACEHOLDER STATE
-   ===================================================== */
+
 .am-placeholder-state {
   display: flex;
   flex-direction: column;
@@ -452,9 +419,7 @@
   margin: 0;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 1024px) {
   .am-main-grid {
     grid-template-columns: 1fr;

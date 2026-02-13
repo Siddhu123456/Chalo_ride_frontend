@@ -28,9 +28,7 @@ const Dashboard = () => {
 
   const [coords, setCoords] = useState(null);
 
-  /* =====================================================
-     INITIAL LOAD
-  ===================================================== */
+  
   useEffect(() => {
     dispatch(fetchDriverDashboardSummary());
     dispatch(fetchCurrentShift());
@@ -41,9 +39,7 @@ const Dashboard = () => {
       .catch(() => {});
   }, [dispatch, getCurrentLocation]);
 
-  /* =====================================================
-     LOCATION POLLING (HOOK MUST ALWAYS RUN)
-  ===================================================== */
+  
   usePolling(
     () => {
       if (!shift || !coords || !profile) return;
@@ -57,19 +53,15 @@ const Dashboard = () => {
       );
     },
     15000,
-    !!shift // enabled flag only
+    !!shift 
   );
 
-  /* =====================================================
-     SAFE EARLY RETURN (AFTER ALL HOOKS)
-  ===================================================== */
+  
   if (!dashboardSummary || !profile) {
     return <p className="dashboard-loading">Loading dashboard...</p>;
   }
 
-  /* =====================================================
-     DATA
-  ===================================================== */
+  
   const { today, tenant } = dashboardSummary;
   const isOnline = !!shift;
 
@@ -79,9 +71,7 @@ const Dashboard = () => {
 
   const recentTrips = tripHistory?.list || [];
 
-  /* =====================================================
-     SHIFT TOGGLE
-  ===================================================== */
+  
   const handleShiftToggle = () => {
     if (isOnline) {
       dispatch(endShift({ driver_id: profile.driver_id }));

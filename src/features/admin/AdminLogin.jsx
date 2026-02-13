@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { adminLogin } from '../../store/adminSlice';
 import { useNavigate } from 'react-router-dom';
-import './AdminLogin.css'; // Importing the specific CSS
+import './AdminLogin.css'; 
 
 const AdminLogin = () => {
   const [key, setKey] = useState('');
@@ -19,7 +19,7 @@ const AdminLogin = () => {
 
   return (
     <div className="al-layout">
-      {/* LEFT SIDE: Visual Pane */}
+      
       <div className="al-visual-pane">
         <div className="al-hero-content">
           <h1 className="al-brand">ChaloRide<span className="al-brand-badge">ADMIN</span></h1>
@@ -27,7 +27,7 @@ const AdminLogin = () => {
         </div>
       </div>
 
-      {/* RIGHT SIDE: Form Pane */}
+      
       <div className="al-form-pane">
         <div className="al-content-box">
           <div className="al-header">

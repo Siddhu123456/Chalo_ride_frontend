@@ -22,7 +22,7 @@ const DashboardOverview = ({ onAddVehicle }) => {
 
   return (
     <div className="do-container">
-      {/* STATS */}
+      
       <div className="do-stats-grid">
         {stats.map((stat, i) => (
           <div key={i} className="do-stat-card">
@@ -36,7 +36,7 @@ const DashboardOverview = ({ onAddVehicle }) => {
       </div>
 
       <div className="do-content-grid">
-        {/* PENDING VEHICLES */}
+        
         <div className="do-main-card">
           <div className="do-card-head">
             <h3>Pending Verification</h3>
@@ -68,7 +68,7 @@ const DashboardOverview = ({ onAddVehicle }) => {
           )}
         </div>
 
-        {/* QUICK ACTIONS */}
+        
         <div className="do-side-card">
           <h3>Quick Actions</h3>
           <div className="do-actions">

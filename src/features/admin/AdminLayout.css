@@ -1,4 +1,4 @@
-/* AdminLayout.css - Production Level */
+
 
 :root {
     --theme-white: #fff;
@@ -10,14 +10,14 @@
     --sidebar-width: 260px;
 }
 
-/* Main Layout Wrapper */
+
 .layout-wrapper {
     display: flex;
     min-height: 100vh;
     background: #f8f9fa;
 }
 
-/* SIDEBAR */
+
 .layout-sidebar {
     width: var(--sidebar-width);
     background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
@@ -32,7 +32,7 @@
     z-index: 1000;
 }
 
-/* Brand */
+
 .sidebar-brand {
     padding: 32px 24px;
     font-size: 2rem;
@@ -57,7 +57,7 @@
     box-shadow: 0 2px 8px rgba(254, 204, 24, 0.4);
 }
 
-/* Navigation */
+
 .sidebar-nav {
     flex: 1;
     padding: 24px 0;
@@ -136,7 +136,7 @@
     opacity: 1;
 }
 
-/* Logout Button */
+
 .logout-btn {
     color: rgba(255, 255, 255, 0.7);
     margin-top: 8px;
@@ -151,7 +151,7 @@
     background: linear-gradient(90deg, rgba(255, 107, 107, 0.1) 0%, transparent 100%);
 }
 
-/* Profile Section */
+
 .sidebar-profile {
     padding: 20px 24px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -201,7 +201,7 @@
     letter-spacing: 0.5px;
 }
 
-/* MAIN CONTENT AREA */
+
 .layout-main {
     flex: 1;
     margin-left: var(--sidebar-width);
@@ -210,7 +210,7 @@
     position: relative;
 }
 
-/* Scrollbar Styling */
+
 .sidebar-nav::-webkit-scrollbar {
     width: 6px;
 }
@@ -228,7 +228,7 @@
     background: rgba(254, 204, 24, 0.5);
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
     :root {
         --sidebar-width: 80px;

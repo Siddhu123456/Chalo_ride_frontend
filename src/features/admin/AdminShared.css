@@ -1,7 +1,7 @@
-/* src/features/admin/AdminShared.css */
+
 
 :root {
-  /* Premium Monochrome Palette */
+  
   --rydo-black: #000000;
   --rydo-dark: #111111;
   --rydo-gray: #f4f4f5;
@@ -11,7 +11,7 @@
   --text-muted: #71717a;
 }
 
-/* --- CARDS --- */
+
 .rydo-card {
   background: var(--rydo-white);
   border: 1px solid var(--rydo-border);
@@ -39,7 +39,7 @@
   border-bottom: 1px solid var(--rydo-border);
 }
 
-/* --- FORMS --- */
+
 .rydo-form {
   padding: 24px;
   display: flex;
@@ -85,7 +85,7 @@ input:focus, select:focus {
   box-shadow: 0 0 0 1px var(--rydo-black);
 }
 
-/* --- BUTTONS --- */
+
 .rydo-btn {
   height: 48px;
   border-radius: 6px;
@@ -140,7 +140,7 @@ input:focus, select:focus {
   color: #444;
 }
 
-/* --- ALERTS --- */
+
 .rydo-alert {
   padding: 16px;
   border-radius: 6px;

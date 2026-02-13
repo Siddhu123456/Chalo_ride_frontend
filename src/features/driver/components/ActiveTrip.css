@@ -14,15 +14,13 @@
 .active-trip-page {
     position: relative;
     width: 100%;
-    height: calc(100vh - var(--navbar-height)); /* Fill remaining height below navbar */
-    overflow: hidden; /* Hide any overflow from map or positioned elements */
+    height: calc(100vh - var(--navbar-height)); 
+    overflow: hidden; 
     display: flex;
     flex-direction: column;
 }
 
-/* =========================================
-   Map Container
-   ========================================= */
+
 .active-trip-map-container {
     position: absolute;
     top: 0;
@@ -37,12 +35,10 @@
     height: 100%;
 }
 
-/* =========================================
-   Bottom Action Card
-   ========================================= */
+
 .active-trip-bottom-card {
     position: absolute;
-    bottom: 0; /* Stick to the very bottom */
+    bottom: 0; 
     left: 0;
     width: 100%;
     z-index: 10;
@@ -59,7 +55,7 @@
     box-sizing: border-box;
 }
 
-/* Left Side: Locations */
+
 .card-left-section {
     flex: 1;
     display: flex;
@@ -88,7 +84,7 @@
     margin: 0;
 }
 
-/* Right Side: Actions (OTP / Progress) */
+
 .card-right-section {
     flex: 1;
     display: flex;
@@ -106,9 +102,7 @@
     margin-bottom: 0.5rem;
 }
 
-/* =========================================
-   OTP Inputs
-   ========================================= */
+
 .otp-verification-section {
     display: flex;
     flex-direction: column;
@@ -136,7 +130,7 @@
     text-align: center;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    -moz-appearance: textfield; /* Firefox */
+    -moz-appearance: textfield; 
 }
 
 .otp-input-field::-webkit-inner-spin-button,
@@ -156,9 +150,7 @@
     margin-top: -0.5rem;
 }
 
-/* =========================================
-   Trip Status Sections
-   ========================================= */
+
 .ride-in-progress-section,
 .trip-completed-section {
     width: 100%;
@@ -175,11 +167,9 @@
     margin-bottom: 1.2rem;
 }
 
-/* =========================================
-   Buttons & Animations
-   ========================================= */
 
-/* Generic Button Styling with Sliding Animation */
+
+
 .btn {
     padding: 0.8rem 1.5rem;
     border: none;
@@ -189,64 +179,62 @@
     cursor: pointer;
     min-width: 120px;
     
-    /* Animation Properties */
+    
     position: relative;
     overflow: hidden;
     z-index: 1;
     transition: color 0.5s ease;
-    color: var(--theme-white); /* Default text color */
+    color: var(--theme-white); 
 }
 
-/* The sliding black background element */
+
 .btn::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -100%; /* Start hidden to the left */
+    left: -100%; 
     width: 100%;
     height: 100%;
-    background-color: #000; /* Black hover background */
-    transition: left 0.5s ease; /* Slide speed */
-    z-index: -1; /* Behind the text */
+    background-color: #000; 
+    transition: left 0.5s ease; 
+    z-index: -1; 
 }
 
-/* Hover State */
+
 .btn:hover {
-    color: #fff !important; /* Force text to be white */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add slight shadow */
+    color: #fff !important; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
 }
 
 .btn:hover::before {
-    left: 0; /* Slide in */
+    left: 0; 
 }
 
 .btn:active {
     transform: scale(0.98);
 }
 
-/* Specific Button Colors (Base States) */
+
 
 .verify-otp-btn {
-    background-color: var(--theme-button-bg); /* Yellow */
-    color: var(--theme-button-font); /* Black text initially */
+    background-color: var(--theme-button-bg); 
+    color: var(--theme-button-font); 
 }
 
 .complete-trip-btn {
-    background-color: var(--color-success); /* Green */
+    background-color: var(--color-success); 
     width: 100%;
     max-width: 250px;
 }
 
 .go-to-dashboard-btn {
-    background-color: var(--color-info); /* Blue */
+    background-color: var(--color-info); 
     width: 100%;
     max-width: 250px;
 }
 
 
-/* =========================================
-   Responsive Adjustments
-   ========================================= */
+
 @media (max-width: 992px) {
     .active-trip-bottom-card {
         flex-direction: column;

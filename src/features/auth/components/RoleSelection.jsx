@@ -16,7 +16,7 @@ const RoleSelection = ({ onBack }) => {
     );
 
     if (selectRole.fulfilled.match(result)) {
-      // STORE AUTH DATA
+      
       localStorage.setItem("access_token", result.payload.token);
       localStorage.setItem("role", role);
     }

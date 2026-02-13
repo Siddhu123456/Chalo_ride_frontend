@@ -16,7 +16,7 @@ const DriverPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Load once for entire driver layout
+    
     dispatch(fetchDriverProfile());
     dispatch(fetchDriverDashboardSummary());
   }, [dispatch]);

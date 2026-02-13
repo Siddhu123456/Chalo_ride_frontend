@@ -1,9 +1,4 @@
-/* ==========================================
-   VERIFICATION PORTAL - PRODUCTION STYLES
-   Theme: white / #fecc18 yellow / #3b3e47 font
-   Consistent with TenantDashboard, TenantSidebar,
-   CitySetup design language.
-   ========================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -14,9 +9,7 @@
   --theme-border-yellow: #fecc18;
 }
 
-/* ==========================================
-   CONTAINER  (two-column split layout)
-   ========================================== */
+
 
 .vp-container {
   display: grid;
@@ -30,9 +23,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* ==========================================
-   LEFT LIST PANE
-   ========================================== */
+
 
 .vp-list-pane {
   background: var(--theme-white);
@@ -42,7 +33,7 @@
   overflow: hidden;
 }
 
-/* Pane header */
+
 .vp-pane-header {
   padding: 24px 28px;
   font-size: 20px;
@@ -66,7 +57,7 @@
   border-radius: 2px 2px 0 0;
 }
 
-/* Scrollable list */
+
 .vp-scroll {
   flex: 1;
   overflow-y: auto;
@@ -79,7 +70,7 @@
 .vp-scroll::-webkit-scrollbar-thumb  { background: var(--theme-border); border-radius: 4px; border: 2px solid #f1f2f4; }
 .vp-scroll::-webkit-scrollbar-thumb:hover { background: #8a8b8f; }
 
-/* ── Item Cards ── */
+
 
 .vp-item-card {
   background: var(--theme-white);
@@ -141,7 +132,7 @@
   text-overflow: ellipsis;
 }
 
-/* Empty state */
+
 .vp-empty {
   text-align: center;
   padding: 60px 20px;
@@ -150,9 +141,7 @@
   font-weight: 600;
 }
 
-/* ==========================================
-   RIGHT INSPECTION PANE
-   ========================================== */
+
 
 .vp-inspect-pane {
   background: var(--theme-white);
@@ -166,10 +155,10 @@
 .vp-inspect-pane::-webkit-scrollbar-track  { background: #f8f9fa; }
 .vp-inspect-pane::-webkit-scrollbar-thumb  { background: var(--theme-border); border-radius: 5px; border: 2px solid #f8f9fa; }
 
-/* ── Document view wrapper ── */
+
 .vp-docs-view { max-width: 1200px; }
 
-/* Inspect header */
+
 .vp-inspect-header {
   margin-bottom: 32px;
   padding-bottom: 22px;
@@ -191,14 +180,14 @@
   line-height: 1.6;
 }
 
-/* ── Documents Grid ── */
+
 .vp-docs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
 }
 
-/* ── Document Card ── */
+
 .vp-doc-card {
   background: var(--theme-white);
   border: 2px solid var(--theme-border);
@@ -231,7 +220,7 @@
   transform: translateY(-4px);
 }
 
-/* Document type row */
+
 .vp-doc-type {
   display: flex;
   justify-content: space-between;
@@ -248,7 +237,7 @@
   word-break: break-word;
 }
 
-/* ── Status Tags ── */
+
 
 .tag {
   padding: 4px 12px;
@@ -285,7 +274,7 @@
   border: 1.5px solid #bee5eb;
 }
 
-/* ── View Document Button ── */
+
 .vp-view-btn {
   width: 100%;
   padding: 12px 18px;
@@ -331,7 +320,7 @@
 
 .vp-view-btn:active { transform: translateY(0); }
 
-/* ── Action Buttons (Approve / Reject) ── */
+
 .vp-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -361,7 +350,7 @@
   transform: none !important;
 }
 
-/* Approve */
+
 .vp-approve {
   background: var(--theme-button-bg);
   color: var(--theme-button-font);
@@ -378,7 +367,7 @@
 
 .vp-approve:active:not(:disabled) { transform: translateY(0); }
 
-/* Reject */
+
 .vp-reject {
   background: #ffffff;
   color: #dc3545;
@@ -396,9 +385,7 @@
 
 .vp-reject:active:not(:disabled) { transform: translateY(0); }
 
-/* ==========================================
-   PLACEHOLDER / EMPTY STATES
-   ========================================== */
+
 
 .vp-placeholder {
   display: flex;
@@ -441,9 +428,7 @@
   max-width: 380px;
 }
 
-/* ==========================================
-   RESPONSIVE
-   ========================================== */
+
 
 @media (max-width: 1200px) {
   .vp-docs-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
@@ -481,9 +466,7 @@
   .vp-placeholder-icon     { font-size: 52px; }
 }
 
-/* ==========================================
-   PRINT
-   ========================================== */
+
 
 @media print {
   .vp-container { display: block; }
@@ -492,9 +475,7 @@
   .vp-actions { display: none; }
 }
 
-/* ==========================================
-   ACCESSIBILITY
-   ========================================== */
+
 
 .vp-item-card:focus-visible,
 .vp-view-btn:focus-visible,

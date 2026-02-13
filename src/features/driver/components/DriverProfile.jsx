@@ -8,9 +8,7 @@ const DriverProfile = () => {
 
   const { profile } = useSelector((state) => state.driver);
 
-  /* =====================================================
-     FETCH PROFILE
-  ===================================================== */
+  
   useEffect(() => {
     if (!profile) {
       dispatch(fetchDriverProfile());
@@ -36,7 +34,7 @@ const DriverProfile = () => {
 
       <div className="profile-card card">
         <div className="profile-header-section">
-          {/* Static placeholder image */}
+          
           <img
             src="https://images.unsplash.com/photo-1535713875002-d1d0cfce72b.jpeg"
             alt={profile.full_name}

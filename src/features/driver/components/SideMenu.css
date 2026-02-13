@@ -5,8 +5,8 @@
     --theme-button-bg: #fecc18;
     --theme-button-font: #000000;
     --theme-border-yellow: #fecc18;
-    --color-attention: #ff5722; /* Retained in root for consistency if needed elsewhere */
-    --color-danger: #dc3545; /* For logout button */
+    --color-attention: #ff5722; 
+    --color-danger: #dc3545; 
 }
 
 
@@ -131,14 +131,14 @@
   opacity: 0;
 }
 
-/* Specific styling for the logout button */
+
 .menu-item.logout-btn {
   margin-top: auto;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   color: var(--color-danger);
   font-weight: 600;
-  background: none; /* Ensure it doesn't get default button background */
-  text-align: left; /* Align text with other menu items */
+  background: none; 
+  text-align: left; 
   width: 99%;
 }
 
@@ -157,7 +157,7 @@
 }
 
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .side-menu {
     width: 65px;
@@ -212,6 +212,6 @@
 
   .menu-item.logout-btn {
     border-top: none;
-    background: none; /* Ensure no default button background */
+    background: none; 
   }
 }

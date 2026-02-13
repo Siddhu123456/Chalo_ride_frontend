@@ -23,7 +23,7 @@ const DocUploadModule = ({ fleetId, docStatus, dispatch, uploadAction }) => {
   const getDocEntry = (key) =>
     uploadedDocs.find((d) => d.document_type === key);
 
-  // API returns `verification_status`, not `status`
+  
   const getDocStatus = (key) => getDocEntry(key)?.verification_status;
 
   const canUpload = (key) => {
@@ -41,7 +41,7 @@ const DocUploadModule = ({ fleetId, docStatus, dispatch, uploadAction }) => {
 
   const progress = useMemo(() => {
     if (DOC_TYPES.length === 0) return 0;
-    // use verification_status here too
+    
     const approvedCount = uploadedDocs.filter(
       (d) => d.verification_status === "APPROVED"
     ).length;
@@ -67,7 +67,7 @@ const DocUploadModule = ({ fleetId, docStatus, dispatch, uploadAction }) => {
     setActiveDoc(null);
     setFile(null);
 
-    // Show success toast unless the action was rejected
+    
     if (!result?.error) {
       showToast(uploadedLabel);
     }
@@ -148,7 +148,7 @@ const DocUploadModule = ({ fleetId, docStatus, dispatch, uploadAction }) => {
           </div>
         </div>
       )}
-      {/* ── Success Toast ── */}
+      
       {toast && (
         <div className="du-toast">
           <span className="du-toast-icon">✓</span>

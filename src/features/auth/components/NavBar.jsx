@@ -14,7 +14,7 @@ const NavBar = () => {
     <nav className="navbar">
       <img src={logo} alt="App Logo" className="navbar-logo" />
 
-      {/* Platform Admin Login */}
+      
       <div className="navbar-actions">
         <button
           className="platform-admin-btn"

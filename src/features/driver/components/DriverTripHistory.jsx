@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import { fetchDriverTrips } from "../../../store/driverSlice";
-import "./DriverTripHistory.css"; // KEEP SAME CSS
+import "./DriverTripHistory.css"; 
 
 const DriverTripHistory = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,7 +33,7 @@ const DriverTripHistory = () => {
 
   const trips = tripHistory.list || [];
 
-  /* ---------------- HELPERS ---------------- */
+  
 
   const getVehicleIcon = (category = "") => {
     switch (category.toLowerCase()) {
@@ -76,7 +76,7 @@ const DriverTripHistory = () => {
     });
   };
 
-  /* ---------------- FILTERING ---------------- */
+  
 
   const filteredTrips = trips.filter((trip) => {
     const matchesSearch =
@@ -90,11 +90,11 @@ const DriverTripHistory = () => {
     return matchesSearch && matchesFilter;
   });
 
-  /* ---------------- RENDER ---------------- */
+  
 
   return (
     <div className="trip-history-container">
-      {/* Header */}
+      
       <div className="history-header">
         <div>
           <h1 className="history-page-title">Trip History</h1>
@@ -102,7 +102,7 @@ const DriverTripHistory = () => {
         </div>
       </div>
 
-      {/* Filters and Search */}
+      
       <div className="history-controls">
         <div className="search-box">
           <Search size={20} />
@@ -127,7 +127,7 @@ const DriverTripHistory = () => {
         </div>
       </div>
 
-      {/* Trip List */}
+      
       <div className="trips-list">
         {loading ? (
           <div className="no-trips">
@@ -144,7 +144,7 @@ const DriverTripHistory = () => {
         ) : (
           filteredTrips.map((trip) => (
             <div key={trip.trip_id} className="trip-card">
-              {/* Trip Header */}
+              
               <div className="trip-header">
                 <div className="trip-meta">
                   <span className="trip-id">#{trip.trip_id}</span>
@@ -152,7 +152,7 @@ const DriverTripHistory = () => {
                 {getStatusBadge(trip.status)}
               </div>
 
-              {/* Trip Route */}
+              
               <div className="trip-route">
                 <div className="route-line-wrapper">
                   <div className="route-point pickup">
@@ -179,7 +179,7 @@ const DriverTripHistory = () => {
                 </div>
               </div>
 
-              {/* Trip Details */}
+              
               <div className="trip-details">
                 <div className="detail-item">
                   <div className="detail-icon-wrapper vehicle">

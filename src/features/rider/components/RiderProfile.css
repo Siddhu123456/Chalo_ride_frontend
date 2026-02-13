@@ -1,4 +1,4 @@
-/* RiderProfile.css */
+
 
 .rider-profile-container {
   padding: 30px 40px;
@@ -7,7 +7,7 @@
   margin: 0;
 }
 
-/* Header */
+
 .profile-header {
   display: flex;
   justify-content: space-between;
@@ -22,14 +22,14 @@
   margin: 0;
 }
 
-/* Content */
+
 .profile-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
 }
 
-/* Make avatar section span full width on top */
+
 .profile-avatar-section {
   grid-column: 1 / -1;
   background: white;
@@ -88,7 +88,7 @@
   color: #dc3545;
 }
 
-/* Details Section */
+
 .profile-details-section {
   background: white;
   border-radius: 16px;
@@ -150,7 +150,7 @@
   color: var(--theme-font);
 }
 
-/* Stats Section */
+
 .profile-stats-section {
   background: white;
   border-radius: 16px;
@@ -194,7 +194,7 @@
   letter-spacing: 0.5px;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
   .rider-profile-container {
     padding: 24px 30px;

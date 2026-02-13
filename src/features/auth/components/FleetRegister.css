@@ -24,7 +24,7 @@
     margin-bottom: 2rem;
 }
 
-/* Ensure select and inputs inherit existing form styles when inside registration-form */
+
 .registration-form select,
 .registration-form input {
 	width: 100%;

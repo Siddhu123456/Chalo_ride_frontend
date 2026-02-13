@@ -29,9 +29,7 @@ const AddVehicleModal = ({ fleetId, onClose }) => {
     year_of_manufacture: new Date().getFullYear(),
   });
 
-  /**
-   * ✅ When vehicle is created -> open VehicleDocsModal automatically
-   */
+  
   useEffect(() => {
     if (vehicleStep === 2 && currentVehicle?.vehicle_id) {
       dispatch(setSelectedVehicleForDocs(currentVehicle));
@@ -73,7 +71,7 @@ const AddVehicleModal = ({ fleetId, onClose }) => {
         <div className="modal-body">
           {error && <div className="auth-alert error">{String(error)}</div>}
 
-          {/* ✅ STEP 1: Create Vehicle */}
+          
           {vehicleStep === 1 && (
             <form onSubmit={handleCreate} className="registration-form">
               <div className="form-row">
@@ -149,7 +147,7 @@ const AddVehicleModal = ({ fleetId, onClose }) => {
             </form>
           )}
 
-          {/* ✅ STEP 2: Show docs guidance text (upload UI handled by VehicleDocsModal) */}
+          
           {vehicleStep === 2 && (
             <div className="docs-list">
               <p>
@@ -174,7 +172,7 @@ const AddVehicleModal = ({ fleetId, onClose }) => {
         </div>
       </div>
 
-      {/* ✅ Reuse same docs upload modal for Add Vehicle + Pending Vehicles */}
+      
       {selectedVehicleForDocs && <VehicleDocsModal />}
     </div>
   );

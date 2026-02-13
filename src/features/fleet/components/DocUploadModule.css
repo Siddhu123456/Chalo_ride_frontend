@@ -270,7 +270,7 @@
 
 
 .du-modal input[type="file"] {
-  /* Full width, no padding override that hides the filename text */
+  
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -282,10 +282,10 @@
   font-family: inherit;
   font-size: 0.9rem;
   color: var(--theme-font);
-  /* No padding here — padding collapses the filename area in most browsers */
+  
 }
 
-/* The "Choose File" / "Browse" button rendered by the browser */
+
 .du-modal input[type="file"]::file-selector-button {
   padding: 0.85rem 1.25rem;
   margin-right: 1rem;
@@ -437,7 +437,7 @@
 }
 
 
-/* PENDING — amber/yellow to match theme */
+
 .du-status-tag.pending {
   background: rgba(254, 204, 24, 0.15);
   color: #7a5f00;
@@ -445,7 +445,7 @@
   box-shadow: 0 2px 6px rgba(254, 204, 24, 0.2);
 }
 
-/* REJECTED — red */
+
 .du-status-tag.rejected {
   background: rgba(239, 68, 68, 0.1);
   color: #991b1b;
@@ -453,7 +453,7 @@
   box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15);
 }
 
-/* APPROVED — green (already the default, kept explicit) */
+
 .du-status-tag.approved {
   background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
   color: #155724;

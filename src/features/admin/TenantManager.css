@@ -1,4 +1,4 @@
-/* TenantManager.css - Matches Simplified JSX */
+
 
 :root {
     --theme-white: #fff;
@@ -8,7 +8,7 @@
     --theme-button-font: #000000;
 }
 
-/* Container */
+
 .tm-container {
     padding: 40px;
     width: 100%;
@@ -16,7 +16,7 @@
     background: #f8f9fa;
 }
 
-/* Notifications */
+
 .tm-notification {
     padding: 16px 24px;
     border-radius: 10px;
@@ -42,7 +42,7 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Header */
+
 .tm-header {
     margin-bottom: 32px;
 }
@@ -60,14 +60,14 @@
     margin: 0;
 }
 
-/* Dashboard Grid */
+
 .tm-dashboard-layout {
     display: grid;
     grid-template-columns: 480px 1fr;
     gap: 28px;
 }
 
-/* Cards */
+
 .tm-card {
     background: white;
     border-radius: 16px;
@@ -89,7 +89,7 @@
     border-bottom: 2px solid #f0f0f0;
 }
 
-/* Forms */
+
 .tm-card form {
     display: flex;
     flex-direction: column;
@@ -155,7 +155,7 @@
     cursor: not-allowed;
 }
 
-/* Tables */
+
 .tm-card table {
     width: 100%;
     border-collapse: collapse;
@@ -195,7 +195,7 @@
     background: rgba(254, 204, 24, 0.1);
 }
 
-/* Detail View - Back Button */
+
 .tm-container > button {
     background: none;
     border: none;
@@ -213,7 +213,7 @@
     background: rgba(254, 204, 24, 0.1);
 }
 
-/* Detail View - Tenant Name */
+
 .tm-container > h2 {
     font-size: 2.2rem;
     font-weight: 800;
@@ -221,7 +221,7 @@
     margin: 0 0 32px 0;
 }
 
-/* Detail Sections */
+
 .tm-container section {
     background: white;
     border-radius: 16px;
@@ -298,7 +298,7 @@
     box-shadow: 0 4px 12px rgba(254, 204, 24, 0.3);
 }
 
-/* Lists */
+
 .tm-container section ul {
     list-style: none;
     padding: 0;
@@ -331,7 +331,7 @@
     background: rgba(220, 53, 69, 0.2);
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
     .tm-container { padding: 30px; }
     .tm-dashboard-layout { grid-template-columns: 1fr; }

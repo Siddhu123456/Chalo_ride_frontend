@@ -16,12 +16,12 @@ const store = configureStore({
     admin: adminReducer, 
     fleet: fleetReducer,
     driver: driverReducer,
-    tenantAdmin: tenantAdminReducer, // tenant dashboard, tenant users
+    tenantAdmin: tenantAdminReducer, 
 
-    rider: riderReducer,     // navbar, profile, stats
-    fare: fareReducer,       // fare discovery
-    trip: tripReducer,       // booking, otp, tracking
-    location: locationReducer // pickup / drop (UI)
+    rider: riderReducer,     
+    fare: fareReducer,       
+    trip: tripReducer,       
+    location: locationReducer 
   },
 });
 

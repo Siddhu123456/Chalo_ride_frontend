@@ -18,8 +18,8 @@ html, body, #root {
     --theme-button-bg: #fecc18;
     --theme-button-font: #000000;
     --theme-border-yellow: #fecc18;
-     --side-menu-width:21%; /* Define side menu width here */
-    --navbar-height: 4.375rem; /* 70px converted to rem */
+     --side-menu-width:21%; 
+    --navbar-height: 4.375rem; 
     --theme-white: #fff;
     --theme-border: #a1a2a6;
     --theme-font: #3b3e47;

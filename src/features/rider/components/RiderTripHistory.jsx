@@ -33,7 +33,7 @@ const RiderTripHistory = () => {
 
   const trips = tripHistory;
 
-  /* ---------------- HELPERS ---------------- */
+  
 
   const getVehicleIcon = (category = "") => {
     switch (category.toLowerCase()) {
@@ -76,7 +76,7 @@ const RiderTripHistory = () => {
     });
   };
 
-  /* ---------------- FILTERING ---------------- */
+  
 
   const filteredTrips = trips.filter((trip) => {
     const matchesSearch =
@@ -91,11 +91,11 @@ const RiderTripHistory = () => {
     return matchesSearch && matchesFilter;
   });
 
-  /* ---------------- RENDER ---------------- */
+  
 
   return (
     <div className="trip-history-container">
-      {/* Header */}
+      
       <div className="history-header">
         <div>
           <h1 className="history-page-title">Trip History</h1>
@@ -103,7 +103,7 @@ const RiderTripHistory = () => {
         </div>
       </div>
 
-      {/* Filters and Search */}
+      
       <div className="history-controls">
         <div className="search-box">
           <Search size={20} />
@@ -128,7 +128,7 @@ const RiderTripHistory = () => {
         </div>
       </div>
 
-      {/* Trip List */}
+      
       <div className="trips-list">
         {loadingTripHistory ? (
           <div className="no-trips">
@@ -145,7 +145,7 @@ const RiderTripHistory = () => {
         ) : (
           filteredTrips.map((trip) => (
             <div key={trip.trip_id} className="trip-card">
-              {/* Trip Header */}
+              
               <div className="trip-header">
                 <div className="trip-meta">
                   <span className="trip-id">#{trip.trip_id}</span>
@@ -154,7 +154,7 @@ const RiderTripHistory = () => {
                 {getStatusBadge(trip.status)}
               </div>
 
-              {/* Trip Route */}
+              
               <div className="trip-route">
                 <div className="route-line-wrapper">
                   <div className="route-point pickup">
@@ -181,7 +181,7 @@ const RiderTripHistory = () => {
                 </div>
               </div>
 
-              {/* Trip Details */}
+              
               <div className="trip-details">
                 <div className="detail-item">
                   <div className="detail-icon-wrapper vehicle">

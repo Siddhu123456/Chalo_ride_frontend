@@ -1,6 +1,6 @@
-/* RiderPage.css - FIXED - Proper outlet space */
 
-/* Main Wrapper */
+
+
 .rider-layout {
     display: flex;
     min-height: 100vh;
@@ -8,7 +8,7 @@
     position: relative;
 }
 
-/* Side Menu Positioning */
+
 .side-menu-rider {
     display: flex;
     flex-direction: column;
@@ -26,7 +26,7 @@
     z-index: 1000;
 }
 
-/* Main Content Wrapper */
+
 .rider-main {
     flex: 1;
     display: flex;
@@ -36,7 +36,7 @@
     min-height: 100vh;
 }
 
-/* Navbar */
+
 .rider-navbar {
     display: flex;
     justify-content: space-between;
@@ -51,7 +51,7 @@
     z-index: 999;
 }
 
-/* Content Area - THIS IS KEY FOR PROPER OUTLET RENDERING */
+
 .rider-content-area {
     flex: 1;
     display: flex;
@@ -59,7 +59,7 @@
     overflow: hidden;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
     .side-menu {
         width: 65px;

@@ -70,7 +70,7 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
       <nav className="ts-nav">
         {MENU_ITEMS.map((item) => (
           <React.Fragment key={item.id}>
-            {/* Render section label only when defined on this item */}
+            
             {item.sectionLabel && (
               <div className="ts-nav-label">{item.sectionLabel}</div>
             )}
@@ -88,7 +88,7 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
         ))}
       </nav>
 
-      {/* ── Logout ── */}
+      
       <button className="ts-logout" onClick={handleLogout}>
         <span className="ts-logout-icon">⏏</span>
         Sign Out

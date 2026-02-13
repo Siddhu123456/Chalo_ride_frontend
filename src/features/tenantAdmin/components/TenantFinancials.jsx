@@ -20,7 +20,7 @@ const TenantFinancials = () => {
     wallet,
     transactions,
     transactionsPagination,
-    verifiedFleets,  // Using verifiedFleets from API
+    verifiedFleets,  
     selectedFleetId,
     fleetPendingCommission,
     fleetUnsettledTrips,
@@ -33,21 +33,21 @@ const TenantFinancials = () => {
   const [txPage, setTxPage] = useState(1);
   const [viewingTrips, setViewingTrips] = useState(null);
 
-  // Fetch wallet and verified fleets on mount
+  
   useEffect(() => {
     console.log('TenantFinancials: Fetching wallet and verified fleets');
     dispatch(fetchTenantWallet());
     dispatch(fetchVerifiedFleets());
   }, [dispatch]);
 
-  // Fetch transactions when wallet is available or page changes
+  
   useEffect(() => {
     if (!wallet) return;
     console.log('TenantFinancials: Fetching transactions - page:', txPage);
     dispatch(fetchTenantWalletTransactions({ page: txPage, limit: 20 }));
   }, [wallet, txPage, dispatch]);
 
-  // Fetch settlement data when a fleet is selected and on settlements tab
+  
   useEffect(() => {
     if (selectedFleetId && activeTab === 'SETTLEMENTS') {
       console.log('TenantFinancials: Fetching settlement data for fleet:', selectedFleetId);
@@ -133,7 +133,7 @@ const TenantFinancials = () => {
 
   return (
     <div className="tfin-container">
-      {/* Header */}
+      
       <div className="tfin-header">
         <div>
           <h1 className="tfin-title">Financial Management</h1>
@@ -141,7 +141,7 @@ const TenantFinancials = () => {
         </div>
       </div>
 
-      {/* Wallet Balance Card */}
+      
       <div className="tfin-balance-card">
         <div className="tfin-balance-content">
           <span className="tfin-balance-label">Tenant Wallet Balance</span>
@@ -150,7 +150,7 @@ const TenantFinancials = () => {
         </div>
       </div>
 
-      {/* Tab Navigation */}
+      
       <div className="tfin-tabs">
         {['WALLET', 'SETTLEMENTS'].map((tab) => (
           <button
@@ -165,9 +165,9 @@ const TenantFinancials = () => {
         ))}
       </div>
 
-      {/* Tab Content */}
+      
       <div className="tfin-content">
-        {/* WALLET TAB */}
+        
         {activeTab === 'WALLET' && (
           <div className="tfin-section">
             <h2 className="tfin-section-title">Transaction History</h2>
@@ -213,7 +213,7 @@ const TenantFinancials = () => {
                   </table>
                 </div>
 
-                {/* Pagination */}
+                
                 {totalPages > 1 && (
                   <div className="tfin-pagination">
                     <button
@@ -240,10 +240,10 @@ const TenantFinancials = () => {
           </div>
         )}
 
-        {/* SETTLEMENTS TAB */}
+        
         {activeTab === 'SETTLEMENTS' && (
           <div className="tfin-section">
-            {/* Fleet Selector */}
+            
             <div className="tfin-fleet-selector">
               <h3 className="tfin-selector-label">Select Fleet</h3>
               {!verifiedFleets || verifiedFleets.length === 0 ? (
@@ -278,10 +278,10 @@ const TenantFinancials = () => {
               )}
             </div>
 
-            {/* Fleet Settlement Management */}
+            
             {selectedFleetId && (
               <>
-                {/* Pending Commission Card */}
+                
                 {fleetPendingCommission && (
                   <div className="tfin-commission-card">
                     <div className="tfin-commission-header">
@@ -313,7 +313,7 @@ const TenantFinancials = () => {
                   </div>
                 )}
 
-                {/* Unsettled Trips Table */}
+                
                 {fleetUnsettledTrips && fleetUnsettledTrips.length > 0 && (
                   <div className="tfin-trips-section">
                     <h3 className="tfin-section-subtitle">Unsettled Trips</h3>
@@ -346,7 +346,7 @@ const TenantFinancials = () => {
                   </div>
                 )}
 
-                {/* Settlement History */}
+                
                 <div className="tfin-history-section">
                   <h3 className="tfin-section-subtitle">Settlement History</h3>
                   {loading && (!fleetSettlementHistory || fleetSettlementHistory.length === 0) ? (
@@ -408,7 +408,7 @@ const TenantFinancials = () => {
         )}
       </div>
 
-      {/* Trips Modal */}
+      
       {viewingTrips && (
         <div className="tfin-modal-overlay" onClick={closeTripsModal}>
           <div className="tfin-modal" onClick={(e) => e.stopPropagation()}>

@@ -18,7 +18,7 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logout());        // optional but recommended
+    dispatch(logout());        
     localStorage.clear();
 
     navigate("/auth", { replace: true });

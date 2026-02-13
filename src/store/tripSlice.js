@@ -3,9 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/trips";
 
-/* -----------------------------------------
-   Helpers
------------------------------------------- */
+
 const getHeaders = () => {
   const token = localStorage.getItem("token");
   return {
@@ -22,9 +20,7 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
-/* -----------------------------------------
-   ASYNC
------------------------------------------- */
+
 export const requestTrip = createAsyncThunk(
   "trip/request",
   async (payload, { rejectWithValue }) => {
@@ -87,7 +83,7 @@ export const cancelTrip = createAsyncThunk(
   }
 );
 
-//slice
+
 const tripSlice = createSlice({
   name: "trip",
   initialState: {
@@ -121,7 +117,7 @@ const tripSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      // Request
+      
       .addCase(requestTrip.pending, (state) => {
         state.requesting = true;
         state.error = null;
@@ -137,17 +133,17 @@ const tripSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Status
+      
       .addCase(fetchTripStatus.fulfilled, (state, action) => {
         state.status = action.payload.status;
       })
 
-      // OTP + Driver
+      
       .addCase(fetchTripOtp.fulfilled, (state, action) => {
         state.otp = action.payload;
       })
 
-      // Cancel
+      
       .addCase(cancelTrip.pending, (state) => {
         state.cancelling = true;
       })

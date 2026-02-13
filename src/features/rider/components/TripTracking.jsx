@@ -40,7 +40,7 @@ const TripTracking = ({ onNewRide }) => {
 
   useEffect(() => {
     if (status === "COMPLETED") {
-      // Small delay so user sees completion UI
+      
       const timer = setTimeout(() => {
         dispatch(resetTripState());
         dispatch(resetFareState());

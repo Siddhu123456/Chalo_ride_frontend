@@ -38,8 +38,8 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    max-width: 800px; /* Constrain width for better readability */
-    margin: 0 auto; /* Center the card */
+    max-width: 800px; 
+    margin: 0 auto; 
 }
 
 .profile-card:hover {
@@ -97,7 +97,7 @@
 
 .status-pending {
     background-color: var(--color-warning);
-    color: var(--theme-font); /* Darker text for warning */
+    color: var(--theme-font); 
 }
 
 .status-rejected {
@@ -130,13 +130,13 @@
 }
 
 .star-rating {
-    color: #ffc107; /* Yellow for stars */
+    color: #ffc107; 
 }
 
 .profile-actions {
     display: flex;
     gap: 1rem;
-    justify-content: flex-end; /* Align buttons to the right */
+    justify-content: flex-end; 
 }
 
 .btn {
@@ -162,7 +162,7 @@
 }
 
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .profile-card {
         padding: 1.5rem;

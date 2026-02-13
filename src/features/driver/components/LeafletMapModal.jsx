@@ -11,7 +11,7 @@ import {
 import "leaflet/dist/leaflet.css";
 import "./LeafletMapModal.css";
 
-/* Fix Leaflet marker icons */
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -33,12 +33,10 @@ const LeafletMapModal = ({ offer, onClose }) => {
     (pickupCoords[1] + dropCoords[1]) / 2
   ];
 
-  /* =====================================================
-     ACCEPT FLOW
-  ===================================================== */
+  
   const handleAccept = async () => {
     try {
-      // 1. Accept Offer
+      
       const res = await dispatch(
         respondOffer({
           attemptId: offer.attempt_id,
@@ -46,10 +44,10 @@ const LeafletMapModal = ({ offer, onClose }) => {
         })
       ).unwrap();
 
-      // 2. Extract Trip ID (Handle different potential response structures)
+      
       const tripId = res?.data?.trip?.trip_id;
 
-      // 3. Generate OTP immediately
+      
       if (tripId) {
         console.log("Trip created with ID:", tripId, "- Requesting OTP...");
         await dispatch(generateOtp(tripId)).unwrap();
@@ -57,7 +55,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
         console.warn("Trip ID not found in acceptance response. OTP generation skipped.");
       }
 
-      // 4. Close Modal
+      
       onClose();
     } catch (err) {
       console.error("Failed to accept offer:", err);

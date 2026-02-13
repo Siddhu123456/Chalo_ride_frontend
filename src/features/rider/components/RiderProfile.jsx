@@ -38,7 +38,7 @@ const RiderProfile = () => {
       </div>
 
       <div className="profile-content">
-        {/* Profile Avatar Section */}
+        
         <div className="profile-avatar-section">
           <div className="avatar-circle">
             <User size={48} />
@@ -53,7 +53,7 @@ const RiderProfile = () => {
           </div>
         </div>
 
-        {/* Profile Details Section */}
+        
         <div className="profile-details-section">
           <h3 className="section-title">Personal Information</h3>
 
@@ -116,7 +116,7 @@ const RiderProfile = () => {
           </div>
         </div>
 
-        {/* Statistics Section */}
+        
         <div className="profile-stats-section">
           <h3 className="section-title">Ride Statistics</h3>
           <div className="stats-grid">
@@ -134,17 +134,7 @@ const RiderProfile = () => {
               <div className="stat-label">Total Spent</div>
             </div>
 
-            {/* <div className="stat-card">
-              <div className="stat-value">—</div>
-              <div className="stat-label">Avg Rating</div>
-            </div>
-
-            <div className="stat-card">
-              <div className="stat-value">
-                {statistics.distance_traveled_km} km
-              </div>
-              <div className="stat-label">Distance Traveled</div>
-            </div> */}
+            
           </div>
         </div>
       </div>

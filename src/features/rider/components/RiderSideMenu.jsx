@@ -13,7 +13,7 @@ const RiderSideMenu = () => {
   const roles = useSelector((state) => state.auth.roles);
 
   const handleLogout = () => {
-    dispatch(logout());        // optional but recommended
+    dispatch(logout());        
     localStorage.clear();
 
     navigate("/auth", { replace: true });

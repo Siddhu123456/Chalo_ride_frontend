@@ -8,8 +8,8 @@ import {
 } from "../../../store/fleetSlice";
 import "./AssignmentManager.css";
 
-/* ===================== HELPERS ===================== */
-// Convert "HH:mm" → ISO TIMESTAMPTZ for today
+
+
 const timeToTodayISO = (timeHHmm) => {
   const [hours, minutes] = timeHHmm.split(":").map(Number);
   const now = new Date();
@@ -17,7 +17,7 @@ const timeToTodayISO = (timeHHmm) => {
   return now.toISOString();
 };
 
-const getNowTime = () => new Date().toTimeString().slice(0, 5); // HH:mm
+const getNowTime = () => new Date().toTimeString().slice(0, 5); 
 
 const AssignmentManager = ({ fleetId }) => {
   const dispatch = useDispatch();
@@ -32,7 +32,7 @@ const AssignmentManager = ({ fleetId }) => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [selectedDriverId, setSelectedDriverId] = useState("");
 
-  // ✅ TIME ONLY (daily recurring)
+  
   const [startTime, setStartTime] = useState("09:00");
   const [endTime, setEndTime] = useState("18:00");
 
@@ -69,9 +69,9 @@ const AssignmentManager = ({ fleetId }) => {
           vehicle_id: selectedVehicle.vehicle_id,
           driver_id: Number(selectedDriverId),
 
-          // ✅ convert TIME → TIMESTAMPTZ
+          
           start_time: startTime,
-          end_time: endTime, // daily recurring until updated by fleet owner
+          end_time: endTime, 
         },
       })
     );
@@ -97,7 +97,7 @@ const AssignmentManager = ({ fleetId }) => {
       )}
 
       <div className="am-main-grid">
-        {/* LEFT */}
+        
         <div className="am-card selection-card">
           <h3>1. Select Verified Vehicle</h3>
 
@@ -127,7 +127,7 @@ const AssignmentManager = ({ fleetId }) => {
           </div>
         </div>
 
-        {/* RIGHT */}
+        
         <div className="am-card action-card">
           <h3>2. Dispatch Assignment</h3>
 
@@ -169,7 +169,7 @@ const AssignmentManager = ({ fleetId }) => {
                 )}
               </div>
 
-              {/* ✅ TIME ONLY */}
+              
               <div className="am-field">
                 <label>Deployment Start Time</label>
                 <input

@@ -26,9 +26,7 @@ const TripOffers = () => {
   }, [activeTrip, navigate]);
 
 
-  /* =====================================================
-     POLLING PENDING OFFERS
-  ===================================================== */
+  
   usePolling(
     () => dispatch(fetchOffers()),
     5000,
@@ -46,7 +44,7 @@ const TripOffers = () => {
         <div className="offers-list">
           {offers.map((offer) => (
             <div key={offer.attempt_id} className="offer-card">
-              {/* ================= HEADER ================= */}
+              
               <div className="offer-header">
                 <h3 className="offer-id">
                   Offer #{offer.attempt_id}
@@ -56,7 +54,7 @@ const TripOffers = () => {
                 </span>
               </div>
 
-              {/* ================= DETAILS ================= */}
+              
               <div className="offer-details-summary">
                 <div className="detail-item-summary">
                   <span className="summary-label">Pickup:</span>
@@ -87,7 +85,7 @@ const TripOffers = () => {
                 </div>
               </div>
 
-              {/* ================= ACTIONS ================= */}
+              
               <div className="offer-actions">
                 <button
                   className="btn view-map-btn"

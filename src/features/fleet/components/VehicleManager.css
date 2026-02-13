@@ -1,7 +1,4 @@
-/* =====================================================
-   VEHICLE MANAGER
-   Production-Ready Styling
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -15,18 +12,14 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   CONTAINER
-   ===================================================== */
+
 .vm-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* =====================================================
-   ACTION BAR
-   ===================================================== */
+
 .vm-action-bar {
   display: flex;
   justify-content: space-between;
@@ -64,9 +57,7 @@
   gap: 1rem;
 }
 
-/* =====================================================
-   FILTER DROPDOWN
-   ===================================================== */
+
 .vm-filter {
   padding: 0.75rem 1.25rem;
   padding-right: 2.5rem;
@@ -95,9 +86,7 @@
   border-color: var(--theme-border-yellow);
 }
 
-/* =====================================================
-   PRIMARY BUTTON
-   ===================================================== */
+
 .vm-btn-primary {
   padding: 0.875rem 1.75rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
@@ -124,18 +113,14 @@
   box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
 }
 
-/* =====================================================
-   VEHICLE GRID
-   ===================================================== */
+
 .vm-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
-/* =====================================================
-   VEHICLE CARD
-   ===================================================== */
+
 .vm-card {
   background: var(--theme-white);
   border: 1.5px solid var(--theme-border);
@@ -172,9 +157,7 @@
   opacity: 1;
 }
 
-/* =====================================================
-   CARD HEAD
-   ===================================================== */
+
 .vm-card-head {
   display: flex;
   justify-content: space-between;
@@ -198,9 +181,7 @@
   gap: 0.5rem;
 }
 
-/* =====================================================
-   PILLS & BADGES
-   ===================================================== */
+
 .vm-doc-pill,
 .vm-status-pill {
   padding: 0.4rem 0.875rem;
@@ -236,9 +217,7 @@
   border: 1px solid #f5c6cb;
 }
 
-/* =====================================================
-   CARD BODY
-   ===================================================== */
+
 .vm-card-body {
   display: flex;
   flex-direction: column;
@@ -292,9 +271,7 @@
   border: 1px solid #f5c6cb;
 }
 
-/* =====================================================
-   CARD ACTIONS
-   ===================================================== */
+
 .vm-card-actions {
   display: flex;
   gap: 0.75rem;
@@ -340,9 +317,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-/* =====================================================
-   EMPTY STATE
-   ===================================================== */
+
 .vm-empty-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -369,9 +344,7 @@
   padding: 0.875rem 1.75rem;
 }
 
-/* =====================================================
-   LOADER
-   ===================================================== */
+
 .vm-loader {
   text-align: center;
   padding: 3rem 2rem;
@@ -380,9 +353,7 @@
   font-weight: 500;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 1024px) {
   .vm-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

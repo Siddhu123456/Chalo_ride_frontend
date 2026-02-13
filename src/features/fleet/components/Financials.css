@@ -1,7 +1,4 @@
-/* =====================================================
-   FINANCIALS COMPONENT - PRODUCTION STYLING
-   Following Fleet Dashboard Theme
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -16,9 +13,7 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   MAIN CONTAINER
-   ===================================================== */
+
 .fin-container {
   max-width: 1400px;
   margin: 0 auto;
@@ -27,9 +22,7 @@
   gap: 1.5rem;
 }
 
-/* =====================================================
-   HEADER
-   ===================================================== */
+
 .fin-header {
   display: flex;
   justify-content: space-between;
@@ -52,9 +45,7 @@
   font-weight: 400;
 }
 
-/* =====================================================
-   BALANCE CARD
-   ===================================================== */
+
 .fin-balance-card {
   background: linear-gradient(135deg, var(--theme-white) 0%, #fafafa 100%);
   border: 2px solid var(--theme-border-yellow);
@@ -97,9 +88,7 @@
   font-weight: 400;
 }
 
-/* =====================================================
-   TABS
-   ===================================================== */
+
 .fin-tabs {
   display: flex;
   gap: 0.5rem;
@@ -139,9 +128,7 @@
   box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
 }
 
-/* =====================================================
-   CONTENT SECTIONS
-   ===================================================== */
+
 .fin-content {
   min-height: 400px;
 }
@@ -162,9 +149,7 @@
   letter-spacing: -0.5px;
 }
 
-/* =====================================================
-   TABLE
-   ===================================================== */
+
 .fin-table-wrapper {
   overflow-x: auto;
   border-radius: 8px;
@@ -240,9 +225,7 @@
   color: var(--theme-font);
 }
 
-/* =====================================================
-   BADGES
-   ===================================================== */
+
 .fin-status-badge {
   display: inline-block;
   padding: 0.375rem 0.875rem;
@@ -289,9 +272,7 @@
   color: #721c24;
 }
 
-/* =====================================================
-   SETTLEMENTS GRID
-   ===================================================== */
+
 .fin-settlements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -374,9 +355,7 @@
   margin-top: auto;
 }
 
-/* =====================================================
-   BUTTONS
-   ===================================================== */
+
 .fin-btn-primary {
   flex: 1;
   padding: 0.875rem 1.5rem;
@@ -442,9 +421,7 @@
   color: #d4a500;
 }
 
-/* =====================================================
-   PAGINATION
-   ===================================================== */
+
 .fin-pagination {
   display: flex;
   justify-content: center;
@@ -487,9 +464,7 @@
   font-weight: 500;
 }
 
-/* =====================================================
-   LOADING & EMPTY STATES
-   ===================================================== */
+
 .fin-loading {
   text-align: center;
   padding: 3rem;
@@ -521,9 +496,7 @@
   font-size: 0.95rem;
 }
 
-/* =====================================================
-   MODAL
-   ===================================================== */
+
 .fin-modal-overlay {
   position: fixed;
   top: 0;
@@ -614,9 +587,7 @@
   flex: 1;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 1024px) {
   .fin-balance-value {
     font-size: 2rem;

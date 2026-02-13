@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000/admin';
 
-// ✅ MODIFIED: Uses 'x-admin-key'
+
 const getHeaders = () => {
   const adminKey = localStorage.getItem('rydo_admin_key'); 
   return { 
@@ -22,7 +22,7 @@ const extractErrorMessage = (err) => {
   return responseData?.detail || err.message || 'An unexpected error occurred';
 };
 
-/* --- EXISTING THUNKS (Tenants & Countries) --- */
+
 export const fetchTenants = createAsyncThunk('admin/fetchTenants', async (_, { rejectWithValue }) => {
   try { return (await axios.get(`${API_URL}/tenants`, getHeaders())).data; } 
   catch (err) { return rejectWithValue(extractErrorMessage(err)); }
@@ -43,22 +43,22 @@ export const addTenantCountry = createAsyncThunk('admin/addTenantCountry', async
   catch (err) { return rejectWithValue(extractErrorMessage(err)); }
 });
 
-/* --- ✅ NEW THUNKS (Tenant Admins) --- */
 
-// 1. Fetch Tenant Admins
+
+
 export const fetchTenantAdmins = createAsyncThunk(
   'admin/fetchTenantAdmins',
   async (tenantId, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${API_URL}/tenant-admin/${tenantId}/admins`, getHeaders());
-      return response.data.admins; // API returns { tenant_id, admins: [] }
+      return response.data.admins; 
     } catch (err) {
       return rejectWithValue(extractErrorMessage(err));
     }
   }
 );
 
-// 2. Assign Tenant Admin
+
 export const assignTenantAdmin = createAsyncThunk(
   'admin/assignTenantAdmin',
   async ({ tenantId, payload }, { rejectWithValue }) => {
@@ -71,27 +71,27 @@ export const assignTenantAdmin = createAsyncThunk(
   }
 );
 
-// 3. Remove Tenant Admin
+
 export const removeTenantAdmin = createAsyncThunk(
   'admin/removeTenantAdmin',
   async ({ tenantId, userId }, { rejectWithValue }) => {
     try {
       await axios.delete(`${API_URL}/tenant-admin/${tenantId}/admins/${userId}`, getHeaders());
-      return userId; // Return the ID so we can filter it out of state
+      return userId; 
     } catch (err) {
       return rejectWithValue(extractErrorMessage(err));
     }
   }
 );
 
-/* --- SLICE --- */
+
 
 const adminSlice = createSlice({
   name: 'admin',
   initialState: {
     tenants: [],
     currentTenantCountries: [], 
-    currentTenantAdmins: [], // ✅ New State for Admins
+    currentTenantAdmins: [], 
     loading: false,
     error: null,
     successMsg: null,
@@ -112,12 +112,12 @@ const adminSlice = createSlice({
       state.error = null;
       state.successMsg = null;
       state.currentTenantCountries = [];
-      state.currentTenantAdmins = []; // Clear admins too
+      state.currentTenantAdmins = []; 
     }
   },
   extraReducers: (builder) => {
     builder
-      // ... Existing Tenant/Country Reducers ...
+      
       .addCase(fetchTenants.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(fetchTenants.fulfilled, (state, action) => { state.loading = false; state.tenants = action.payload; })
       .addCase(fetchTenants.rejected, (state, action) => {
@@ -132,9 +132,9 @@ const adminSlice = createSlice({
       .addCase(fetchTenantCountries.fulfilled, (state, action) => { state.currentTenantCountries = action.payload.countries; state.loading = false; })
       .addCase(addTenantCountry.fulfilled, (state, action) => { state.currentTenantCountries.push(action.payload); state.successMsg = "Country added"; state.loading = false; })
       
-      // ... ✅ NEW REDUCERS FOR ADMINS ...
       
-      // Fetch Admins
+      
+      
       .addCase(fetchTenantAdmins.pending, (state) => { state.loading = true; state.error = null; })
       .addCase(fetchTenantAdmins.fulfilled, (state, action) => {
         state.loading = false;
@@ -142,11 +142,11 @@ const adminSlice = createSlice({
       })
       .addCase(fetchTenantAdmins.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
 
-      // Assign Admin
+      
       .addCase(assignTenantAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.successMsg = "Admin assigned successfully";
-        // Check if exists (reactivated) or push new
+        
         const index = state.currentTenantAdmins.findIndex(a => a.user_id === action.payload.user_id);
         if (index !== -1) {
           state.currentTenantAdmins[index] = action.payload;
@@ -156,7 +156,7 @@ const adminSlice = createSlice({
       })
       .addCase(assignTenantAdmin.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
 
-      // Remove Admin
+      
       .addCase(removeTenantAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.successMsg = "Admin removed successfully";

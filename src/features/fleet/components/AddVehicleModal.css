@@ -1,7 +1,4 @@
-/* =====================================================
-   ADD VEHICLE MODAL
-   Production-Ready Styling
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -16,9 +13,7 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   MODAL OVERLAY
-   ===================================================== */
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -43,9 +38,7 @@
   }
 }
 
-/* =====================================================
-   MODAL BOX
-   ===================================================== */
+
 .modal-box {
   background: var(--theme-white);
   border-radius: 12px;
@@ -73,9 +66,7 @@
   max-width: 650px;
 }
 
-/* =====================================================
-   MODAL HEADER
-   ===================================================== */
+
 .modal-header {
   padding: 1.75rem 2rem;
   border-bottom: 2px solid var(--theme-border-yellow);
@@ -93,9 +84,7 @@
   letter-spacing: -0.3px;
 }
 
-/* =====================================================
-   CLOSE BUTTON
-   ===================================================== */
+
 .close-btn {
   background: transparent;
   border: none;
@@ -124,16 +113,12 @@
   opacity: 0.3;
 }
 
-/* =====================================================
-   MODAL BODY
-   ===================================================== */
+
 .modal-body {
   padding: 2rem;
 }
 
-/* =====================================================
-   AUTH ALERT (ERROR/SUCCESS)
-   ===================================================== */
+
 .auth-alert {
   padding: 1rem 1.25rem;
   border-radius: 8px;
@@ -167,18 +152,14 @@
   color: #155724;
 }
 
-/* =====================================================
-   REGISTRATION FORM
-   ===================================================== */
+
 .registration-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* =====================================================
-   FORM ROW
-   ===================================================== */
+
 .form-row {
   display: flex;
   flex-direction: column;
@@ -224,9 +205,7 @@
   padding-right: 2.5rem;
 }
 
-/* =====================================================
-   SPLIT FLEX ROW (FOR SIDE-BY-SIDE FIELDS)
-   ===================================================== */
+
 .split-flex-row {
   flex-direction: row;
   gap: 1rem;
@@ -236,9 +215,7 @@
   flex: 1;
 }
 
-/* =====================================================
-   MODAL ACTIONS (BUTTON CONTAINER)
-   ===================================================== */
+
 .modal-actions {
   display: flex;
   gap: 1rem;
@@ -248,9 +225,7 @@
   border-top: 1px solid #e9ecef;
 }
 
-/* =====================================================
-   PRIMARY BUTTON
-   ===================================================== */
+
 .rydo-btn-pri {
   padding: 0.875rem 1.75rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
@@ -284,9 +259,7 @@
   transform: none;
 }
 
-/* =====================================================
-   DOCS LIST (STEP 2 GUIDANCE)
-   ===================================================== */
+
 .docs-list {
   text-align: center;
   padding: 1rem;
@@ -309,9 +282,7 @@
   font-weight: 700;
 }
 
-/* =====================================================
-   SUBMIT BUTTON (LARGE)
-   ===================================================== */
+
 .rydo-submit-btn {
   padding: 1rem 2rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
@@ -346,9 +317,7 @@
   transform: none;
 }
 
-/* =====================================================
-   SCROLLBAR STYLING
-   ===================================================== */
+
 .modal-box::-webkit-scrollbar {
   width: 8px;
 }
@@ -366,9 +335,7 @@
   background: var(--theme-button-bg);
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 768px) {
   .modal-box {
     width: 95%;

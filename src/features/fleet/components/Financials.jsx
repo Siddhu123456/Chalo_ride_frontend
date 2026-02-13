@@ -29,18 +29,18 @@ const Financials = () => {
   const [expandedSettlement, setExpandedSettlement] = useState(null);
   const [viewingDetails, setViewingDetails] = useState(null);
 
-  // Fetch wallet data on mount
+  
   useEffect(() => {
     dispatch(fetchWalletDetails());
   }, [dispatch]);
 
-  // Fetch transactions when wallet is available
+  
   useEffect(() => {
     if (!wallet) return;
     dispatch(fetchWalletTransactions({ page: txPage, limit: 20 }));
   }, [wallet, txPage, dispatch]);
 
-  // Fetch settlements when tab changes
+  
   useEffect(() => {
     if (activeTab === "SETTLEMENTS") {
       dispatch(fetchPendingSettlements());
@@ -104,7 +104,7 @@ const Financials = () => {
 
   return (
     <div className="fin-container">
-      {/* Header */}
+      
       <div className="fin-header">
         <div>
           <h1 className="fin-title">Financials</h1>
@@ -112,7 +112,7 @@ const Financials = () => {
         </div>
       </div>
 
-      {/* Wallet Balance Card */}
+      
       <div className="fin-balance-card">
         <div className="fin-balance-content">
           <span className="fin-balance-label">Current Balance</span>
@@ -121,7 +121,7 @@ const Financials = () => {
         </div>
       </div>
 
-      {/* Tab Navigation */}
+      
       <div className="fin-tabs">
         {["WALLET", "SETTLEMENTS", "HISTORY"].map((tab) => (
           <button
@@ -137,9 +137,9 @@ const Financials = () => {
         ))}
       </div>
 
-      {/* Tab Content */}
+      
       <div className="fin-content">
-        {/* WALLET TAB */}
+        
         {activeTab === "WALLET" && (
           <div className="fin-section">
             <h2 className="fin-section-title">Transaction History</h2>
@@ -185,7 +185,7 @@ const Financials = () => {
                   </table>
                 </div>
 
-                {/* Pagination */}
+                
                 {totalPages > 1 && (
                   <div className="fin-pagination">
                     <button
@@ -212,7 +212,7 @@ const Financials = () => {
           </div>
         )}
 
-        {/* SETTLEMENTS TAB */}
+        
         {activeTab === "SETTLEMENTS" && (
           <div className="fin-section">
             <h2 className="fin-section-title">Pending Commission Settlements</h2>
@@ -271,7 +271,7 @@ const Financials = () => {
           </div>
         )}
 
-        {/* HISTORY TAB */}
+        
         {activeTab === "HISTORY" && (
           <div className="fin-section">
             <h2 className="fin-section-title">Settlement History</h2>
@@ -327,7 +327,7 @@ const Financials = () => {
         )}
       </div>
 
-      {/* Details Modal */}
+      
       {viewingDetails && (
         <div className="fin-modal-overlay" onClick={closeDetails}>
           <div className="fin-modal" onClick={(e) => e.stopPropagation()}>

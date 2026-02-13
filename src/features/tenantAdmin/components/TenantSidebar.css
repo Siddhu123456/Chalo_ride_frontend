@@ -1,6 +1,4 @@
-/* ==========================================
-   TENANT SIDEBAR - PRODUCTION STYLES
-   ========================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -26,7 +24,7 @@
   overflow: hidden;
 }
 
-/* ── Brand Section ── */
+
 
 .ts-brand {
   padding: 20px 22px;
@@ -59,7 +57,7 @@
   box-shadow: 0 2px 6px rgba(254, 204, 24, 0.25);
 }
 
-/* ── Profile Card ── */
+
 
 .ts-profile-card {
   padding: 18px 22px;
@@ -147,7 +145,7 @@
   line-height: 1.6;
 }
 
-/* ── Shimmer Loading ── */
+
 
 .ts-profile-loading {
   align-items: center;
@@ -187,7 +185,7 @@
 .ts-shimmer-line-lg { width: 80%; }
 .ts-shimmer-line-sm { width: 55%; }
 
-/* ── Navigation Container ── */
+
 
 .ts-nav {
   flex: 1;
@@ -200,7 +198,7 @@
 .ts-nav::-webkit-scrollbar-track { background: transparent; }
 .ts-nav::-webkit-scrollbar-thumb { background: var(--theme-border); border-radius: 2px; }
 
-/* Navigation Label */
+
 .ts-nav-label {
   padding: 12px 24px 8px;
   font-size: 10px;
@@ -210,7 +208,7 @@
   letter-spacing: 1.2px;
 }
 
-/* Navigation Items */
+
 .ts-nav-item {
   width: 100%;
   display: flex;
@@ -268,7 +266,7 @@
 
 .ts-nav-item.active .ts-icon { filter: grayscale(0); }
 
-/* Badge */
+
 .ts-badge {
   margin-left: auto;
   background: var(--theme-button-bg);
@@ -288,7 +286,7 @@
   50%       { transform: scale(1.06); box-shadow: 0 3px 8px rgba(254, 204, 24, 0.38); }
 }
 
-/* ── Logout Button ── */
+
 
 .ts-logout {
   margin: 12px 18px 20px;
@@ -340,9 +338,7 @@
 
 .ts-logout:active { transform: scale(0.98); }
 
-/* ==========================================
-   RESPONSIVE
-   ========================================== */
+
 
 @media (max-width: 768px) {
   .ts-sidebar { width: 240px; }

@@ -16,9 +16,7 @@
         box-sizing: border-box;
     }
 
-    /* ===========================
-    Page Layout
-    =========================== */
+    
 
     .driver-layout {
         min-height: 100vh;
@@ -26,9 +24,7 @@
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
-    /* ===========================
-    Driver Navbar (Fixed)
-    =========================== */
+    
 
     .driver-layout > .driver-navbar {
         position: fixed;
@@ -45,9 +41,7 @@
         padding: 0 2rem;
     }
 
-    /* ===========================
-    Docs Content Area
-    =========================== */
+    
 
     .driver-docs-content {
         width : 100%;
@@ -65,9 +59,7 @@
         gap: 2.5rem;
     }
 
-    /* ===========================
-    Header & Progress Section
-    =========================== */
+    
 
     .docs-header {
         background-color: var(--theme-white);
@@ -107,7 +99,7 @@
         line-height: 1.5;
     }
 
-    /* Progress Bar */
+    
     .progress-container {
         width: 350px;
         background: var(--theme-light-bg);
@@ -159,9 +151,7 @@
         background-size: 1rem 1rem;
     }
 
-    /* ===========================
-    Sections
-    =========================== */
+    
 
     .docs-section {
         display: flex;
@@ -180,15 +170,13 @@
         height: 1.5rem;
     }
 
-    /* CHANGE: Rejected section heading — red accent bar + red text to signal urgency */
+    
     .section-heading--rejected {
         color: #b02a37;
         border-left-color: #dc3545;
     }
 
-    /* ===========================
-    Docs Grid & Cards
-    =========================== */
+    
 
     .docs-grid {
         display: grid;
@@ -213,7 +201,7 @@
         box-shadow: 0 4px 6px rgba(0,0,0,0.02);
     }
 
-    /* Pending State */
+    
     .card-pending {
         border: 2px dashed #d1d1d1;
         background-color: #ffffff;
@@ -231,7 +219,7 @@
         transform: scale(1.1);
     }
 
-    /* Uploaded State */
+    
     .card-uploaded {
         border: 1px solid var(--theme-border);
         background-color: #fafafa;
@@ -241,7 +229,7 @@
         box-shadow: 0 8px 15px rgba(0,0,0,0.05);
     }
 
-    /* Internal Card Elements */
+    
     .doc-card-inner {
         width: 100%;
         height: 100%;
@@ -264,7 +252,7 @@
     .icon-neutral { background-color: #f1f3f5; color: #666; }
     .icon-success { background-color: var(--color-success-bg); color: var(--color-success); }
 
-    /* CHANGE: Red icon background for rejected state */
+    
     .icon-rejected {
         background-color: #f8d7da;
         color: #dc3545;
@@ -303,7 +291,7 @@
         border-bottom-color: #007bff;
     }
 
-    /* Status Badges */
+    
     .status-badge {
         padding: 6px 12px;
         border-radius: 20px;
@@ -316,9 +304,7 @@
     .status-badge.approved { background-color: var(--color-success-bg); color: var(--color-success); }
     .status-badge.pending { background-color: var(--color-pending-bg); color: var(--color-pending-text); }
 
-    /* ===========================
-    Completion Banner
-    =========================== */
+    
 
     .completion-banner {
         background-color: var(--color-success);
@@ -360,9 +346,7 @@
         margin: 0;
     }
 
-    /* ===========================
-    Responsive Design
-    =========================== */
+    
 
     @media (max-width: 900px) {
         .docs-header {
@@ -401,9 +385,7 @@
     }
 
 
-/* ===========================
-   REJECTED DOCUMENT STATE
-   =========================== */
+
 
 .card-rejected {
   border: 2px solid #dc3545;
@@ -433,14 +415,14 @@
   transform: translateY(-3px);
 }
 
-/* CHANGE: Rejected card hover re-upload icon emphasis */
+
 .card-rejected:hover .doc-icon-wrapper {
     background-color: #dc3545;
     color: #fff;
     transform: scale(1.1);
 }
 
-/* CHANGE: Rejected card re-upload action text underline on hover */
+
 .card-rejected:hover .action-text {
     border-bottom: 2px solid #dc3545;
 }

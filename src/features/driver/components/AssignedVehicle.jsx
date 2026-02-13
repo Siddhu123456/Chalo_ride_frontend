@@ -14,9 +14,7 @@ const AssignedVehicle = () => {
     (state) => state.driver
   );
 
-  /* =====================================================
-     FETCH CURRENT ASSIGNMENT ONLY
-  ===================================================== */
+  
   useEffect(() => {
     dispatch(fetchCurrentVehicleAssignment());
   }, [dispatch]);
@@ -36,7 +34,7 @@ const AssignedVehicle = () => {
         Details of the vehicle currently assigned to you.
       </p>
 
-      {/* ================= ACTIVE ASSIGNMENT ================= */}
+      
       {vehicleAssignment ? (
         <div className="vehicle-assignment-card card">
           <div className="vehicle-header-section">

@@ -1,4 +1,4 @@
-/* AdminLogin.css - Production Level */
+
 
 :root {
     --theme-white: #fff;
@@ -9,14 +9,14 @@
     --theme-border-yellow: #fecc18;
 }
 
-/* Main Layout */
+
 .al-layout {
     display: flex;
     min-height: 100vh;
     background: #f8f9fa;
 }
 
-/* LEFT PANE - Visual/Branding */
+
 .al-visual-pane {
     flex: 1;
     background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
@@ -80,7 +80,7 @@
     letter-spacing: 0.5px;
 }
 
-/* RIGHT PANE - Form */
+
 .al-form-pane {
     flex: 1;
     display: flex;
@@ -114,7 +114,7 @@
     line-height: 1.6;
 }
 
-/* Form */
+
 .al-form {
     margin-bottom: 32px;
 }
@@ -159,7 +159,7 @@
     box-shadow: 0 0 0 4px rgba(254, 204, 24, 0.1);
 }
 
-/* Submit Button */
+
 .al-submit-btn {
     width: 100%;
     padding: 18px;
@@ -207,7 +207,7 @@
     transform: scale(0.98) translateY(0);
 }
 
-/* Footer */
+
 .al-footer {
     text-align: center;
     font-size: 0.85rem;
@@ -219,7 +219,7 @@
     border-top: 1px solid #e9ecef;
 }
 
-/* Responsive */
+
 @media (max-width: 1024px) {
     .al-layout {
         flex-direction: column;

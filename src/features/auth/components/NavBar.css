@@ -2,31 +2,31 @@
     background-color: var(--theme-white);
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Ensures vertical centering */
-    padding: 5px 5%; /* Unified padding for cleaner syntax */
+    align-items: center; 
+    padding: 5px 5%; 
     position: absolute;
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensures navbar stays on top of other content */
-    box-sizing: border-box; /* Prevents padding from breaking 100% width */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Subtle lift */
-    backdrop-filter: blur(10px); /* Optional: Modern glass effect if bg is slightly transparent */
+    z-index: 1000; 
+    box-sizing: border-box; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
+    backdrop-filter: blur(10px); 
 }
 
 .navbar-logo {
     height: 60px;
     width: auto;
-    border-radius: 12px; /* Slightly softer corners */
+    border-radius: 12px; 
     border: 2px solid var(--theme-border);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy smooth transition */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
     cursor: pointer;
-    background: white; /* Ensures logo png transparency doesn't look odd over shadows */
+    background: white; 
 }
 
 .navbar-logo:hover {
     border-color: #333333;
-    transform: scale(1.05); /* Removed translateZ to avoid blurry text issues on some screens */
+    transform: scale(1.05); 
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 

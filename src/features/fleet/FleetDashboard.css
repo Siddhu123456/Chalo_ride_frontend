@@ -1,7 +1,4 @@
-/* =====================================================
-   FLEET DASHBOARD - MAIN LAYOUT
-   Production-Ready Styling
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -16,9 +13,7 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   SCREEN LOADER
-   ===================================================== */
+
 .fd-screen-loader {
   width: 100vw;
   height: 100vh;
@@ -43,9 +38,7 @@
   }
 }
 
-/* =====================================================
-   ONBOARDING LAYOUT (UNVERIFIED)
-   ===================================================== */
+
 .fd-onboarding-layout {
   min-height: 100vh;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -172,9 +165,7 @@
   font-weight: 600;
 }
 
-/* =====================================================
-   BANNER ALERTS
-   ===================================================== */
+
 .fd-banner {
   padding: 1rem 1.5rem;
   border-radius: 10px;
@@ -230,9 +221,7 @@
   opacity: 1;
 }
 
-/* =====================================================
-   FULL DASHBOARD LAYOUT (VERIFIED)
-   ===================================================== */
+
 .fd-layout {
   display: flex;
   min-height: 100vh;
@@ -303,9 +292,7 @@
   overflow-y: auto;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 1024px) {
   .fd-main {
     margin-left: 0;

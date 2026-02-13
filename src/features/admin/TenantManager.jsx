@@ -48,7 +48,7 @@ const TenantManager = () => {
     is_primary: false,
   });
 
-  // ✅ CONFIRM COMPONENT MOUNT
+  
   useEffect(() => {
     console.log('✅ TenantManager mounted');
   }, []);

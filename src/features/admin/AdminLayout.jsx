@@ -3,20 +3,20 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { adminLogout } from '../../store/adminSlice';
 import './AdminLayout.css';
-import logo from '../../assets/logo.png'; // adjust path if needed
+import logo from '../../assets/logo.png'; 
 
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  //  SAFE SELECTOR
+  
   const isAuthenticated = useSelector(
     (state) => state.admin?.isAuthenticated
   );
 
   useEffect(() => {
-    // Redirect ONLY if explicitly false
+    
     if (isAuthenticated === false) {
       navigate('/admin/login');
     }
@@ -30,12 +30,12 @@ const AdminLayout = () => {
   const isActive = (path) =>
     location.pathname.includes(path) ? 'active' : '';
 
-  // Prevent premature unmount
+  
   if (isAuthenticated === undefined) return null;
 
   return (
     <div className="layout-wrapper">
-      {/* SIDEBAR */}
+      
       <aside className="layout-sidebar">
         <div className="sidebar-brand">
           <img src={logo} alt="Rydo Logo" className="sidebar-logo" />
@@ -66,7 +66,7 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* MAIN */}
+      
       <main className="layout-main">
         <Outlet />
       </main>

@@ -31,20 +31,20 @@ const FleetRegistration = () => {
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
-  // Only for UI restriction (NO redirects)
+  
   const isTenantAdmin = useMemo(
     () => roles?.includes("TENANT_ADMIN"),
     [roles]
   );
 
-  // Check fleet status once
+  
   useEffect(() => {
     if (!isTenantAdmin) {
       dispatch(checkFleetStatus());
     }
   }, [dispatch, isTenantAdmin]);
 
-  // Fetch tenants only when required
+  
   useEffect(() => {
     if (
       !isTenantAdmin &&
@@ -55,7 +55,7 @@ const FleetRegistration = () => {
     }
   }, [dispatch, hasExistingFleet, isTenantAdmin, user]);
 
-  // Show dialog after successful registration
+  
   useEffect(() => {
     if (fleetApplied) {
       setShowSuccessDialog(true);
@@ -108,7 +108,7 @@ const FleetRegistration = () => {
   return (
     <>
       <div className="fleet-reg-layout">
-        {/* Hero Section */}
+        
         <div
           className="fleet-reg-hero"
           style={{
@@ -124,7 +124,7 @@ const FleetRegistration = () => {
           </div>
         </div>
 
-        {/* Form Section */}
+        
         <div className="fleet-reg-form-pane">
           <div className="fleet-reg-form-container">
             <div className="fleet-reg-top-brand">
@@ -193,7 +193,7 @@ const FleetRegistration = () => {
         </div>
       </div>
 
-      {/* SUCCESS DIALOG */}
+      
       {showSuccessDialog && (
         <div className="fleet-dialog-backdrop">
           <div className="fleet-dialog">

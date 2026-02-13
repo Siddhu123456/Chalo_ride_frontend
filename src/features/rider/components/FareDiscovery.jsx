@@ -25,7 +25,7 @@ const FareDiscovery = ({ onRideSelect }) => {
     }
   };
 
-  // Filter by selected vehicle category
+  
   const filteredEstimates = estimates.filter(
     (e) => e.vehicle_category === vehicleCategory
   );
@@ -38,7 +38,7 @@ const FareDiscovery = ({ onRideSelect }) => {
     <div className="panel-card fade-in">
       <h3 className="panel-title">Choose Your Ride</h3>
 
-      {/* Tabs */}
+      
       <div className="tabs">
         {['CAB', 'AUTO', 'BIKE'].map((cat) => (
           <button
@@ -52,20 +52,20 @@ const FareDiscovery = ({ onRideSelect }) => {
       </div>
 
       <div className="ride-list">
-        {/* Loading */}
+        
         {loading && <p>Fetching available rides...</p>}
 
-        {/* No drivers */}
+        
         {noDriversAvailable && (
           <p>No drivers available at the moment</p>
         )}
 
-        {/* No rides for selected category */}
+        
         {!loading && !noDriversAvailable && filteredEstimates.length === 0 && (
           <p>No rides available for this vehicle type</p>
         )}
 
-        {/* Ride cards */}
+        
         {filteredEstimates.map((ride) => (
           <div
             key={ride.id}

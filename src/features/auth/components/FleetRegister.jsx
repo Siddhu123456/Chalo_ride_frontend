@@ -25,26 +25,22 @@ const FleetRegistrationForm = () => {
         fleet_name: "",
     });
 
-    /* -----------------------------------------
-       Lifecycle
-    ------------------------------------------ */
-    // Load tenants ONLY if fleet does not exist
+    
+    
     useEffect(() => {
         if (hasExistingFleet === false || hasExistingFleet === null) {
             dispatch(fetchFleetTenants(user.user_id));
         }
     }, [hasExistingFleet, dispatch, user.user_id]);
 
-    // Clear errors on unmount
+    
     useEffect(() => {
         return () => {
             dispatch(clearFleetError());
         };
     }, [dispatch]);
 
-    /* -----------------------------------------
-       Handlers
-    ------------------------------------------ */
+    
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -63,9 +59,7 @@ const FleetRegistrationForm = () => {
         );
     };
 
-    /* -----------------------------------------
-       UI
-    ------------------------------------------ */
+    
 
     return (
         <div className="form-content-box">
@@ -74,13 +68,13 @@ const FleetRegistrationForm = () => {
                 <p>Start your journey as a Fleet Owner.</p>
             </header>
 
-            {/* ERROR */}
+            
             {error && <div className="auth-alert error">{error}</div>}
 
-            {/* SUCCESS */}
+            
             {successMsg && <div className="auth-alert success">{successMsg}</div>}
 
-            {/* ALREADY HAS FLEET */}
+            
             {hasExistingFleet && (
                 <div className="auth-alert success">
                     You already have a fleet registered.

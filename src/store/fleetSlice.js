@@ -4,9 +4,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8000/fleet-owner";
 const WALLET_API_URL = "http://localhost:8000/wallet";
 
-/* -----------------------------------------
-   Helpers
------------------------------------------- */
+
 
 const getHeaders = (isMultipart = false) => {
   const token = localStorage.getItem("token");
@@ -35,9 +33,7 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
-/* -----------------------------------------
-   ASYNC THUNKS
------------------------------------------- */
+
 
 export const checkFleetStatus = createAsyncThunk(
   "fleet/checkStatus",
@@ -252,7 +248,7 @@ export const fetchAssignments = createAsyncThunk(
   }
 );
 
-/// Wallet & Financials
+
 export const fetchWalletDetails = createAsyncThunk(
   "fleet/fetchWallet",
   async (_, { rejectWithValue }) => {
@@ -281,7 +277,7 @@ export const fetchWalletTransactions = createAsyncThunk(
   }
 );
 
-// Settlements 
+
 export const fetchPendingSettlements = createAsyncThunk(
   "fleet/fetchPendingSettlements",
   async (_, { rejectWithValue }) => {
@@ -304,7 +300,7 @@ export const paySettlement = createAsyncThunk(
         {},
         getHeaders()
       );
-      // Refresh data after payment
+      
       dispatch(fetchPendingSettlements());
       dispatch(fetchSettlementHistory());
       dispatch(fetchWalletDetails());
@@ -392,7 +388,7 @@ const fleetSlice = createSlice({
     selectedVehicleForDocs: null,
     selectedVehicleDocStatus: null,
 
-    // Wallet & Financials
+    
     wallet: null,
     transactions: [],
     transactionsPagination: {
@@ -401,7 +397,7 @@ const fleetSlice = createSlice({
       total: 0,
     },
 
-    // Settlements
+    
     pendingSettlements: [],
     settlementHistory: [],
     selectedSettlementTrips: [],
@@ -490,7 +486,7 @@ const fleetSlice = createSlice({
         state.successMsg = "Assignment confirmed";
       })
 
-      // Wallet & Financials
+      
       .addCase(fetchWalletDetails.fulfilled, (state, action) => {
         state.wallet = action.payload;
       })
@@ -504,7 +500,7 @@ const fleetSlice = createSlice({
         };
       })
 
-      // Settlements
+      
       .addCase(fetchPendingSettlements.fulfilled, (state, action) => {
         state.pendingSettlements = action.payload || [];
       })

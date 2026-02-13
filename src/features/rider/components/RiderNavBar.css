@@ -1,4 +1,4 @@
-/* RiderNavBar.css - FIXED */
+
 
 .rider-navbar {
     display: flex;
@@ -59,7 +59,7 @@
     color: var(--theme-font);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .rider-navbar {
         padding: 0.8rem 1rem;

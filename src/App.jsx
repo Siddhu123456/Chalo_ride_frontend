@@ -5,14 +5,14 @@ import "./style/variable.css";
 
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 
-// --- AUTH ---
+
 import AuthPage from "./features/auth/pages/AuthPage.jsx";
 
-// --- FLEET ---
+
 import FleetDashboard from "./features/fleet/FleetDashboard.jsx";
 import FleetRegistration from "./features/fleet/FleetRegistration.jsx";
 
-// --- DRIVER ---
+
 import DriverPage from "./features/driver/pages/DriverPage.jsx";
 import DriverDashboard from "./features/driver/components/DriverDashboard.jsx";
 import DriverProfile from "./features/driver/components/DriverProfile.jsx";
@@ -22,18 +22,18 @@ import AssignedVehicle from "./features/driver/components/AssignedVehicle.jsx";
 import DriverDocsPage from "./features/driver/pages/DriverDocsPage.jsx";
 import DriverTripHistory from "./features/driver/components/DriverTripHistory.jsx";
 
-// --- RIDER ---
+
 import RiderPage from "./features/rider/pages/RiderPage.jsx";
 import RiderHome from "./features/rider/pages/RiderHome.jsx";
 import RiderTripHistory from "./features/rider/components/RiderTripHistory.jsx";
 import RiderProfile from "./features/rider/components/RiderProfile.jsx";
 
-// --- ADMIN ---
+
 import AdminLogin from "./features/admin/AdminLogin.jsx";
 import AdminLayout from "./features/admin/AdminLayout.jsx";
 import TenantManager from "./features/admin/TenantManager.jsx";
 
-// --- TENANT ADMIN ---
+
 import TenantDashboard from "./features/tenantAdmin/TenantDashboard.jsx";
 
 import "leaflet/dist/leaflet.css";
@@ -43,10 +43,10 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* AUTH */}
+        
         <Route path="/auth" element={<AuthPage />} />
 
-        {/* ADMIN */}
+        
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route
           path="/admin"
@@ -56,7 +56,7 @@ function App() {
           <Route path="tenants" element={<TenantManager />} />
         </Route>
 
-        {/* RIDER */}
+        
         <Route
           path="/rider"
           element={
@@ -71,7 +71,7 @@ function App() {
           <Route path="profile" element={<RiderProfile />} />
         </Route>
 
-        {/* DRIVER */}
+        
         <Route
           path="/driver"
           element={
@@ -98,7 +98,7 @@ function App() {
           }
         />
 
-        {/* FLEET */}
+        
         <Route
           path="/fleet-registration"
           element={
@@ -118,7 +118,7 @@ function App() {
           }
         />
 
-        {/* TENANT ADMIN */}
+        
         <Route
           path="/tenant-admin-dashboard"
           element={
@@ -128,7 +128,7 @@ function App() {
           }
         />
 
-        {/* FALLBACK */}
+        
         <Route path="*" element={<Navigate to="/auth" replace />} />
 
       </Routes>

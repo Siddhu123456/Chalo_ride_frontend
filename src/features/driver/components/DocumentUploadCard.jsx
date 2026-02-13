@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-// Ensure CSS is imported in Parent or here.
+
 
 const DocumentUploadCard = ({ type, uploaded, uploading, onUpload, status }) => {
   const [isDragging, setIsDragging] = useState(false);

@@ -1,6 +1,4 @@
-/* ==========================================
-   TENANT DASHBOARD - PRODUCTION STYLES
-   ========================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -11,9 +9,7 @@
   --theme-border-yellow: #fecc18;
 }
 
-/* ==========================================
-   LAYOUT ROOT
-   ========================================== */
+
 
 .td-layout-root {
   display: flex;
@@ -26,9 +22,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ==========================================
-   MAIN CONTAINER
-   ========================================== */
+
 
 .td-main-container {
   flex: 1;
@@ -40,9 +34,7 @@
   transition: margin-left 0.3s ease;
 }
 
-/* ==========================================
-   TOP UTILITY BAR
-   ========================================== */
+
 
 .td-top-utility {
   display: flex;
@@ -68,7 +60,7 @@
   background: linear-gradient(90deg, var(--theme-border-yellow) 0%, #ffd54f 100%);
 }
 
-/* Breadcrumb */
+
 .td-breadcrumb {
   font-size: 14px;
   color: var(--theme-border);
@@ -102,7 +94,7 @@
   white-space: nowrap;
 }
 
-/* ── Admin Identity (center-right) ── */
+
 
 .td-admin-identity {
   display: flex;
@@ -159,8 +151,8 @@
   line-height: 1;
 }
 
-/* Profile shimmer while loading */
-/* Profile error inline in header */
+
+
 .td-admin-error {
   font-size: 12px;
   font-weight: 600;
@@ -185,7 +177,7 @@
   100% { background-position: -200% 0; }
 }
 
-/* Status Indicator */
+
 .td-status-indicator {
   display: flex;
   align-items: center;
@@ -218,9 +210,7 @@
   100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
 }
 
-/* ==========================================
-   ALERT MESSAGES
-   ========================================== */
+
 
 .td-alert {
   padding: 16px 24px;
@@ -256,9 +246,7 @@
 }
 .td-alert.error::before { content: '✕'; }
 
-/* ==========================================
-   VIEW AREA
-   ========================================== */
+
 
 .td-view-area {
   flex: 1;
@@ -271,9 +259,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================
-   STATS OVERVIEW (Optional Dashboard Widget)
-   ========================================== */
+
 
 .td-stats-overview {
   display: grid;
@@ -333,9 +319,7 @@
   line-height: 1;
 }
 
-/* ==========================================
-   LOADING STATE
-   ========================================== */
+
 
 .td-loading {
   display: flex;
@@ -363,9 +347,7 @@
   color: var(--theme-border);
 }
 
-/* ==========================================
-   RESPONSIVE DESIGN
-   ========================================== */
+
 
 @media (max-width: 1280px) {
   .td-breadcrumb-tenant { max-width: 150px; }
@@ -406,9 +388,7 @@
   .td-admin-name { font-size: 12px; }
 }
 
-/* ==========================================
-   PRINT STYLES
-   ========================================== */
+
 
 @media print {
   .td-layout-root { display: block; }
@@ -417,9 +397,7 @@
   .td-view-area { box-shadow: none; border: none; }
 }
 
-/* ==========================================
-   ACCESSIBILITY
-   ========================================== */
+
 
 button:focus-visible,
 a:focus-visible,

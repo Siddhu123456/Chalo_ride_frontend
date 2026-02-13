@@ -11,14 +11,14 @@ const RiderNavBar = () => {
 
   return (
     <nav className="rider-navbar">
-      {/* Left Side: Current City */}
+      
       <div className="rider-navbar-left">
         <span className="page-title">
           {location}
         </span>
       </div>
 
-      {/* Right Side: Rider Profile */}
+      
       <div className="rider-navbar-right">
         <div className="rider-profile">
           <img

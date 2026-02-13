@@ -3,9 +3,7 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8000/trips";
 
-/* -----------------------------------------
-   Helpers
------------------------------------------- */
+
 const getHeaders = () => {
   const token = localStorage.getItem("token");
   return {
@@ -22,9 +20,7 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
-/* -----------------------------------------
-   ASYNC
------------------------------------------- */
+
 export const fetchFareEstimates = createAsyncThunk(
   "fare/fetchEstimates",
   async (payload, { rejectWithValue }) => {
@@ -41,9 +37,7 @@ export const fetchFareEstimates = createAsyncThunk(
   }
 );
 
-/* -----------------------------------------
-   SLICE
------------------------------------------- */
+
 const fareSlice = createSlice({
   name: "fare",
   initialState: {
@@ -101,7 +95,7 @@ const fareSlice = createSlice({
         state.dropAddress = action.payload.drop_address;
         state.distanceKm = action.payload.distance_km;
 
-        // normalize for FareDiscovery UI
+        
         state.estimates = (action.payload.estimates || [])
           .filter(e => e.available_drivers > 0)
           .map((e, idx) => ({

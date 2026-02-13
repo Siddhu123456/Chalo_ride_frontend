@@ -32,12 +32,12 @@ const TenantDashboard = () => {
     pendingVehicles,
     profile,
     profileLoading,
-    profileError,   // isolated — won't collide with global error
+    profileError,   
     successMsg,
-    error,          // global operation errors (verify, fetch queues, etc.)
+    error,          
   } = useSelector((state) => state.tenantAdmin);
 
-  /* ── Bootstrap on mount ── */
+  
   useEffect(() => {
     dispatch(fetchTenantAdminProfile());
     dispatch(fetchPendingFleets());
@@ -45,7 +45,7 @@ const TenantDashboard = () => {
     dispatch(fetchPendingVehicles());
   }, [dispatch]);
 
-  /* ── Auto-dismiss global alerts after 4 s ── */
+  
   useEffect(() => {
     if (successMsg || error) {
       const timer = setTimeout(() => dispatch(clearTenantState()), 4000);
@@ -75,7 +75,7 @@ const TenantDashboard = () => {
 
       <main className="td-main-container">
 
-        {/* ── Top Utility Bar ── */}
+        
         <header className="td-top-utility">
           <div className="td-breadcrumb">
             <span className="td-breadcrumb-tenant">
@@ -111,11 +111,11 @@ const TenantDashboard = () => {
           </div>
         </header>
 
-        {/* ── Global operation alerts ── */}
+        
         {successMsg && <div className="td-alert success">{successMsg}</div>}
         {error      && <div className="td-alert error">{error}</div>}
 
-        {/* ── Main View ── */}
+        
         <section className="td-view-area">
           {activeView === 'FLEETS' && (
             <VerificationPortal

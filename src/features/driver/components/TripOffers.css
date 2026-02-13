@@ -53,7 +53,7 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    display: flex; /* Make card content flex column */
+    display: flex; 
     flex-direction: column;
 }
 
@@ -83,12 +83,12 @@
     color: var(--theme-button-bg);
 }
 
-.offer-details-summary { /* New class for simplified details */
+.offer-details-summary { 
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
     margin-bottom: 1.5rem;
-    flex-grow: 1; /* Allows this section to push actions to bottom */
+    flex-grow: 1; 
 }
 
 .detail-item-summary {
@@ -114,7 +114,7 @@
 .offer-actions {
     display: flex;
     gap: 1rem;
-    margin-top: auto; /* Pushes buttons to the bottom of the card */
+    margin-top: auto; 
 }
 
 .btn {
@@ -131,7 +131,7 @@
 
 .view-map-btn {
     background-color: var(--theme-button-bg);
-    color: var(--theme-button-font); /* Use theme-button-font for text */
+    color: var(--theme-button-font); 
 }
 
 .view-map-btn:hover {
@@ -150,7 +150,7 @@
     box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .trip-offers-page {
         padding: 1.5rem;

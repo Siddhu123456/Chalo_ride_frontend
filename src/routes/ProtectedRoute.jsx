@@ -11,7 +11,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   console.log("Allowed:", allowedRoles);
 
   if (!token) {
-    // REPLACE history instead of pushing
+    
     return <Navigate to="/auth" replace />;
   }
 

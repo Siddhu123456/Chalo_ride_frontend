@@ -39,7 +39,7 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid rgba(0, 0, 0, 0.05);
     max-width: 800px;
-    margin: 0 auto 2rem auto; /* Center and add bottom margin */
+    margin: 0 auto 2rem auto; 
 }
 
 .vehicle-assignment-card:hover {
@@ -58,7 +58,7 @@
 
 .vehicle-icon {
     font-size: 3rem;
-    /* You might want to use an actual SVG icon or image here */
+    
 }
 
 .vehicle-header-info {
@@ -164,7 +164,7 @@
 .section-sub-heading {
     font-size: 1.8rem;
     color: var(--theme-font);
-    margin: 3rem auto 1.5rem auto; /* Center and provide spacing */
+    margin: 3rem auto 1.5rem auto; 
     font-weight: 700;
     max-width: 800px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -218,7 +218,7 @@
     padding: 2rem;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     .vehicle-assignment-card, .no-vehicle-message, .no-previous-assignments {
         padding: 1.5rem;

@@ -23,9 +23,7 @@ import usePolling from "../../../hooks/usePolling";
 import "leaflet/dist/leaflet.css";
 import "./ActiveTrip.css";
 
-/* =====================================================
-   LEAFLET ICON FIX
-===================================================== */
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -36,9 +34,7 @@ L.Icon.Default.mergeOptions({
     "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png"
 });
 
-/* =====================================================
-   CUSTOM ICONS
-===================================================== */
+
 const driverIcon = new L.Icon({
   iconUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
@@ -66,9 +62,7 @@ const dropoffIcon = new L.Icon({
   iconAnchor: [12, 41]
 });
 
-/* =====================================================
-   MAP AUTO FIT
-===================================================== */
+
 const MapUpdater = ({
   pickupCoords,
   dropCoords,
@@ -101,9 +95,7 @@ const MapUpdater = ({
   return null;
 };
 
-/* =====================================================
-   ACTIVE TRIP
-===================================================== */
+
 const ActiveTrip = () => {
   const dispatch = useDispatch();
   const { getCurrentLocation } = useGeolocation();
@@ -117,7 +109,7 @@ const ActiveTrip = () => {
   const [otpError, setOtpError] = useState("");
   const navigate = useNavigate();
 
-  /* ================= HARD GUARD ================= */
+  
   if (
     !activeTrip ||
     activeTrip.pickup_lat == null ||
@@ -148,9 +140,7 @@ const ActiveTrip = () => {
   const isRideInProgress = tripStatus === "PICKED_UP";
   const isTripCompleted = tripStatus === "COMPLETED";
 
-  /* =====================================================
-     LOCATION POLLING (SAFE)
-  ===================================================== */
+  
   usePolling(
     async () => {
       if (
@@ -179,9 +169,7 @@ const ActiveTrip = () => {
     true
   );
 
-  /* =====================================================
-     OTP HANDLERS
-  ===================================================== */
+  
   const handleOtpChange = (e, index) => {
     if (/[^0-9]/.test(e.target.value)) return;
 
@@ -229,9 +217,7 @@ const ActiveTrip = () => {
     navigate("/driver/dashboard");
   };
 
-  /* =====================================================
-     UI (UNCHANGED)
-  ===================================================== */
+  
   return (
     <div className="active-trip-page">
       <div className="active-trip-map-container">

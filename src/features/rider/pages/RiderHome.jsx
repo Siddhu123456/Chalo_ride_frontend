@@ -230,7 +230,7 @@ const RiderHome = () => {
             </Marker>
           )}
 
-          {/* Route */}
+          
           {pickup?.lat && drop?.lat && (
             <Polyline
               positions={[

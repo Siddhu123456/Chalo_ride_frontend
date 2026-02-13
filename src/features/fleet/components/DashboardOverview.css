@@ -1,7 +1,4 @@
-/* =====================================================
-   DASHBOARD OVERVIEW
-   Production-Ready Styling
-   ===================================================== */
+
 
 :root {
   --theme-white: #fff;
@@ -15,18 +12,14 @@
   --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* =====================================================
-   CONTAINER
-   ===================================================== */
+
 .do-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
 
-/* =====================================================
-   STATS GRID
-   ===================================================== */
+
 .do-stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -103,18 +96,14 @@
   line-height: 1;
 }
 
-/* =====================================================
-   CONTENT GRID
-   ===================================================== */
+
 .do-content-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
 }
 
-/* =====================================================
-   MAIN CARD
-   ===================================================== */
+
 .do-main-card {
   background: var(--theme-white);
   border: 1.5px solid var(--theme-border);
@@ -139,9 +128,7 @@
   margin: 0;
 }
 
-/* =====================================================
-   ACTION BUTTON
-   ===================================================== */
+
 .do-action-btn {
   padding: 0.75rem 1.5rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
@@ -178,9 +165,7 @@
   box-shadow: 0 5px 14px rgba(220, 53, 69, 0.35);
 }
 
-/* =====================================================
-   PENDING LIST
-   ===================================================== */
+
 .do-pending-list {
   display: flex;
   flex-direction: column;
@@ -222,9 +207,7 @@
   font-weight: 400;
 }
 
-/* =====================================================
-   PILL BADGES
-   ===================================================== */
+
 .do-pill {
   padding: 0.4rem 1rem;
   border-radius: 20px;
@@ -247,9 +230,7 @@
   border: 1px solid #c3e6cb;
 }
 
-/* =====================================================
-   EMPTY MESSAGE
-   ===================================================== */
+
 .do-empty-msg {
   text-align: center;
   color: #6c757d;
@@ -260,9 +241,7 @@
   border: 1px dashed var(--theme-border);
 }
 
-/* =====================================================
-   SIDE CARD
-   ===================================================== */
+
 .do-side-card {
   background: var(--theme-white);
   border: 1.5px solid var(--theme-border);
@@ -294,9 +273,7 @@
   justify-content: center;
 }
 
-/* =====================================================
-   RESPONSIVE DESIGN
-   ===================================================== */
+
 @media (max-width: 1200px) {
   .do-content-grid {
     grid-template-columns: 1fr;
