@@ -21,9 +21,6 @@ const TripTracking = ({ onNewRide }) => {
     (state) => state.trip
   );
 
-  /* -------------------------------------------------
-     Poll trip status while trip is active
-  -------------------------------------------------- */
   useEffect(() => {
     if (!tripId || !ACTIVE_STATES.includes(status)) return;
 
@@ -34,18 +31,13 @@ const TripTracking = ({ onNewRide }) => {
     return () => clearInterval(interval);
   }, [tripId, status, dispatch]);
 
-  /* -------------------------------------------------
-     Fetch OTP when assigned
-  -------------------------------------------------- */
   useEffect(() => {
     if (status === "ASSIGNED") {
       dispatch(fetchTripOtp(tripId));
     }
   }, [status, tripId, dispatch]);
 
-  /* -------------------------------------------------
-     AUTO RESET when trip is completed
-  -------------------------------------------------- */
+
   useEffect(() => {
     if (status === "COMPLETED") {
       // Small delay so user sees completion UI
@@ -59,9 +51,6 @@ const TripTracking = ({ onNewRide }) => {
     }
   }, [status, dispatch, onNewRide]);
 
-  /* -------------------------------------------------
-     SEARCHING
-  -------------------------------------------------- */
   if (loading || status === "REQUESTED") {
     return (
       <div className="panel-card fade-in">
@@ -74,9 +63,7 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* -------------------------------------------------
-     ASSIGNED / PICKED_UP
-  -------------------------------------------------- */
+
   if (status === "ASSIGNED" || status === "PICKED_UP") {
     return (
       <div className="panel-card fade-in">
@@ -116,9 +103,6 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* -------------------------------------------------
-     COMPLETED (short-lived UI)
-  -------------------------------------------------- */
   if (status === "COMPLETED") {
     return (
       <div className="panel-card fade-in">

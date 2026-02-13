@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 import { registerUser, resetAuth, fetchCountries } from '../../../store/authSlice.js';
 import './Register.css';
 
 const Register = ({ onRegisterSuccess }) => {
   const dispatch = useDispatch();
   const { loading, success, error, countries } = useSelector(state => state.auth);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     full_name: '',
@@ -16,16 +19,10 @@ const Register = ({ onRegisterSuccess }) => {
     password: ''
   });
 
-  /* -----------------------------------------
-     Fetch countries on mount
-  ------------------------------------------ */
   useEffect(() => {
     dispatch(fetchCountries());
   }, [dispatch]);
 
-  /* -----------------------------------------
-     Auto-select first country once loaded
-  ------------------------------------------ */
   useEffect(() => {
     if (countries.length > 0 && !formData.country_code) {
       setFormData(prev => ({
@@ -36,17 +33,26 @@ const Register = ({ onRegisterSuccess }) => {
   }, [countries, formData.country_code]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    // Restrict phone to digits only and max 10
+    if (name === 'phone') {
+      const onlyDigits = value.replace(/\D/g, '');
+      if (onlyDigits.length <= 10) {
+        setFormData({ ...formData, phone: onlyDigits });
+      }
+      return;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(registerUser(formData));
   };
 
-  /* -----------------------------------------
-     After successful registration → switch to login
-  ------------------------------------------ */
   useEffect(() => {
     if (success) {
       onRegisterSuccess();
@@ -88,22 +94,54 @@ const Register = ({ onRegisterSuccess }) => {
 
           <div className="form-row phone-box">
             <label>Mobile Number</label>
-            <input name="phone" onChange={handleChange} />
+            <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              maxLength={10}
+              inputMode="numeric"
+              pattern="[0-9]*"
+              placeholder="Enter 10 digit number"
+              required
+            />
+
           </div>
         </div>
 
         <div className="split-flex-row">
-          <div className="form-row">
+          <div className="form-row gender-label">
             <label>Gender</label>
-            <select name="gender" onChange={handleChange}>
+            <select
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Gender</option>
               <option value="MALE">Male</option>
               <option value="FEMALE">Female</option>
             </select>
+
           </div>
 
           <div className="form-row">
             <label>Password</label>
-            <input name="password" type="password" onChange={handleChange} />
+            <div className="password-wrapper">
+              <input
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+              <span
+                className="eye-icon"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            </div>
+
           </div>
         </div>
 

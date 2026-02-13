@@ -58,7 +58,7 @@ export const fetchFleetTenants = createAsyncThunk(
     try {
       const res = await axios.get(
         `${API_URL}/tenants`,
-        { params: { user_id } }   // ✅ pass user_id
+        { params: { user_id } }   
       );
       return res.data;
     } catch (err) {
@@ -189,15 +189,7 @@ export const fetchFleetDrivers = createAsyncThunk(
   }
 );
 
-/**
- * ✅ UPDATED: Add driver by EMAIL
- * POST /fleets/{fleet_id}/drivers
- * body:
- * {
- *   "email": "...",
- *   "driver_type": "CAB"
- * }
- */
+
 export const addDriverToFleet = createAsyncThunk(
   "fleet/addDriver",
   async ({ fleetId, payload }, { rejectWithValue, dispatch }) => {
@@ -260,14 +252,7 @@ export const fetchAssignments = createAsyncThunk(
   }
 );
 
-/* -----------------------------------------
-   WALLET / FINANCIALS THUNKS
------------------------------------------- */
-
-/**
- * Fetch wallet details
- * GET /wallet/me
- */
+/// Wallet & Financials
 export const fetchWalletDetails = createAsyncThunk(
   "fleet/fetchWallet",
   async (_, { rejectWithValue }) => {
@@ -280,10 +265,7 @@ export const fetchWalletDetails = createAsyncThunk(
   }
 );
 
-/**
- * Fetch wallet transactions with pagination
- * GET /wallet/transactions?page=1&limit=20
- */
+
 export const fetchWalletTransactions = createAsyncThunk(
   "fleet/fetchTransactions",
   async ({ page = 1, limit = 20 }, { rejectWithValue }) => {
@@ -299,9 +281,86 @@ export const fetchWalletTransactions = createAsyncThunk(
   }
 );
 
-/* -----------------------------------------
-   SLICE
------------------------------------------- */
+// Settlements 
+export const fetchPendingSettlements = createAsyncThunk(
+  "fleet/fetchPendingSettlements",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/settlements/pending`, getHeaders());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch pending settlements"));
+    }
+  }
+);
+
+
+export const paySettlement = createAsyncThunk(
+  "fleet/paySettlement",
+  async (settlementId, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.post(
+        `${API_URL}/settlements/${settlementId}/pay`,
+        {},
+        getHeaders()
+      );
+      // Refresh data after payment
+      dispatch(fetchPendingSettlements());
+      dispatch(fetchSettlementHistory());
+      dispatch(fetchWalletDetails());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to pay settlement"));
+    }
+  }
+);
+
+
+export const fetchSettlementHistory = createAsyncThunk(
+  "fleet/fetchSettlementHistory",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/settlements/history`, getHeaders());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch settlement history"));
+    }
+  }
+);
+
+
+export const fetchSettlementTrips = createAsyncThunk(
+  "fleet/fetchSettlementTrips",
+  async (settlementId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/settlements/${settlementId}/trips`,
+        getHeaders()
+      );
+      return { settlementId, trips: res.data };
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch settlement trips"));
+    }
+  }
+);
+
+
+export const fetchSettlementTransactions = createAsyncThunk(
+  "fleet/fetchSettlementTransactions",
+  async (settlementId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/settlements/${settlementId}/transactions`,
+        getHeaders()
+      );
+      return { settlementId, transactions: res.data };
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch settlement transactions"));
+    }
+  }
+);
+
+
 
 const fleetSlice = createSlice({
   name: "fleet",
@@ -342,6 +401,12 @@ const fleetSlice = createSlice({
       total: 0,
     },
 
+    // Settlements
+    pendingSettlements: [],
+    settlementHistory: [],
+    selectedSettlementTrips: [],
+    selectedSettlementTransactions: [],
+
     loading: false,
     error: null,
     successMsg: null,
@@ -367,6 +432,11 @@ const fleetSlice = createSlice({
     clearSelectedVehicleForDocs: (state) => {
       state.selectedVehicleForDocs = null;
       state.selectedVehicleDocStatus = null;
+    },
+
+    clearSelectedSettlementDetails: (state) => {
+      state.selectedSettlementTrips = [];
+      state.selectedSettlementTransactions = [];
     },
   },
 
@@ -434,6 +504,27 @@ const fleetSlice = createSlice({
         };
       })
 
+      // Settlements
+      .addCase(fetchPendingSettlements.fulfilled, (state, action) => {
+        state.pendingSettlements = action.payload || [];
+      })
+
+      .addCase(fetchSettlementHistory.fulfilled, (state, action) => {
+        state.settlementHistory = action.payload || [];
+      })
+
+      .addCase(fetchSettlementTrips.fulfilled, (state, action) => {
+        state.selectedSettlementTrips = action.payload.trips || [];
+      })
+
+      .addCase(fetchSettlementTransactions.fulfilled, (state, action) => {
+        state.selectedSettlementTransactions = action.payload.transactions || [];
+      })
+
+      .addCase(paySettlement.fulfilled, (state) => {
+        state.successMsg = "Settlement paid successfully";
+      })
+
       .addMatcher((action) => action.type.endsWith("/pending"), (state) => {
         state.loading = true;
         state.error = null;
@@ -456,6 +547,7 @@ export const {
   clearFleetError,
   setSelectedVehicleForDocs,
   clearSelectedVehicleForDocs,
+  clearSelectedSettlementDetails,
 } = fleetSlice.actions;
 
 export default fleetSlice.reducer;

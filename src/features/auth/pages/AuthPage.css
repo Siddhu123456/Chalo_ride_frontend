@@ -196,7 +196,8 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    width: 100%; /* Ensure form-row takes full available width */
+    width: 100%; 
+    margin-bottom: o;/* Ensure form-row takes full available width */
 }
 
 .form-row label {

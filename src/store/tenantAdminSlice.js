@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'http://localhost:8000/tenant-admin';
+const WALLET_API_URL = 'http://localhost:8000/wallet';
+const SETTLEMENT_API_URL = 'http://localhost:8000/tenant/settlements';
 
 const getHeaders = () => ({
   headers: {
@@ -10,12 +12,7 @@ const getHeaders = () => ({
   },
 });
 
-/* ─────────────────────────────────────────────────────────────
-   PROFILE
-   Route: GET /tenant-admin/me/profile
-   Returns: { user_id, full_name, phone, email, gender,
-              tenant_id, tenant_name, countries: [...], created_on }
-───────────────────────────────────────────────────────────── */
+
 export const fetchTenantAdminProfile = createAsyncThunk(
   'tenantAdmin/fetchProfile',
   async (_, { rejectWithValue }) => {
@@ -27,11 +24,7 @@ export const fetchTenantAdminProfile = createAsyncThunk(
   }
 );
 
-/* ─────────────────────────────────────────────────────────────
-   VERIFICATION THUNKS
-───────────────────────────────────────────────────────────── */
 
-// Route: GET /tenant-admin/fleets/pending
 export const fetchPendingFleets = createAsyncThunk(
   'tenantAdmin/pendingFleets',
   async (_, { rejectWithValue }) => {
@@ -43,7 +36,7 @@ export const fetchPendingFleets = createAsyncThunk(
   }
 );
 
-// Route: GET /tenant-admin/drivers/pending
+
 export const fetchPendingDrivers = createAsyncThunk(
   'tenantAdmin/pendingDrivers',
   async (_, { rejectWithValue }) => {
@@ -55,7 +48,6 @@ export const fetchPendingDrivers = createAsyncThunk(
   }
 );
 
-// Route: GET /tenant-admin/vehicles/pending  (reserved for future backend route)
 export const fetchPendingVehicles = createAsyncThunk(
   'tenantAdmin/pendingVehicles',
   async (_, { rejectWithValue }) => {
@@ -67,11 +59,7 @@ export const fetchPendingVehicles = createAsyncThunk(
   }
 );
 
-/**
- * Route: GET /tenant-admin/{type}/{id}/documents
- *   type='fleets'  → /tenant-admin/fleets/{fleet_id}/documents
- *   type='drivers' → /tenant-admin/drivers/{driver_id}/documents
- */
+
 export const fetchEntityDocs = createAsyncThunk(
   'tenantAdmin/fetchDocs',
   async ({ type, id }, { rejectWithValue }) => {
@@ -83,16 +71,7 @@ export const fetchEntityDocs = createAsyncThunk(
   }
 );
 
-/**
- * Route: POST /tenant-admin/{type}/documents/{document_id}/verify
- *   type='fleets'  → /tenant-admin/fleets/documents/{docId}/verify
- *   type='drivers' → /tenant-admin/drivers/documents/{docId}/verify
- * Body:    { approve: bool }
- * Returns: { message, fleet_auto_approved | driver_auto_approved }
- *
- * We also pass entityId + type back in the result so the fulfilled handler
- * can re-fetch docs after a successful action, keeping the UI fresh.
- */
+
 export const verifyDocument = createAsyncThunk(
   'tenantAdmin/verifyDoc',
   async ({ type, docId, approve, entityId }, { rejectWithValue, dispatch }) => {
@@ -106,6 +85,14 @@ export const verifyDocument = createAsyncThunk(
       if (entityId) {
         dispatch(fetchEntityDocs({ type, id: entityId }));
       }
+
+      if (type === 'fleets') {
+        dispatch(fetchPendingFleets());
+      } else if (type === 'drivers') {
+        dispatch(fetchPendingDrivers());
+      } else if (type === 'vehicles') {
+        dispatch(fetchPendingVehicles());
+      }
       return { docId, approve, type, entityId, serverResponse: res.data };
     } catch (err) {
       return rejectWithValue(err.response?.data?.detail ?? err.message);
@@ -113,12 +100,7 @@ export const verifyDocument = createAsyncThunk(
   }
 );
 
-/* ─────────────────────────────────────────────────────────────
-   CITY THUNKS — verified against:
-   app/routes/tenant_admin_tenant_setup_routes.py  (prefix /tenant-admin)
-───────────────────────────────────────────────────────────── */
 
-// Route: GET /tenant-admin/tenants/{tenant_id}/cities
 export const fetchTenantCities = createAsyncThunk(
   'tenantAdmin/fetchTenantCities',
   async (tenantId, { rejectWithValue }) => {
@@ -130,7 +112,6 @@ export const fetchTenantCities = createAsyncThunk(
   }
 );
 
-// Route: GET /tenant-admin/{tenant_id}/countries/{country_code}/available-cities
 export const fetchAvailableCities = createAsyncThunk(
   'tenantAdmin/fetchAvailableCities',
   async ({ tenantId, countryCode }, { rejectWithValue }) => {
@@ -147,12 +128,6 @@ export const fetchAvailableCities = createAsyncThunk(
   }
 );
 
-/**
- * Route: POST /tenant-admin/{tenant_id}/countries/{country_code}/city
- * Body: { name, timezone, currency,
- *         fare_configs: [{ vehicle_category, base_fare, per_km_rate,
- *                          per_min_rate, minimum_fare, platform_commission_percent }] }
- */
 export const addCityWithFare = createAsyncThunk(
   'tenantAdmin/addCityWithFare',
   async ({ tenantId, countryCode, body }, { rejectWithValue, dispatch }) => {
@@ -170,7 +145,6 @@ export const addCityWithFare = createAsyncThunk(
   }
 );
 
-// Route: GET /tenant-admin/{tenant_id}/cities/{city_id}/fare-configs
 export const fetchCityFareConfigs = createAsyncThunk(
   'tenantAdmin/fetchCityFareConfigs',
   async ({ tenantId, cityId }, { rejectWithValue }) => {
@@ -187,7 +161,6 @@ export const fetchCityFareConfigs = createAsyncThunk(
   }
 );
 
-// Route: PUT /tenant-admin/{tenant_id}/fare-config/{fare_config_id}
 export const updateFareConfig = createAsyncThunk(
   'tenantAdmin/updateFareConfig',
   async ({ tenantId, fareConfigId, body }, { rejectWithValue }) => {
@@ -199,6 +172,177 @@ export const updateFareConfig = createAsyncThunk(
           getHeaders()
         )
       ).data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+
+export const fetchVerifiedFleets = createAsyncThunk(
+  'tenantAdmin/fetchVerifiedFleets',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${SETTLEMENT_API_URL}/fleet/verified_fleets`, getHeaders());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Fetch wallet details
+ * GET /wallet/me
+ */
+export const fetchTenantWallet = createAsyncThunk(
+  'tenantAdmin/fetchWallet',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${WALLET_API_URL}/me`, getHeaders());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Fetch wallet transactions with pagination
+ * GET /wallet/transactions?page=1&limit=20
+ */
+export const fetchTenantWalletTransactions = createAsyncThunk(
+  'tenantAdmin/fetchWalletTransactions',
+  async ({ page = 1, limit = 20 }, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${WALLET_API_URL}/transactions?page=${page}&limit=${limit}`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/* ─────────────────────────────────────────────────────────────
+   SETTLEMENT THUNKS
+───────────────────────────────────────────────────────────── */
+
+/**
+ * Get pending commission for a specific fleet
+ * GET /tenant/settlements/fleet/{fleet_id}/pending-commission
+ */
+export const fetchFleetPendingCommission = createAsyncThunk(
+  'tenantAdmin/fetchFleetPendingCommission',
+  async (fleetId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${SETTLEMENT_API_URL}/fleet/${fleetId}/pending-commission`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Get unsettled trips for a specific fleet
+ * GET /tenant/settlements/fleet/{fleet_id}/unsettled-trips
+ */
+export const fetchFleetUnsettledTrips = createAsyncThunk(
+  'tenantAdmin/fetchFleetUnsettledTrips',
+  async (fleetId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${SETTLEMENT_API_URL}/fleet/${fleetId}/unsettled-trips`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Create a settlement for a fleet
+ * POST /tenant/settlements/fleet/{fleet_id}
+ */
+export const createFleetSettlement = createAsyncThunk(
+  'tenantAdmin/createFleetSettlement',
+  async (fleetId, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.post(
+        `${SETTLEMENT_API_URL}/fleet/${fleetId}`,
+        {},
+        getHeaders()
+      );
+      // Refresh data after creating settlement
+      dispatch(fetchFleetSettlementHistory(fleetId));
+      dispatch(fetchFleetPendingCommission(fleetId));
+      dispatch(fetchTenantWallet());
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Get settlement history for a specific fleet
+ * GET /tenant/settlements/fleet/{fleet_id}/history
+ */
+export const fetchFleetSettlementHistory = createAsyncThunk(
+  'tenantAdmin/fetchFleetSettlementHistory',
+  async (fleetId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${SETTLEMENT_API_URL}/fleet/${fleetId}/history`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Get settlement details
+ * GET /tenant/settlements/{settlement_id}
+ */
+export const fetchSettlementDetails = createAsyncThunk(
+  'tenantAdmin/fetchSettlementDetails',
+  async (settlementId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${SETTLEMENT_API_URL}/${settlementId}`,
+        getHeaders()
+      );
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.detail ?? err.message);
+    }
+  }
+);
+
+/**
+ * Get trips in a settlement
+ * GET /tenant/settlements/{settlement_id}/trips
+ */
+export const fetchSettlementTrips = createAsyncThunk(
+  'tenantAdmin/fetchSettlementTrips',
+  async (settlementId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${SETTLEMENT_API_URL}/${settlementId}/trips`,
+        getHeaders()
+      );
+      return { settlementId, trips: res.data };
     } catch (err) {
       return rejectWithValue(err.response?.data?.detail ?? err.message);
     }
@@ -235,10 +379,30 @@ const tenantAdminSlice = createSlice({
     pendingVehicles: [],
     activeDocs: [],          // documents for currently-selected entity
 
+    /* ── Verified fleets for financials ── */
+    verifiedFleets: [],      // approved fleets for settlement management
+
     /* ── City / Fare ── */
     cities: [],
     availableCities: [],
     cityFareConfigs: [],
+
+    /* ── Wallet & Financials ── */
+    wallet: null,
+    transactions: [],
+    transactionsPagination: {
+      page: 1,
+      limit: 20,
+      total: 0,
+    },
+
+    /* ── Settlements ── */
+    selectedFleetId: null,
+    fleetPendingCommission: null,
+    fleetUnsettledTrips: [],
+    fleetSettlementHistory: [],
+    selectedSettlementDetails: null,
+    selectedSettlementTrips: [],
 
     /* ── Global UI ── */
     loading: false,
@@ -249,7 +413,7 @@ const tenantAdminSlice = createSlice({
 
   reducers: {
     clearTenantState(state) {
-      state.error      = null;
+      state.error = null;
       state.successMsg = null;
     },
     resetActiveDocs(state) {
@@ -261,6 +425,17 @@ const tenantAdminSlice = createSlice({
     clearCityFareConfigs(state) {
       state.cityFareConfigs = [];
     },
+    setSelectedFleetId(state, action) {
+      state.selectedFleetId = action.payload;
+      // Clear previous fleet data
+      state.fleetPendingCommission = null;
+      state.fleetUnsettledTrips = [];
+      state.fleetSettlementHistory = [];
+    },
+    clearSettlementDetails(state) {
+      state.selectedSettlementDetails = null;
+      state.selectedSettlementTrips = [];
+    },
   },
 
   extraReducers: (builder) => {
@@ -269,33 +444,29 @@ const tenantAdminSlice = createSlice({
       /* ── Profile — fully isolated ── */
       .addCase(fetchTenantAdminProfile.pending, (s) => {
         s.profileLoading = true;
-        s.profileError   = null;
+        s.profileError = null;
       })
       .addCase(fetchTenantAdminProfile.fulfilled, (s, a) => {
         s.profileLoading = false;
-        s.profile        = a.payload;
+        s.profile = a.payload;
       })
       .addCase(fetchTenantAdminProfile.rejected, (s, a) => {
         s.profileLoading = false;
-        s.profileError   = a.payload ?? 'Failed to load profile';
+        s.profileError = a.payload ?? 'Failed to load profile';
       })
 
       /* ── Verification queues ── */
-      .addCase(fetchPendingFleets.fulfilled,   (s, a) => { s.pendingFleets   = a.payload; })
-      .addCase(fetchPendingDrivers.fulfilled,  (s, a) => { s.pendingDrivers  = a.payload; })
+      .addCase(fetchPendingFleets.fulfilled, (s, a) => { s.pendingFleets = a.payload; })
+      .addCase(fetchPendingDrivers.fulfilled, (s, a) => { s.pendingDrivers = a.payload; })
       .addCase(fetchPendingVehicles.fulfilled, (s, a) => { s.pendingVehicles = a.payload; })
 
-      /* ── Entity docs ── */
+      .addCase(fetchVerifiedFleets.fulfilled, (s, a) => { s.verifiedFleets = a.payload; })
+
       .addCase(fetchEntityDocs.fulfilled, (s, a) => { s.activeDocs = a.payload; })
 
-      /* ── Verify document:
-            Optimistically update the specific doc's status in activeDocs
-            so the Approve/Reject buttons disappear immediately.
-            The subsequent fetchEntityDocs (dispatched inside the thunk)
-            will overwrite with the real server state. ── */
       .addCase(verifyDocument.fulfilled, (s, a) => {
         const { docId, approve } = a.payload;
-        const newStatus          = approve ? 'APPROVED' : 'REJECTED';
+        const newStatus = approve ? 'APPROVED' : 'REJECTED';
         const idx = s.activeDocs.findIndex((d) => d.document_id === docId);
         if (idx !== -1) {
           s.activeDocs[idx] = { ...s.activeDocs[idx], verification_status: newStatus };
@@ -303,19 +474,19 @@ const tenantAdminSlice = createSlice({
       })
 
       /* ── Cities ── */
-      .addCase(fetchTenantCities.fulfilled,    (s, a) => { s.cities          = a.payload; })
+      .addCase(fetchTenantCities.fulfilled, (s, a) => { s.cities = a.payload; })
       .addCase(fetchAvailableCities.fulfilled, (s, a) => { s.availableCities = a.payload; })
 
       .addCase(addCityWithFare.fulfilled, (s) => {
         s.availableCities = [];
-        s.successMsg      = 'City onboarded successfully with fare configurations.';
+        s.successMsg = 'City onboarded successfully with fare configurations.';
       })
 
       /* ── Fare configs (isolated loading) ── */
-      .addCase(fetchCityFareConfigs.pending,   (s) => { s.fareLoading = true; })
+      .addCase(fetchCityFareConfigs.pending, (s) => { s.fareLoading = true; })
       .addCase(fetchCityFareConfigs.fulfilled, (s, a) => {
         s.cityFareConfigs = a.payload;
-        s.fareLoading     = false;
+        s.fareLoading = false;
       })
       .addCase(fetchCityFareConfigs.rejected, (s) => { s.fareLoading = false; })
 
@@ -327,11 +498,47 @@ const tenantAdminSlice = createSlice({
         s.successMsg = 'Fare config updated successfully.';
       })
 
-      /* ── Global loading / error matchers
-         Exclude: profile thunk (has its own loading) and fareConfig thunk
-         (has its own fareLoading) so we don't double-set them. ── */
+      /* ── Wallet ── */
+      .addCase(fetchTenantWallet.fulfilled, (s, a) => {
+        s.wallet = a.payload;
+      })
+
+      .addCase(fetchTenantWalletTransactions.fulfilled, (s, a) => {
+        s.transactions = a.payload.transactions || [];
+        s.transactionsPagination = {
+          page: a.payload.page,
+          limit: a.payload.limit,
+          total: a.payload.total,
+        };
+      })
+
+      /* ── Settlements ── */
+      .addCase(fetchFleetPendingCommission.fulfilled, (s, a) => {
+        s.fleetPendingCommission = a.payload;
+      })
+
+      .addCase(fetchFleetUnsettledTrips.fulfilled, (s, a) => {
+        s.fleetUnsettledTrips = a.payload || [];
+      })
+
+      .addCase(createFleetSettlement.fulfilled, (s) => {
+        s.successMsg = 'Settlement created successfully';
+      })
+
+      .addCase(fetchFleetSettlementHistory.fulfilled, (s, a) => {
+        s.fleetSettlementHistory = a.payload || [];
+      })
+
+      .addCase(fetchSettlementDetails.fulfilled, (s, a) => {
+        s.selectedSettlementDetails = a.payload;
+      })
+
+      .addCase(fetchSettlementTrips.fulfilled, (s, a) => {
+        s.selectedSettlementTrips = a.payload.trips || [];
+      })
+
       .addMatcher(
-        (a) => a.type.endsWith('/pending')   && !isExcluded(a.type),
+        (a) => a.type.endsWith('/pending') && !isExcluded(a.type),
         (s) => { s.loading = true; s.error = null; }
       )
       .addMatcher(
@@ -339,7 +546,7 @@ const tenantAdminSlice = createSlice({
         (s) => { s.loading = false; }
       )
       .addMatcher(
-        (a) => a.type.endsWith('/rejected')  && !isExcluded(a.type),
+        (a) => a.type.endsWith('/rejected') && !isExcluded(a.type),
         (s, a) => { s.loading = false; s.error = a.payload ?? 'Request failed.'; }
       );
   },
@@ -350,6 +557,8 @@ export const {
   resetActiveDocs,
   clearAvailableCities,
   clearCityFareConfigs,
+  setSelectedFleetId,
+  clearSettlementDetails,
 } = tenantAdminSlice.actions;
 
 export default tenantAdminSlice.reducer;

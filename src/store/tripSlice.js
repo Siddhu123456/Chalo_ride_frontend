@@ -87,9 +87,7 @@ export const cancelTrip = createAsyncThunk(
   }
 );
 
-/* -----------------------------------------
-   SLICE
------------------------------------------- */
+//slice
 const tripSlice = createSlice({
   name: "trip",
   initialState: {

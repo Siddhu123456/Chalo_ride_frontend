@@ -3,29 +3,51 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchWalletDetails,
   fetchWalletTransactions,
+  fetchPendingSettlements,
+  fetchSettlementHistory,
+  fetchSettlementTrips,
+  fetchSettlementTransactions,
+  paySettlement,
 } from "../../../store/fleetSlice";
 import "./Financials.css";
 
 const Financials = () => {
   const dispatch = useDispatch();
-
   const {
     wallet,
     transactions,
     transactionsPagination,
+    pendingSettlements,
+    settlementHistory,
+    selectedSettlementTrips,
+    selectedSettlementTransactions,
     loading,
   } = useSelector((state) => state.fleet);
 
-  const [page, setPage] = useState(1);
+  const [activeTab, setActiveTab] = useState("WALLET");
+  const [txPage, setTxPage] = useState(1);
+  const [expandedSettlement, setExpandedSettlement] = useState(null);
+  const [viewingDetails, setViewingDetails] = useState(null);
 
+  // Fetch wallet data on mount
   useEffect(() => {
     dispatch(fetchWalletDetails());
   }, [dispatch]);
 
+  // Fetch transactions when wallet is available
   useEffect(() => {
     if (!wallet) return;
-    dispatch(fetchWalletTransactions({ page, limit: 20 }));
-  }, [wallet, page, dispatch]);
+    dispatch(fetchWalletTransactions({ page: txPage, limit: 20 }));
+  }, [wallet, txPage, dispatch]);
+
+  // Fetch settlements when tab changes
+  useEffect(() => {
+    if (activeTab === "SETTLEMENTS") {
+      dispatch(fetchPendingSettlements());
+    } else if (activeTab === "HISTORY") {
+      dispatch(fetchSettlementHistory());
+    }
+  }, [activeTab, dispatch]);
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat("en-IN", {
@@ -40,85 +62,362 @@ const Financials = () => {
     }).format(new Date(date));
 
   const totalPages = Math.ceil(
-    (transactionsPagination?.total || 0) /
-      (transactionsPagination?.limit || 1)
+    (transactionsPagination?.total || 0) / (transactionsPagination?.limit || 1)
   );
 
+  const handlePaySettlement = async (settlementId) => {
+    if (window.confirm("Confirm payment for this settlement?")) {
+      await dispatch(paySettlement(settlementId));
+    }
+  };
+
+  const handleViewDetails = (settlementId, type) => {
+    setViewingDetails({ settlementId, type });
+    if (type === "trips") {
+      dispatch(fetchSettlementTrips(settlementId));
+    } else if (type === "transactions") {
+      dispatch(fetchSettlementTransactions(settlementId));
+    }
+  };
+
+  const closeDetails = () => {
+    setViewingDetails(null);
+  };
+
+  const getStatusBadge = (status) => {
+    const statusMap = {
+      PENDING: { label: "Pending", className: "status-pending" },
+      COMPLETED: { label: "Paid", className: "status-completed" },
+      CANCELLED: { label: "Cancelled", className: "status-cancelled" },
+    };
+    const config = statusMap[status] || { label: status, className: "" };
+    return <span className={`fin-status-badge ${config.className}`}>{config.label}</span>;
+  };
+
+  const getDirectionBadge = (direction) => {
+    return (
+      <span className={`fin-direction-badge ${direction.toLowerCase()}`}>
+        {direction === "CREDIT" ? "+" : "−"}
+      </span>
+    );
+  };
+
   return (
-    <div className="wallet-container">
-      {/* Wallet Header */}
-      <div className="wallet-header">
-        <h1 className="wallet-title">Wallet</h1>
-        <p className="wallet-subtitle">Fleet financial summary</p>
+    <div className="fin-container">
+      {/* Header */}
+      <div className="fin-header">
+        <div>
+          <h1 className="fin-title">Financials</h1>
+          <p className="fin-subtitle">Wallet & Commission Settlements</p>
+        </div>
       </div>
 
-      {/* Wallet Balance */}
-      <div className="wallet-balance-card">
-        <span className="wallet-balance-label">Current Balance</span>
-        <h2 className="wallet-balance-value">
-          {formatCurrency(wallet?.balance)}
-        </h2>
-        <span className="wallet-id">
-          Wallet ID: {wallet?.wallet_id ?? "—"}
-        </span>
+      {/* Wallet Balance Card */}
+      <div className="fin-balance-card">
+        <div className="fin-balance-content">
+          <span className="fin-balance-label">Current Balance</span>
+          <h2 className="fin-balance-value">{formatCurrency(wallet?.balance)}</h2>
+          <span className="fin-wallet-id">Wallet ID: {wallet?.wallet_id ?? "—"}</span>
+        </div>
       </div>
 
-      {/* Transactions */}
-      <div className="wallet-transactions">
-        <h2 className="wallet-section-title">Transactions</h2>
+      {/* Tab Navigation */}
+      <div className="fin-tabs">
+        {["WALLET", "SETTLEMENTS", "HISTORY"].map((tab) => (
+          <button
+            key={tab}
+            className={`fin-tab ${activeTab === tab ? "active" : ""}`}
+            onClick={() => setActiveTab(tab)}
+          >
+            {tab === "WALLET" && "💳"}
+            {tab === "SETTLEMENTS" && "⚡"}
+            {tab === "HISTORY" && "📜"}
+            <span>{tab.replace("_", " ")}</span>
+          </button>
+        ))}
+      </div>
 
-        {loading && transactions.length === 0 ? (
-          <p className="wallet-loading">Loading transactions…</p>
-        ) : transactions.length === 0 ? (
-          <p className="wallet-empty">No transactions found</p>
-        ) : (
-          <table className="wallet-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Trip</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((tx) => (
-                <tr key={tx.transaction_id}>
-                  <td>{tx.transaction_id}</td>
-                  <td>{tx.transaction_type}</td>
-                  <td>{formatCurrency(tx.amount)}</td>
-                  <td>{tx.trip_id ?? "—"}</td>
-                  <td>{formatDate(tx.created_on)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Tab Content */}
+      <div className="fin-content">
+        {/* WALLET TAB */}
+        {activeTab === "WALLET" && (
+          <div className="fin-section">
+            <h2 className="fin-section-title">Transaction History</h2>
+            {loading && transactions.length === 0 ? (
+              <div className="fin-loading">Loading transactions…</div>
+            ) : transactions.length === 0 ? (
+              <div className="fin-empty">
+                <div className="fin-empty-icon">💳</div>
+                <p>No transactions yet</p>
+              </div>
+            ) : (
+              <>
+                <div className="fin-table-wrapper">
+                  <table className="fin-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Reason</th>
+                        <th>Trip</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {transactions.map((tx) => (
+                        <tr key={tx.transaction_id}>
+                          <td>
+                            <span className="fin-id">#{tx.transaction_id}</span>
+                          </td>
+                          <td>{getDirectionBadge(tx.direction)}</td>
+                          <td className="fin-amount">
+                            <strong>{formatCurrency(tx.amount)}</strong>
+                          </td>
+                          <td>
+                            <span className="fin-reason">{tx.reason}</span>
+                          </td>
+                          <td>{tx.trip_id ? `#${tx.trip_id}` : "—"}</td>
+                          <td className="fin-date">{formatDate(tx.created_on)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                {totalPages > 1 && (
+                  <div className="fin-pagination">
+                    <button
+                      className="fin-page-btn"
+                      disabled={txPage === 1}
+                      onClick={() => setTxPage(txPage - 1)}
+                    >
+                      ← Previous
+                    </button>
+                    <span className="fin-page-info">
+                      Page {txPage} of {totalPages}
+                    </span>
+                    <button
+                      className="fin-page-btn"
+                      disabled={txPage === totalPages}
+                      onClick={() => setTxPage(txPage + 1)}
+                    >
+                      Next →
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         )}
 
-        {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="wallet-pagination">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage(page - 1)}
-            >
-              Previous
-            </button>
+        {/* SETTLEMENTS TAB */}
+        {activeTab === "SETTLEMENTS" && (
+          <div className="fin-section">
+            <h2 className="fin-section-title">Pending Commission Settlements</h2>
+            {loading && pendingSettlements.length === 0 ? (
+              <div className="fin-loading">Loading settlements…</div>
+            ) : pendingSettlements.length === 0 ? (
+              <div className="fin-empty">
+                <div className="fin-empty-icon">⚡</div>
+                <p>No pending settlements</p>
+              </div>
+            ) : (
+              <div className="fin-settlements-grid">
+                {pendingSettlements.map((settlement) => (
+                  <div key={settlement.settlement_id} className="fin-settlement-card">
+                    <div className="fin-settlement-header">
+                      <div>
+                        <h3 className="fin-settlement-id">
+                          Settlement #{settlement.settlement_id}
+                        </h3>
+                        <span className="fin-settlement-date">
+                          {formatDate(settlement.created_on)}
+                        </span>
+                      </div>
+                      {getStatusBadge(settlement.status)}
+                    </div>
 
-            <span>
-              Page {page} of {totalPages}
-            </span>
+                    <div className="fin-settlement-amount">
+                      <span className="fin-label">Total Commission</span>
+                      <h2 className="fin-value">{formatCurrency(settlement.total_commission)}</h2>
+                    </div>
 
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage(page + 1)}
-            >
-              Next
-            </button>
+                    <div className="fin-settlement-trips">
+                      <span className="fin-label">
+                        {settlement.trips?.length || 0} trip(s) included
+                      </span>
+                    </div>
+
+                    <div className="fin-settlement-actions">
+                      <button
+                        className="fin-btn-secondary"
+                        onClick={() => handleViewDetails(settlement.settlement_id, "trips")}
+                      >
+                        View Trips
+                      </button>
+                      <button
+                        className="fin-btn-primary"
+                        onClick={() => handlePaySettlement(settlement.settlement_id)}
+                      >
+                        Pay Now
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* HISTORY TAB */}
+        {activeTab === "HISTORY" && (
+          <div className="fin-section">
+            <h2 className="fin-section-title">Settlement History</h2>
+            {loading && settlementHistory.length === 0 ? (
+              <div className="fin-loading">Loading history…</div>
+            ) : settlementHistory.length === 0 ? (
+              <div className="fin-empty">
+                <div className="fin-empty-icon">📜</div>
+                <p>No settlement history</p>
+              </div>
+            ) : (
+              <div className="fin-table-wrapper">
+                <table className="fin-table">
+                  <thead>
+                    <tr>
+                      <th>Settlement ID</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Created</th>
+                      <th>Paid On</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {settlementHistory.map((settlement) => (
+                      <tr key={settlement.settlement_id}>
+                        <td>
+                          <span className="fin-id">#{settlement.settlement_id}</span>
+                        </td>
+                        <td className="fin-amount">
+                          <strong>{formatCurrency(settlement.total_commission)}</strong>
+                        </td>
+                        <td>{getStatusBadge(settlement.status)}</td>
+                        <td className="fin-date">{formatDate(settlement.created_on)}</td>
+                        <td className="fin-date">
+                          {settlement.paid_on ? formatDate(settlement.paid_on) : "—"}
+                        </td>
+                        <td>
+                          <button
+                            className="fin-btn-link"
+                            onClick={() => handleViewDetails(settlement.settlement_id, "trips")}
+                          >
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
       </div>
+
+      {/* Details Modal */}
+      {viewingDetails && (
+        <div className="fin-modal-overlay" onClick={closeDetails}>
+          <div className="fin-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="fin-modal-header">
+              <h2>
+                {viewingDetails.type === "trips"
+                  ? "Settlement Trips"
+                  : "Settlement Transactions"}
+              </h2>
+              <button className="fin-modal-close" onClick={closeDetails}>
+                ✕
+              </button>
+            </div>
+
+            <div className="fin-modal-content">
+              {viewingDetails.type === "trips" && (
+                <>
+                  {selectedSettlementTrips.length === 0 ? (
+                    <p className="fin-empty-text">No trips found</p>
+                  ) : (
+                    <div className="fin-table-wrapper">
+                      <table className="fin-table">
+                        <thead>
+                          <tr>
+                            <th>Trip ID</th>
+                            <th>Commission Amount</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedSettlementTrips.map((trip) => (
+                            <tr key={trip.trip_id}>
+                              <td>
+                                <span className="fin-id">#{trip.trip_id}</span>
+                              </td>
+                              <td className="fin-amount">
+                                <strong>{formatCurrency(trip.commission_amount)}</strong>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {viewingDetails.type === "transactions" && (
+                <>
+                  {selectedSettlementTransactions.length === 0 ? (
+                    <p className="fin-empty-text">No transactions found</p>
+                  ) : (
+                    <div className="fin-table-wrapper">
+                      <table className="fin-table">
+                        <thead>
+                          <tr>
+                            <th>Transaction ID</th>
+                            <th>Wallet ID</th>
+                            <th>Amount</th>
+                            <th>Direction</th>
+                            <th>Reason</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedSettlementTransactions.map((tx) => (
+                            <tr key={tx.transaction_id}>
+                              <td>
+                                <span className="fin-id">#{tx.transaction_id}</span>
+                              </td>
+                              <td>{tx.wallet_id}</td>
+                              <td className="fin-amount">
+                                <strong>{formatCurrency(tx.amount)}</strong>
+                              </td>
+                              <td>{getDirectionBadge(tx.direction)}</td>
+                              <td>
+                                <span className="fin-reason">{tx.reason}</span>
+                              </td>
+                              <td className="fin-date">{formatDate(tx.created_on)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

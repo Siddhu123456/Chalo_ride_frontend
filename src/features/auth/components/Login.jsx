@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 import { loginUser } from '../../../store/authSlice.js';
 import './Login.css';
 
@@ -8,6 +10,7 @@ const Login = ({ onLoginSuccess }) => {
   const { loading, error, authStep } = useSelector(state => state.auth);
 
   const [creds, setCreds] = useState({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setCreds({ ...creds, [e.target.name]: e.target.value });
@@ -18,7 +21,6 @@ const Login = ({ onLoginSuccess }) => {
     dispatch(loginUser(creds));
   };
 
-  // ✅ When login step completes, notify parent
   useEffect(() => {
     if (authStep === 'ROLE_SELECT') {
       onLoginSuccess();
@@ -45,12 +47,21 @@ const Login = ({ onLoginSuccess }) => {
 
         <div className="form-row">
           <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            onChange={handleChange}
-            required
-          />
+          <div className="password-wrapper">
+            <input
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              value={creds.password}
+              onChange={handleChange}
+              required
+            />
+            <span
+              className="eye-icon"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
         </div>
 
         <button type="submit" className="submit-btn" disabled={loading}>

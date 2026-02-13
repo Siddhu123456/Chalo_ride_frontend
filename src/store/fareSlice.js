@@ -61,6 +61,10 @@ const fareSlice = createSlice({
   },
 
   reducers: {
+    setInitialPickup: (state, action) => {
+      state.pickupAddress = action.payload.address;
+    },
+
     setVehicleCategory: (state, action) => {
       state.vehicleCategory = action.payload;
     },
@@ -97,7 +101,7 @@ const fareSlice = createSlice({
         state.dropAddress = action.payload.drop_address;
         state.distanceKm = action.payload.distance_km;
 
-        // 🔥 normalize for FareDiscovery UI
+        // normalize for FareDiscovery UI
         state.estimates = (action.payload.estimates || [])
           .filter(e => e.available_drivers > 0)
           .map((e, idx) => ({
@@ -123,6 +127,7 @@ export const {
   setVehicleCategory,
   selectRide,
   resetFareState,
+  setInitialPickup,
 } = fareSlice.actions;
 
 export default fareSlice.reducer;

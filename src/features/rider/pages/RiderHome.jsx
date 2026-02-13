@@ -12,6 +12,7 @@ import L from "leaflet";
 
 import { fetchFareEstimates } from "../../../store/fareSlice";
 import { requestTrip } from "../../../store/tripSlice";
+import { setPickupLocation, setDropLocation } from "../../../store/locationSlice";
 
 import LocationPicker from "../components/LocationPicker";
 import FareDiscovery from "../components/FareDiscovery";
@@ -20,9 +21,8 @@ import TripTracking from "../components/TripTracking";
 
 import "./RiderHome.css";
 
-/* -----------------------------------------
-   Marker Icons
------------------------------------------- */
+
+
 const pickupIcon = L.icon({
   iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png",
   iconSize: [32, 32],
@@ -35,21 +35,13 @@ const dropIcon = L.icon({
   iconAnchor: [16, 32],
 });
 
-const activePickupIcon = L.icon({
-  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green.png",
-  iconSize: [36, 36],
-  iconAnchor: [18, 36],
+const currentLocationIcon = L.icon({
+  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png",
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
 });
 
-const activeDropIcon = L.icon({
-  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/red.png",
-  iconSize: [36, 36],
-  iconAnchor: [18, 36],
-});
 
-/* -----------------------------------------
-   Reverse Geocode Helper
------------------------------------------- */
 const reverseGeocode = async (lat, lng) => {
   const res = await fetch(
     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
@@ -58,10 +50,9 @@ const reverseGeocode = async (lat, lng) => {
   return data.display_name || "Unknown location";
 };
 
-/* -----------------------------------------
-   Map Click Handler (LOCKABLE)
------------------------------------------- */
-const MapClickHandler = ({ onPick, enabled }) => {
+
+
+const MapClickHandler = ({ enabled, onPick }) => {
   useMapEvents(
     enabled
       ? {
@@ -74,49 +65,40 @@ const MapClickHandler = ({ onPick, enabled }) => {
   return null;
 };
 
+
 const RiderHome = () => {
   const dispatch = useDispatch();
 
-  /* -----------------------------------------
-     Local UI State
-  ------------------------------------------ */
+
+  const pickup = useSelector((s) => s.location.pickup);
+  const drop = useSelector((s) => s.location.drop);
+  const currentLocation = useSelector((s) => s.location.currentLocation);
+
+
   const [step, setStep] = useState("location");
-  const [pickup, setPickup] = useState(null);
-  const [drop, setDrop] = useState(null);
   const [activePick, setActivePick] = useState("pickup");
 
-  /* -----------------------------------------
-     Redux State
-  ------------------------------------------ */
-  const selectedRide = useSelector((state) => state.fare.selectedRide);
-  const cityId = useSelector((state) => state.fare.cityId);
-  const trip = useSelector((state) => state.trip);
+  const selectedRide = useSelector((s) => s.fare.selectedRide);
+  const cityId = useSelector((s) => s.fare.cityId);
+  const trip = useSelector((s) => s.trip);
 
-  /* -----------------------------------------
-     Map Lock Logic
-  ------------------------------------------ */
   const isMapLocked = step !== "location";
 
-  /* -----------------------------------------
-     Map Click Logic
-  ------------------------------------------ */
   const handleMapPick = async ({ lat, lng }) => {
     if (isMapLocked) return;
 
     const address = await reverseGeocode(lat, lng);
 
     if (activePick === "pickup") {
-      setPickup({ lat, lng, address });
+      dispatch(setPickupLocation({ lat, lng, address }));
     } else {
-      setDrop({ lat, lng, address });
+      dispatch(setDropLocation({ lat, lng, address }));
     }
   };
 
-  /* -----------------------------------------
-     Confirm Locations → Fare Discovery
-  ------------------------------------------ */
+
   const handleLocationConfirm = async () => {
-    if (!pickup || !drop) return;
+    if (!pickup?.lat || !drop?.lat) return;
 
     await dispatch(
       fetchFareEstimates({
@@ -132,9 +114,7 @@ const RiderHome = () => {
     setStep("fare");
   };
 
-  /* -----------------------------------------
-     Confirm Booking → Request Trip
-  ------------------------------------------ */
+
   const handleBookingConfirm = async () => {
     if (!pickup || !drop || !selectedRide || !cityId) return;
 
@@ -163,22 +143,14 @@ const RiderHome = () => {
     }
   };
 
-  /* -----------------------------------------
-     Navigation Helpers
-  ------------------------------------------ */
   const handleRideSelect = () => setStep("summary");
   const handleChangeRide = () => setStep("fare");
 
   const handleNewRide = () => {
-    setPickup(null);
-    setDrop(null);
-    setActivePick("pickup");
     setStep("location");
   };
 
-  /* -----------------------------------------
-     Right Panel Renderer
-  ------------------------------------------ */
+
   const renderControlPanel = () => {
     if (trip.tripId && trip.status && step === "tracking") {
       return <TripTracking onNewRide={handleNewRide} />;
@@ -189,22 +161,16 @@ const RiderHome = () => {
         return <FareDiscovery onRideSelect={handleRideSelect} />;
 
       case "summary":
-        if (!selectedRide) {
-          setStep("fare");
-          return null;
-        }
-
         return (
           <TripSummary
             ride={selectedRide}
-            pickup={pickup.address}
-            drop={drop.address}
+            pickup={pickup?.address}
+            drop={drop?.address}
             onConfirm={handleBookingConfirm}
             onChange={handleChangeRide}
           />
         );
 
-      case "location":
       default:
         return (
           <LocationPicker
@@ -218,52 +184,54 @@ const RiderHome = () => {
     }
   };
 
-  /* -----------------------------------------
-     Render
-  ------------------------------------------ */
+
+  const mapCenter = [
+    pickup?.lat || currentLocation?.lat || 17.385,
+    pickup?.lng || currentLocation?.lng || 78.4867,
+  ];
+
+
   return (
     <div className="rider-home-layout">
       <div className="map-section">
         <MapContainer
-          center={[17.385, 78.4867]}
+          center={mapCenter}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
           dragging={!isMapLocked}
           scrollWheelZoom={!isMapLocked}
-          doubleClickZoom={!isMapLocked}
-          touchZoom={!isMapLocked}
-          boxZoom={!isMapLocked}
-          keyboard={!isMapLocked}
         >
           <TileLayer
             attribution="&copy; OpenStreetMap"
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-          <MapClickHandler
-            onPick={handleMapPick}
-            enabled={!isMapLocked}
-          />
+          <MapClickHandler enabled={!isMapLocked} onPick={handleMapPick} />
 
-          {pickup && (
+         
+          {currentLocation?.lat && (
             <Marker
-              position={[pickup.lat, pickup.lng]}
-              icon={activePick === "pickup" ? activePickupIcon : pickupIcon}
+              position={[currentLocation.lat, currentLocation.lng]}
+              icon={currentLocationIcon}
             >
+              <Tooltip>Your Current Location</Tooltip>
+            </Marker>
+          )}
+
+          {pickup?.lat && (
+            <Marker position={[pickup.lat, pickup.lng]} icon={pickupIcon}>
               <Tooltip permanent>Pickup</Tooltip>
             </Marker>
           )}
 
-          {drop && (
-            <Marker
-              position={[drop.lat, drop.lng]}
-              icon={activePick === "drop" ? activeDropIcon : dropIcon}
-            >
+          {drop?.lat && (
+            <Marker position={[drop.lat, drop.lng]} icon={dropIcon}>
               <Tooltip permanent>Drop</Tooltip>
             </Marker>
           )}
 
-          {pickup && drop && (
+          {/* Route */}
+          {pickup?.lat && drop?.lat && (
             <Polyline
               positions={[
                 [pickup.lat, pickup.lng],
@@ -276,9 +244,7 @@ const RiderHome = () => {
         </MapContainer>
       </div>
 
-      <div className="control-section">
-        {renderControlPanel()}
-      </div>
+      <div className="control-section">{renderControlPanel()}</div>
     </div>
   );
 };

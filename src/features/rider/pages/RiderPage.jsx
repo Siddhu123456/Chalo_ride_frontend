@@ -5,9 +5,19 @@ import { useDispatch } from "react-redux";
 import RiderSideMenu from "../components/RiderSideMenu";
 import RiderNavBar from "../components/RiderNavBar";
 
+import { setPickupLocation, setCurrentLocation } from "../../../store/locationSlice";
 import { fetchRiderCity, fetchRiderProfile } from "../../../store/riderSlice";
 
 import "./RiderPage.css";
+
+const reverseGeocode = async (lat, lng) => {
+  const res = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+  );
+  const data = await res.json();
+  return data.display_name || "Unknown location";
+};
+
 
 const RiderPage = () => {
   const dispatch = useDispatch();
@@ -19,9 +29,14 @@ const RiderPage = () => {
     //  Detect city using browser location
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
+        async (pos) => {
           const { latitude, longitude } = pos.coords;
 
+          const address = await reverseGeocode(latitude, longitude);
+
+          dispatch(setPickupLocation({ lat: latitude, lng: longitude, address }));
+          dispatch(setCurrentLocation({ lat: latitude, lng: longitude }));
+          
           dispatch(
             fetchRiderCity({
               lat: latitude,
@@ -42,14 +57,13 @@ const RiderPage = () => {
 
   return (
     <div className="rider-layout">
-      {/* 1. Left Side Menu (Fixed) */}
+
       <RiderSideMenu />
 
       <main className="rider-main">
-        {/* 2. Top Navigation Bar (Sticky) */}
+    
         <RiderNavBar />
 
-        {/* 3. Dynamic Content Area */}
         <div className="rider-content-area">
           <Outlet />
         </div>

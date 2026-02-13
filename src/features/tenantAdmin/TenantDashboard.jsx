@@ -11,13 +11,15 @@ import {
 import TenantSidebar from './components/TenantSidebar';
 import VerificationPortal from './components/VerificationPortal';
 import CitySetup from './components/CitySetup';
+import TenantFinancials from './components/TenantFinancials';
 import './TenantDashboard.css';
 
 const VIEW_LABELS = {
-  FLEETS:   'Fleet Verification',
-  DRIVERS:  'Driver Verification',
-  VEHICLES: 'Vehicle Verification',
-  CITIES:   'Regional Setup',
+  FLEETS:     'Fleet Verification',
+  DRIVERS:    'Driver Verification',
+  VEHICLES:   'Vehicle Verification',
+  CITIES:     'Regional Setup',
+  FINANCIALS: 'Financial Management',
 };
 
 const TenantDashboard = () => {
@@ -137,6 +139,7 @@ const TenantDashboard = () => {
             />
           )}
           {activeView === 'CITIES' && <CitySetup />}
+          {activeView === 'FINANCIALS' && <TenantFinancials />}
         </section>
       </main>
     </div>

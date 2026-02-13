@@ -1,6 +1,6 @@
 /* =====================================================
-   FINANCIALS COMPONENT - PRODUCTION STYLING
-   Following Fleet Dashboard Theme
+   TENANT FINANCIALS COMPONENT - PRODUCTION STYLING
+   Following Tenant Dashboard Theme
    ===================================================== */
 
 :root {
@@ -19,25 +19,31 @@
 /* =====================================================
    MAIN CONTAINER
    ===================================================== */
-.fin-container {
+.tfin-container {
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =====================================================
    HEADER
    ===================================================== */
-.fin-header {
+.tfin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5rem;
 }
 
-.fin-title {
+.tfin-title {
   font-size: 2rem;
   font-weight: 800;
   color: var(--theme-font);
@@ -45,7 +51,7 @@
   letter-spacing: -0.5px;
 }
 
-.fin-subtitle {
+.tfin-subtitle {
   font-size: 0.95rem;
   color: #6c757d;
   margin: 0.5rem 0 0;
@@ -55,27 +61,39 @@
 /* =====================================================
    BALANCE CARD
    ===================================================== */
-.fin-balance-card {
+.tfin-balance-card {
   background: linear-gradient(135deg, var(--theme-white) 0%, #fafafa 100%);
   border: 2px solid var(--theme-border-yellow);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: var(--shadow-md);
   transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
 
-.fin-balance-card:hover {
+.tfin-balance-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--theme-border-yellow) 0%, #ffd54f 100%);
+}
+
+.tfin-balance-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
-.fin-balance-content {
+.tfin-balance-content {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.fin-balance-label {
+.tfin-balance-label {
   font-size: 0.9rem;
   color: #6c757d;
   font-weight: 500;
@@ -83,7 +101,7 @@
   letter-spacing: 0.5px;
 }
 
-.fin-balance-value {
+.tfin-balance-value {
   font-size: 2.5rem;
   font-weight: 800;
   color: var(--theme-font);
@@ -91,7 +109,7 @@
   letter-spacing: -1px;
 }
 
-.fin-wallet-id {
+.tfin-wallet-id {
   font-size: 0.85rem;
   color: #6c757d;
   font-weight: 400;
@@ -100,17 +118,17 @@
 /* =====================================================
    TABS
    ===================================================== */
-.fin-tabs {
+.tfin-tabs {
   display: flex;
   gap: 0.5rem;
   background: var(--theme-white);
   padding: 0.5rem;
   border-radius: 10px;
   box-shadow: var(--shadow-sm);
-  border: 1px solid #e9ecef;
+  border: 2px solid var(--theme-border);
 }
 
-.fin-tab {
+.tfin-tab {
   flex: 1;
   display: flex;
   align-items: center;
@@ -128,12 +146,12 @@
   font-family: inherit;
 }
 
-.fin-tab:hover {
+.tfin-tab:hover {
   background: #f8f9fa;
   color: var(--theme-font);
 }
 
-.fin-tab.active {
+.tfin-tab.active {
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
   color: var(--theme-button-font);
   box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
@@ -142,46 +160,234 @@
 /* =====================================================
    CONTENT SECTIONS
    ===================================================== */
-.fin-content {
+.tfin-content {
   min-height: 400px;
 }
 
-.fin-section {
+.tfin-section {
   background: var(--theme-white);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: var(--shadow-sm);
-  border: 1px solid #e9ecef;
+  border: 2px solid var(--theme-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.fin-section-title {
+.tfin-section-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--theme-font);
-  margin: 0 0 1.5rem;
+  margin: 0;
   letter-spacing: -0.5px;
+}
+
+.tfin-section-subtitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+/* =====================================================
+   FLEET SELECTOR
+   ===================================================== */
+.tfin-fleet-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tfin-selector-label {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.tfin-fleet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.tfin-fleet-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: var(--theme-white);
+  border: 2px solid var(--theme-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.tfin-fleet-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+  background: var(--theme-border-yellow);
+  transform: scaleY(0);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tfin-fleet-card:hover {
+  border-color: var(--theme-border-yellow);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.tfin-fleet-card.active {
+  border-color: var(--theme-border-yellow);
+  background: linear-gradient(90deg, rgba(254, 204, 24, 0.08) 0%, rgba(254, 204, 24, 0.02) 100%);
+  box-shadow: var(--shadow-md);
+}
+
+.tfin-fleet-card.active::before {
+  transform: scaleY(1);
+}
+
+.tfin-fleet-icon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tfin-fleet-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.tfin-fleet-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tfin-fleet-meta {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: 500;
+}
+
+.tfin-fleet-check {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--theme-button-bg);
+  color: var(--theme-button-font);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
+}
+
+/* =====================================================
+   COMMISSION CARD
+   ===================================================== */
+.tfin-commission-card {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffbf0 100%);
+  border: 2px solid var(--theme-border-yellow);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.tfin-commission-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.tfin-commission-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+}
+
+.tfin-commission-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.tfin-stat-box {
+  background: var(--theme-white);
+  border: 2px solid var(--theme-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: var(--transition-base);
+}
+
+.tfin-stat-box:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.tfin-stat-box.highlight {
+  border-color: var(--theme-border-yellow);
+  background: linear-gradient(135deg, rgba(254, 204, 24, 0.08) 0%, var(--theme-white) 100%);
+}
+
+.tfin-stat-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tfin-stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: var(--theme-font);
+  line-height: 1;
 }
 
 /* =====================================================
    TABLE
    ===================================================== */
-.fin-table-wrapper {
+.tfin-table-wrapper {
   overflow-x: auto;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 2px solid var(--theme-border);
 }
 
-.fin-table {
+.tfin-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
 
-.fin-table thead {
+.tfin-table thead {
   background: #f8f9fa;
 }
 
-.fin-table th {
+.tfin-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
@@ -189,28 +395,28 @@
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--theme-border);
 }
 
-.fin-table tbody tr {
+.tfin-table tbody tr {
   border-bottom: 1px solid #e9ecef;
   transition: background-color 0.2s;
 }
 
-.fin-table tbody tr:hover {
+.tfin-table tbody tr:hover {
   background: #f8f9fa;
 }
 
-.fin-table tbody tr:last-child {
+.tfin-table tbody tr:last-child {
   border-bottom: none;
 }
 
-.fin-table td {
+.tfin-table td {
   padding: 1rem;
   color: var(--theme-font);
 }
 
-.fin-id {
+.tfin-id {
   font-family: 'Courier New', monospace;
   font-weight: 600;
   color: var(--theme-font);
@@ -220,17 +426,17 @@
   font-size: 0.85rem;
 }
 
-.fin-amount {
+.tfin-amount {
   font-weight: 600;
   color: var(--theme-font);
 }
 
-.fin-date {
+.tfin-date {
   color: #6c757d;
   font-size: 0.85rem;
 }
 
-.fin-reason {
+.tfin-reason {
   display: inline-block;
   background: #f8f9fa;
   padding: 0.25rem 0.75rem;
@@ -243,7 +449,7 @@
 /* =====================================================
    BADGES
    ===================================================== */
-.fin-status-badge {
+.tfin-status-badge {
   display: inline-block;
   padding: 0.375rem 0.875rem;
   border-radius: 12px;
@@ -253,22 +459,22 @@
   letter-spacing: 0.5px;
 }
 
-.fin-status-badge.status-pending {
+.tfin-status-badge.status-pending {
   background: #fff3cd;
   color: #856404;
 }
 
-.fin-status-badge.status-completed {
+.tfin-status-badge.status-completed {
   background: #d4edda;
   color: #155724;
 }
 
-.fin-status-badge.status-cancelled {
+.tfin-status-badge.status-cancelled {
   background: #f8d7da;
   color: #721c24;
 }
 
-.fin-direction-badge {
+.tfin-direction-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -279,106 +485,20 @@
   font-size: 1.1rem;
 }
 
-.fin-direction-badge.credit {
+.tfin-direction-badge.credit {
   background: #d4edda;
   color: #155724;
 }
 
-.fin-direction-badge.debit {
+.tfin-direction-badge.debit {
   background: #f8d7da;
   color: #721c24;
 }
 
 /* =====================================================
-   SETTLEMENTS GRID
-   ===================================================== */
-.fin-settlements-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.fin-settlement-card {
-  background: var(--theme-white);
-  border: 2px solid #e9ecef;
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: var(--transition-base);
-}
-
-.fin-settlement-card:hover {
-  border-color: var(--theme-border-yellow);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.fin-settlement-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1rem;
-}
-
-.fin-settlement-id {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--theme-font);
-  margin: 0;
-}
-
-.fin-settlement-date {
-  font-size: 0.8rem;
-  color: #6c757d;
-  display: block;
-  margin-top: 0.25rem;
-}
-
-.fin-settlement-amount {
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.fin-label {
-  font-size: 0.8rem;
-  color: #6c757d;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.fin-value {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--theme-font);
-  margin: 0;
-  letter-spacing: -0.5px;
-}
-
-.fin-settlement-trips {
-  padding: 0.75rem;
-  background: linear-gradient(135deg, rgba(254, 204, 24, 0.1) 0%, rgba(254, 204, 24, 0.05) 100%);
-  border-radius: 8px;
-  border-left: 3px solid var(--theme-border-yellow);
-}
-
-.fin-settlement-actions {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: auto;
-}
-
-/* =====================================================
    BUTTONS
    ===================================================== */
-.fin-btn-primary {
-  flex: 1;
+.tfin-btn-create {
   padding: 0.875rem 1.5rem;
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
   color: var(--theme-button-font);
@@ -392,38 +512,17 @@
   box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
 }
 
-.fin-btn-primary:hover {
+.tfin-btn-create:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(254, 204, 24, 0.4);
 }
 
-.fin-btn-primary:active {
-  transform: translateY(0);
+.tfin-btn-create:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-.fin-btn-secondary {
-  flex: 1;
-  padding: 0.875rem 1.5rem;
-  background: transparent;
-  color: var(--theme-font);
-  border: 1.5px solid var(--theme-border);
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition-base);
-  font-family: inherit;
-}
-
-.fin-btn-secondary:hover {
-  background: var(--theme-font);
-  color: var(--theme-white);
-  border-color: var(--theme-font);
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
-}
-
-.fin-btn-link {
+.tfin-btn-link {
   padding: 0.5rem 1rem;
   background: transparent;
   color: var(--theme-button-bg);
@@ -437,7 +536,7 @@
   text-decoration: underline;
 }
 
-.fin-btn-link:hover {
+.tfin-btn-link:hover {
   background: rgba(254, 204, 24, 0.1);
   color: #d4a500;
 }
@@ -445,21 +544,21 @@
 /* =====================================================
    PAGINATION
    ===================================================== */
-.fin-pagination {
+.tfin-pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1.5rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 2px solid var(--theme-border);
 }
 
-.fin-page-btn {
+.tfin-page-btn {
   padding: 0.75rem 1.5rem;
   background: var(--theme-white);
   color: var(--theme-font);
-  border: 1.5px solid var(--theme-border);
+  border: 2px solid var(--theme-border);
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -468,7 +567,7 @@
   font-family: inherit;
 }
 
-.fin-page-btn:hover:not(:disabled) {
+.tfin-page-btn:hover:not(:disabled) {
   background: var(--theme-button-bg);
   color: var(--theme-button-font);
   border-color: var(--theme-button-bg);
@@ -476,12 +575,12 @@
   box-shadow: var(--shadow-sm);
 }
 
-.fin-page-btn:disabled {
+.tfin-page-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.fin-page-info {
+.tfin-page-info {
   font-size: 0.9rem;
   color: var(--theme-font);
   font-weight: 500;
@@ -490,31 +589,31 @@
 /* =====================================================
    LOADING & EMPTY STATES
    ===================================================== */
-.fin-loading {
+.tfin-loading {
   text-align: center;
   padding: 3rem;
   color: #6c757d;
   font-size: 0.95rem;
 }
 
-.fin-empty {
+.tfin-empty {
   text-align: center;
   padding: 3rem;
   color: #6c757d;
 }
 
-.fin-empty-icon {
+.tfin-empty-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
   opacity: 0.5;
 }
 
-.fin-empty p {
+.tfin-empty p {
   font-size: 1rem;
   margin: 0;
 }
 
-.fin-empty-text {
+.tfin-empty-text {
   text-align: center;
   color: #6c757d;
   padding: 2rem;
@@ -524,7 +623,7 @@
 /* =====================================================
    MODAL
    ===================================================== */
-.fin-modal-overlay {
+.tfin-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -536,19 +635,15 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeInOverlay 0.2s ease-out;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.fin-modal {
+.tfin-modal {
   background: var(--theme-white);
   border-radius: 12px;
   max-width: 900px;
@@ -558,6 +653,7 @@
   flex-direction: column;
   box-shadow: var(--shadow-lg);
   animation: slideUp 0.3s ease-out;
+  border: 2px solid var(--theme-border);
 }
 
 @keyframes slideUp {
@@ -571,7 +667,7 @@
   }
 }
 
-.fin-modal-header {
+.tfin-modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -579,16 +675,27 @@
   border-bottom: 2px solid var(--theme-border-yellow);
   background: linear-gradient(135deg, #fafafa 0%, var(--theme-white) 100%);
   border-radius: 12px 12px 0 0;
+  position: relative;
 }
 
-.fin-modal-header h2 {
+.tfin-modal-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--theme-border-yellow) 0%, #ffd54f 100%);
+}
+
+.tfin-modal-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--theme-font);
   margin: 0;
 }
 
-.fin-modal-close {
+.tfin-modal-close {
   width: 36px;
   height: 36px;
   display: flex;
@@ -603,113 +710,132 @@
   transition: var(--transition-base);
 }
 
-.fin-modal-close:hover {
+.tfin-modal-close:hover {
   background: #f8f9fa;
   color: #dc3545;
 }
 
-.fin-modal-content {
+.tfin-modal-content {
   padding: 2rem;
   overflow-y: auto;
   flex: 1;
 }
 
 /* =====================================================
+   SECTIONS SPACING
+   ===================================================== */
+.tfin-trips-section,
+.tfin-history-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* =====================================================
    RESPONSIVE DESIGN
    ===================================================== */
 @media (max-width: 1024px) {
-  .fin-balance-value {
+  .tfin-balance-value {
     font-size: 2rem;
   }
 
-  .fin-settlements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  .tfin-fleet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .tfin-commission-stats {
+    grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 768px) {
-  .fin-container {
+  .tfin-container {
     gap: 1rem;
   }
 
-  .fin-title {
+  .tfin-title {
     font-size: 1.75rem;
   }
 
-  .fin-balance-card {
+  .tfin-balance-card {
     padding: 1.5rem;
   }
 
-  .fin-balance-value {
+  .tfin-balance-value {
     font-size: 1.75rem;
   }
 
-  .fin-tabs {
+  .tfin-tabs {
     flex-direction: column;
   }
 
-  .fin-tab {
+  .tfin-tab {
     justify-content: flex-start;
   }
 
-  .fin-section {
+  .tfin-section {
     padding: 1.5rem;
   }
 
-  .fin-settlements-grid {
+  .tfin-fleet-grid {
     grid-template-columns: 1fr;
   }
 
-  .fin-settlement-actions {
+  .tfin-commission-header {
     flex-direction: column;
+    align-items: flex-start;
   }
 
-  .fin-table-wrapper {
+  .tfin-btn-create {
+    width: 100%;
+  }
+
+  .tfin-table-wrapper {
     font-size: 0.85rem;
   }
 
-  .fin-table th,
-  .fin-table td {
+  .tfin-table th,
+  .tfin-table td {
     padding: 0.75rem 0.5rem;
   }
 
-  .fin-modal {
+  .tfin-modal {
     max-width: 100%;
     max-height: 95vh;
   }
 
-  .fin-modal-header {
+  .tfin-modal-header {
     padding: 1rem 1.5rem;
   }
 
-  .fin-modal-content {
+  .tfin-modal-content {
     padding: 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
-  .fin-title {
+  .tfin-title {
     font-size: 1.5rem;
   }
 
-  .fin-balance-value {
+  .tfin-balance-value {
     font-size: 1.5rem;
   }
 
-  .fin-section-title {
+  .tfin-section-title {
     font-size: 1.25rem;
   }
 
-  .fin-table {
+  .tfin-table {
     font-size: 0.8rem;
   }
 
-  .fin-pagination {
+  .tfin-pagination {
     flex-direction: column;
     gap: 1rem;
   }
 
-  .fin-page-btn {
+  .tfin-page-btn {
     width: 100%;
   }
 }

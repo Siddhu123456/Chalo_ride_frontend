@@ -25,7 +25,7 @@ const FareDiscovery = ({ onRideSelect }) => {
     }
   };
 
-  // 🔥 Filter by selected vehicle category
+  // Filter by selected vehicle category
   const filteredEstimates = estimates.filter(
     (e) => e.vehicle_category === vehicleCategory
   );

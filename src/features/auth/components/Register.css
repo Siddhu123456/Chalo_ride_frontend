@@ -39,3 +39,35 @@
 .split-flex-row .form-row {
     flex: 1;
 }
+
+.split-flex-row select,
+.split-flex-row input {
+    height: 42px;
+    box-sizing: border-box;
+}
+
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password-wrapper input {
+  width: 100%;
+  padding-right: 40px;
+  height: 42px;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #666;
+}
+
+.eye-icon:hover {
+  color: #000;
+}

@@ -5,15 +5,15 @@ import logo from '../../../assets/logo.png';
 import { logout } from '../../../store/authSlice';
 import './TenantSidebar.css';
 
-/* Navigation definition — section marks the START of a new labelled group */
 const MENU_ITEMS = [
-  { id: 'FLEETS',   label: 'Fleets',         icon: '🏢', countKey: 'fleets',   sectionLabel: 'Verification Queue' },
-  { id: 'DRIVERS',  label: 'Drivers',         icon: '👤', countKey: 'drivers',  sectionLabel: null },
-  { id: 'VEHICLES', label: 'Vehicles',        icon: '🚗', countKey: 'vehicles', sectionLabel: null },
-  { id: 'CITIES',   label: 'Regional Setup',  icon: '🌍', countKey: null,       sectionLabel: 'Configuration' },
+  { id: 'FLEETS',     label: 'Fleets',         icon: '🏢', countKey: 'fleets',   sectionLabel: 'Verification Queue' },
+  { id: 'DRIVERS',    label: 'Drivers',        icon: '👤', countKey: 'drivers',  sectionLabel: null },
+  { id: 'VEHICLES',   label: 'Vehicles',       icon: '🚗', countKey: 'vehicles', sectionLabel: null },
+  { id: 'CITIES',     label: 'Regional Setup', icon: '🌍', countKey: null,       sectionLabel: 'Configuration' },
+  { id: 'FINANCIALS', label: 'Financials',     icon: '💰', countKey: null,       sectionLabel: null },
 ];
 
-const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, counts }) => {
+const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, counts = {} }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,7 +23,6 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
     navigate('/auth', { replace: true });
   };
 
-  /* Two-character initials derived from full name */
   const initials = profile?.full_name
     ? profile.full_name
         .split(' ')
@@ -36,14 +35,11 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
 
   return (
     <aside className="ts-sidebar">
-
-      {/* ── Brand / Logo ── */}
       <div className="ts-brand">
         <img src={logo} alt="ChaloRide" className="menu-logo" />
         <span className="ts-role-badge">TENANT</span>
       </div>
 
-      {/* ── Profile Card ── */}
       <div className={`ts-profile-card ${profileLoading ? 'ts-profile-loading' : ''}`}>
         {profileLoading ? (
           <>
@@ -71,7 +67,6 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
         ) : null}
       </div>
 
-      {/* ── Navigation ── */}
       <nav className="ts-nav">
         {MENU_ITEMS.map((item) => (
           <React.Fragment key={item.id}>
