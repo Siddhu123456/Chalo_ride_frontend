@@ -13,6 +13,16 @@ import {
   clearSettlementDetails,
 } from '../../../store/tenantAdminSlice';
 import './TenantFinancials.css';
+import {
+  FaCreditCard,
+  FaChartBar,
+  FaFileAlt,
+  FaBuilding,
+  FaCheck,
+  FaTimes,
+  FaChevronLeft,
+  FaChevronRight,
+} from 'react-icons/fa';
 
 const TenantFinancials = () => {
   const dispatch = useDispatch();
@@ -152,14 +162,14 @@ const TenantFinancials = () => {
 
       
       <div className="tfin-tabs">
-        {['WALLET', 'SETTLEMENTS'].map((tab) => (
+          {['WALLET', 'SETTLEMENTS'].map((tab) => (
           <button
             key={tab}
             className={`tfin-tab ${activeTab === tab ? 'active' : ''}`}
             onClick={() => setActiveTab(tab)}
           >
-            {tab === 'WALLET' && '💳'}
-            {tab === 'SETTLEMENTS' && '📊'}
+            {tab === 'WALLET' && <FaCreditCard className="icon-inline" />}
+            {tab === 'SETTLEMENTS' && <FaChartBar className="icon-inline" />}
             <span>{tab}</span>
           </button>
         ))}
@@ -175,7 +185,7 @@ const TenantFinancials = () => {
               <div className="tfin-loading">Loading transactions…</div>
             ) : !transactions || transactions.length === 0 ? (
               <div className="tfin-empty">
-                <div className="tfin-empty-icon">💳</div>
+                <div className="tfin-empty-icon"><FaCreditCard className="icon-inline" /></div>
                 <p>No transactions yet</p>
               </div>
             ) : (
@@ -216,12 +226,12 @@ const TenantFinancials = () => {
                 
                 {totalPages > 1 && (
                   <div className="tfin-pagination">
-                    <button
+            <button
                       className="tfin-page-btn"
                       disabled={txPage === 1}
                       onClick={() => setTxPage(txPage - 1)}
                     >
-                      ← Previous
+              <FaChevronLeft className="icon-inline" /> Previous
                     </button>
                     <span className="tfin-page-info">
                       Page {txPage} of {totalPages}
@@ -231,7 +241,7 @@ const TenantFinancials = () => {
                       disabled={txPage === totalPages}
                       onClick={() => setTxPage(txPage + 1)}
                     >
-                      Next →
+                      Next <FaChevronRight className="icon-inline" />
                     </button>
                   </div>
                 )}
@@ -248,7 +258,7 @@ const TenantFinancials = () => {
               <h3 className="tfin-selector-label">Select Fleet</h3>
               {!verifiedFleets || verifiedFleets.length === 0 ? (
                 <div className="tfin-empty">
-                  <div className="tfin-empty-icon">🏢</div>
+                  <div className="tfin-empty-icon"><FaBuilding className="icon-inline" /></div>
                   <p>No verified fleets available</p>
                   <small style={{ color: '#6c757d', marginTop: '0.5rem' }}>
                     Fleets must be verified before they appear here
@@ -264,13 +274,13 @@ const TenantFinancials = () => {
                       }`}
                       onClick={() => handleFleetSelect(fleet.fleet_id)}
                     >
-                      <div className="tfin-fleet-icon">🏢</div>
+                      <div className="tfin-fleet-icon"><FaBuilding className="icon-inline" /></div>
                       <div className="tfin-fleet-info">
                         <span className="tfin-fleet-name">{fleet.fleet_name}</span>
                         <span className="tfin-fleet-meta">ID: {fleet.fleet_id}</span>
                       </div>
                       {selectedFleetId === fleet.fleet_id && (
-                        <div className="tfin-fleet-check">✓</div>
+                        <div className="tfin-fleet-check"><FaCheck className="icon-inline" /></div>
                       )}
                     </button>
                   ))}
@@ -352,8 +362,8 @@ const TenantFinancials = () => {
                   {loading && (!fleetSettlementHistory || fleetSettlementHistory.length === 0) ? (
                     <div className="tfin-loading">Loading history…</div>
                   ) : !fleetSettlementHistory || fleetSettlementHistory.length === 0 ? (
-                    <div className="tfin-empty">
-                      <div className="tfin-empty-icon">📜</div>
+                      <div className="tfin-empty">
+                      <div className="tfin-empty-icon"><FaFileAlt className="icon-inline" /></div>
                       <p>No settlement history</p>
                     </div>
                   ) : (
@@ -415,7 +425,7 @@ const TenantFinancials = () => {
             <div className="tfin-modal-header">
               <h2>Settlement Trips - #{viewingTrips}</h2>
               <button className="tfin-modal-close" onClick={closeTripsModal}>
-                ✕
+                <FaTimes className="icon-inline" />
               </button>
             </div>
 

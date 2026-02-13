@@ -10,6 +10,7 @@ import {
   paySettlement,
 } from "../../../store/fleetSlice";
 import "./Financials.css";
+import { FaCreditCard, FaBolt, FaFileAlt, FaChevronLeft, FaChevronRight, FaTimes } from 'react-icons/fa';
 
 const Financials = () => {
   const dispatch = useDispatch();
@@ -129,9 +130,9 @@ const Financials = () => {
             className={`fin-tab ${activeTab === tab ? "active" : ""}`}
             onClick={() => setActiveTab(tab)}
           >
-            {tab === "WALLET" && "💳"}
-            {tab === "SETTLEMENTS" && "⚡"}
-            {tab === "HISTORY" && "📜"}
+            {tab === "WALLET" && <FaCreditCard className="icon-inline" />}
+            {tab === "SETTLEMENTS" && <FaBolt className="icon-inline" />}
+            {tab === "HISTORY" && <FaFileAlt className="icon-inline" />}
             <span>{tab.replace("_", " ")}</span>
           </button>
         ))}
@@ -147,7 +148,7 @@ const Financials = () => {
               <div className="fin-loading">Loading transactions…</div>
             ) : transactions.length === 0 ? (
               <div className="fin-empty">
-                <div className="fin-empty-icon">💳</div>
+                <div className="fin-empty-icon"><FaCreditCard className="icon-inline" /></div>
                 <p>No transactions yet</p>
               </div>
             ) : (
@@ -193,7 +194,7 @@ const Financials = () => {
                       disabled={txPage === 1}
                       onClick={() => setTxPage(txPage - 1)}
                     >
-                      ← Previous
+                      <FaChevronLeft className="icon-inline" /> Previous
                     </button>
                     <span className="fin-page-info">
                       Page {txPage} of {totalPages}
@@ -203,7 +204,7 @@ const Financials = () => {
                       disabled={txPage === totalPages}
                       onClick={() => setTxPage(txPage + 1)}
                     >
-                      Next →
+                      Next <FaChevronRight className="icon-inline" />
                     </button>
                   </div>
                 )}
@@ -220,7 +221,7 @@ const Financials = () => {
               <div className="fin-loading">Loading settlements…</div>
             ) : pendingSettlements.length === 0 ? (
               <div className="fin-empty">
-                <div className="fin-empty-icon">⚡</div>
+                <div className="fin-empty-icon"><FaBolt className="icon-inline" /></div>
                 <p>No pending settlements</p>
               </div>
             ) : (
@@ -279,7 +280,7 @@ const Financials = () => {
               <div className="fin-loading">Loading history…</div>
             ) : settlementHistory.length === 0 ? (
               <div className="fin-empty">
-                <div className="fin-empty-icon">📜</div>
+                <div className="fin-empty-icon"><FaFileAlt className="icon-inline" /></div>
                 <p>No settlement history</p>
               </div>
             ) : (
@@ -331,14 +332,14 @@ const Financials = () => {
       {viewingDetails && (
         <div className="fin-modal-overlay" onClick={closeDetails}>
           <div className="fin-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="fin-modal-header">
+              <div className="fin-modal-header">
               <h2>
                 {viewingDetails.type === "trips"
                   ? "Settlement Trips"
                   : "Settlement Transactions"}
               </h2>
               <button className="fin-modal-close" onClick={closeDetails}>
-                ✕
+                <FaTimes className="icon-inline" />
               </button>
             </div>
 

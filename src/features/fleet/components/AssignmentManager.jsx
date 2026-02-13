@@ -7,6 +7,7 @@ import {
   clearFleetError,
 } from "../../../store/fleetSlice";
 import "./AssignmentManager.css";
+import { FaTimes, FaArrowRight, FaKey } from 'react-icons/fa';
 
 
 
@@ -91,7 +92,7 @@ const AssignmentManager = ({ fleetId }) => {
         <div className={`am-banner ${error ? "error" : "success"}`}>
           <span>{error || successMsg}</span>
           <button type="button" onClick={() => dispatch(clearFleetError())}>
-            ✕
+            <FaTimes className="icon-inline" />
           </button>
         </div>
       )}
@@ -115,7 +116,7 @@ const AssignmentManager = ({ fleetId }) => {
                   <span className="am-reg">{v.registration_no}</span>
                   <span className="am-cat">{v.category}</span>
                 </div>
-                <span className="am-arrow">→</span>
+                <span className="am-arrow"><FaArrowRight className="icon-inline" /></span>
               </div>
             ))}
 
@@ -202,7 +203,7 @@ const AssignmentManager = ({ fleetId }) => {
             </form>
           ) : (
             <div className="am-placeholder-state">
-              <div className="am-icon-circle">🔑</div>
+              <div className="am-icon-circle"><FaKey className="icon-inline" /></div>
               <p>
                 Select a vehicle from the roster to see available drivers for
                 deployment.

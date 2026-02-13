@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import "./DocUploadModule.css";
+import { FaCheck, FaTimes } from 'react-icons/fa';
 
 const DOC_TYPES = [
   { key: "AADHAAR", label: "Aadhaar Card", desc: "Personal ID Verification" },
@@ -151,12 +152,12 @@ const DocUploadModule = ({ fleetId, docStatus, dispatch, uploadAction }) => {
       
       {toast && (
         <div className="du-toast">
-          <span className="du-toast-icon">✓</span>
+          <span className="du-toast-icon"><FaCheck className="icon-inline" /></span>
           <div className="du-toast-body">
             <strong>{toast}</strong>
             <span>uploaded successfully — pending review</span>
           </div>
-          <button className="du-toast-close" onClick={() => setToast(null)}>✕</button>
+          <button className="du-toast-close" onClick={() => setToast(null)}><FaTimes className="icon-inline" /></button>
         </div>
       )}
     </div>

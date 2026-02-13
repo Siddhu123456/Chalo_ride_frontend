@@ -4,13 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../../assets/logo.png';
 import { logout } from '../../../store/authSlice';
 import './TenantSidebar.css';
+import {
+  FaBuilding,
+  FaUser,
+  FaCar,
+  FaGlobe,
+  FaMoneyBillWave,
+  FaSignOutAlt,
+} from 'react-icons/fa';
 
 const MENU_ITEMS = [
-  { id: 'FLEETS',     label: 'Fleets',         icon: '🏢', countKey: 'fleets',   sectionLabel: 'Verification Queue' },
-  { id: 'DRIVERS',    label: 'Drivers',        icon: '👤', countKey: 'drivers',  sectionLabel: null },
-  { id: 'VEHICLES',   label: 'Vehicles',       icon: '🚗', countKey: 'vehicles', sectionLabel: null },
-  { id: 'CITIES',     label: 'Regional Setup', icon: '🌍', countKey: null,       sectionLabel: 'Configuration' },
-  { id: 'FINANCIALS', label: 'Financials',     icon: '💰', countKey: null,       sectionLabel: null },
+  { id: 'FLEETS',     label: 'Fleets',         icon: <FaBuilding className="icon-inline ts-menu-icon" />, countKey: 'fleets',   sectionLabel: 'Verification Queue' },
+  { id: 'DRIVERS',    label: 'Drivers',        icon: <FaUser className="icon-inline ts-menu-icon" />,    countKey: 'drivers',  sectionLabel: null },
+  { id: 'VEHICLES',   label: 'Vehicles',       icon: <FaCar className="icon-inline ts-menu-icon" />,     countKey: 'vehicles', sectionLabel: null },
+  { id: 'CITIES',     label: 'Regional Setup', icon: <FaGlobe className="icon-inline ts-menu-icon" />,   countKey: null,       sectionLabel: 'Configuration' },
+  { id: 'FINANCIALS', label: 'Financials',     icon: <FaMoneyBillWave className="icon-inline ts-menu-icon" />, countKey: null,       sectionLabel: null },
 ];
 
 const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, counts = {} }) => {
@@ -90,7 +98,7 @@ const TenantSidebar = ({ activeView, onViewChange, profile, profileLoading, coun
 
       
       <button className="ts-logout" onClick={handleLogout}>
-        <span className="ts-logout-icon">⏏</span>
+        <FaSignOutAlt className="icon-inline ts-logout-icon" />
         Sign Out
       </button>
     </aside>

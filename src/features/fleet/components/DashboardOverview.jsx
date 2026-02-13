@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import "./DashboardOverview.css";
+import { FaCar, FaCheck, FaFileAlt, FaUsers } from 'react-icons/fa';
 
 const DashboardOverview = ({ onAddVehicle }) => {
   const { vehicles = [], drivers = [] } = useSelector((state) => state.fleet);
@@ -14,10 +15,10 @@ const DashboardOverview = ({ onAddVehicle }) => {
   }, [vehicles]);
 
   const stats = [
-    { label: "Total Vehicles", value: vehicles.length, icon: "🚗" },
-    { label: "Approved Assets", value: approvedVehicles.length, icon: "✅" },
-    { label: "Pending Vehicles", value: pendingVehicles.length, icon: "📄" },
-    { label: "Active Drivers", value: drivers.length, icon: "👥" },
+    { label: "Total Vehicles", value: vehicles.length, icon: <FaCar className="icon-inline" /> },
+    { label: "Approved Assets", value: approvedVehicles.length, icon: <FaCheck className="icon-inline" /> },
+    { label: "Pending Vehicles", value: pendingVehicles.length, icon: <FaFileAlt className="icon-inline" /> },
+    { label: "Active Drivers", value: drivers.length, icon: <FaUsers className="icon-inline" /> },
   ];
 
   return (
@@ -46,7 +47,7 @@ const DashboardOverview = ({ onAddVehicle }) => {
           </div>
 
           {pendingVehicles.length === 0 ? (
-            <p className="do-empty-msg">All vehicles are verified ✅</p>
+            <p className="do-empty-msg"><FaCheck className="icon-inline" /> All vehicles are verified</p>
           ) : (
             <div className="do-pending-list">
               {pendingVehicles.slice(0, 5).map((v) => (

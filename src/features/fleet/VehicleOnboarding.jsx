@@ -7,6 +7,7 @@ import {
   resetVehicleState, clearMessages 
 } from '../../store/vehicleSlice';
 import './VehicleOnboarding.css';
+import { FaCheck, FaArrowLeft } from 'react-icons/fa';
 
 const VEHICLE_DOCS = [
   { key: 'REGISTRATION_CERTIFICATE', label: 'RC Book' },
@@ -77,8 +78,8 @@ const VehicleOnboarding = () => {
 
       <div className="form-pane">
         <div className="form-content-box wide">
-          <header className="form-intro">
-            <button className="back-link" onClick={() => navigate('/dashboard')}>← Dashboard</button>
+            <header className="form-intro">
+            <button className="back-link" onClick={() => navigate('/dashboard')}><FaArrowLeft className="icon-inline" /> Dashboard</button>
             <h2>{step === 1 ? 'Add New Vehicle' : 'Vehicle Documentation'}</h2>
             <p>{step === 1 ? 'Enter details to register vehicle.' : `Upload docs for ${currentVehicle?.registration_no}`}</p>
           </header>
@@ -110,7 +111,7 @@ const VehicleOnboarding = () => {
                   const done = isUploaded(doc.key);
                   return (
                     <div key={doc.key} className={`doc-card ${done ? 'completed' : ''}`}>
-                      <div className="doc-info"><span className="doc-name">{doc.label}</span><span className={`doc-status ${done ? 'ok' : 'pending'}`}>{done ? '✓ Uploaded' : 'Required'}</span></div>
+                      <div className="doc-info"><span className="doc-name">{doc.label}</span><span className={`doc-status ${done ? 'ok' : 'pending'}`}>{done ? (<><FaCheck className="icon-inline" /> Uploaded</>) : 'Required'}</span></div>
                       {!done && <button className="doc-action-btn" onClick={() => { setActiveDoc(doc.key); dispatch(clearMessages()); }}>Upload</button>}
                     </div>
                   );

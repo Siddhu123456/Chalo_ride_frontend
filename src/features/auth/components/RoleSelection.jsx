@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { selectRole } from "../../../store/authSlice";
 import { fetchDriverProfile } from "../../../store/driverSlice";
 import "./RoleSelection.css";
+import { FaArrowRight } from 'react-icons/fa';
 
 const RoleSelection = ({ onBack }) => {
   const dispatch = useDispatch();
@@ -66,7 +67,7 @@ const RoleSelection = ({ onBack }) => {
             disabled={loading}
           >
             <span className="role-name">{role}</span>
-            <span className="role-arrow">→</span>
+            <FaArrowRight className="icon-inline role-arrow" />
           </button>
         ))}
 

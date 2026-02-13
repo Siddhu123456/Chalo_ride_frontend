@@ -21,6 +21,7 @@ import Financials from "./components/Financials";
 import logo from '../../assets/logo.png'; 
 
 import "./FleetDashboard.css";
+import { FaTimes } from 'react-icons/fa';
 
 const FleetDashboard = () => {
   const dispatch = useDispatch();
@@ -106,7 +107,7 @@ const FleetDashboard = () => {
           {(error || successMsg) && (
             <div className={`fd-banner ${error ? "error" : "success"}`}>
               <span>{error || successMsg}</span>
-              <button onClick={() => dispatch(clearFleetError())}>✕</button>
+              <button onClick={() => dispatch(clearFleetError())}><FaTimes className="icon-inline" /></button>
             </div>
           )}
 

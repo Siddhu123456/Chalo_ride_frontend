@@ -7,6 +7,7 @@ import {
   clearFleetError,
 } from "../../../store/fleetSlice";
 import "./VehicleDocsModal.css";
+import { FaCheck, FaFileAlt, FaTimes } from 'react-icons/fa';
 
 const REQUIRED_DOCS = [
   { key: "REGISTRATION", label: "Registration Certificate (RC)" },
@@ -66,7 +67,7 @@ const VehicleDocsModal = () => {
             </p>
           </div>
           <button className="vd-close" onClick={closeModal} disabled={loading}>
-            ✕
+            <FaTimes className="icon-inline" />
           </button>
         </header>
 
@@ -81,8 +82,8 @@ const VehicleDocsModal = () => {
             <div key={doc.key} className="vd-doc-row">
               <div className="vd-doc-info">
                 <span className="vd-doc-title">{doc.label}</span>
-                <span className={`vd-chip ${isUploaded(doc.key) ? "done" : "pending"}`}>
-                  {isUploaded(doc.key) ? "Uploaded ✅" : "Pending 📄"}
+                  <span className={`vd-chip ${isUploaded(doc.key) ? "done" : "pending"}`}>
+                  {isUploaded(doc.key) ? (<><FaCheck className="icon-inline" /> Uploaded</>) : (<><FaFileAlt className="icon-inline" /> Pending</>)}
                 </span>
               </div>
 

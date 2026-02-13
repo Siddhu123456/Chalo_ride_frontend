@@ -14,6 +14,7 @@ import useGeolocation from "../../../hooks/useGeolocation";
 import usePolling from "../../../hooks/usePolling";
 
 import "./DriverDashboard.css";
+import { FaCheck, FaMoneyBillWave } from 'react-icons/fa';
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -102,7 +103,7 @@ const Dashboard = () => {
       <div className="summary-cards">
         {today?.trip_count !== undefined && (
           <div className="card summary-card">
-            <span className="card-icon">✅</span>
+            <FaCheck className="icon-inline card-icon" />
             <h3 className="card-title">Trips Today</h3>
             <p className="card-value">{today.trip_count}</p>
           </div>
@@ -110,7 +111,7 @@ const Dashboard = () => {
 
         {today?.total_earnings !== undefined && (
           <div className="card summary-card">
-            <span className="card-icon">💰</span>
+            <FaMoneyBillWave className="icon-inline card-icon" />
             <h3 className="card-title">Earnings Today</h3>
             <p className="card-value">
               ₹{today.total_earnings.toFixed(2)}

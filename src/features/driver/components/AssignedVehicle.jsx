@@ -6,6 +6,7 @@ import {
 } from "../../../store/driverSlice";
 
 import "./AssignedVehicle.css";
+import { FaCar } from 'react-icons/fa';
 
 const AssignedVehicle = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const AssignedVehicle = () => {
       {vehicleAssignment ? (
         <div className="vehicle-assignment-card card">
           <div className="vehicle-header-section">
-            <span className="vehicle-icon">🚗</span>
+            <FaCar className="icon-inline vehicle-icon" />
             <div className="vehicle-header-info">
               <h2 className="vehicle-number">
                 {vehicleAssignment.registration_no}

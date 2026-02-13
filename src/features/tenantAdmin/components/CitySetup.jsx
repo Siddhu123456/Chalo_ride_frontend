@@ -10,14 +10,29 @@ import {
   clearCityFareConfigs,
 } from '../../../store/tenantAdminSlice';
 import './CitySetup.css';
+import {
+  FaMotorcycle,
+  FaCar,
+  FaTaxi,
+  FaMapMarkedAlt,
+  FaGlobe,
+  FaPlus,
+  FaTimes,
+  FaSearch,
+  FaCheck,
+  FaSave,
+  FaChevronRight,
+  FaArrowLeft,
+  FaExclamationTriangle,
+} from 'react-icons/fa';
 
 
 const CATEGORIES = ['BIKE', 'AUTO', 'CAB'];
 
 const CAT_META = {
-  BIKE: { icon: '🛵', label: 'Bike' },
-  AUTO: { icon: '🛺', label: 'Auto' },
-  CAB:  { icon: '🚗', label: 'Cab'  },
+  BIKE: { icon: <FaMotorcycle className="icon-inline cs-cat-icon" />, label: 'Bike' },
+  AUTO: { icon: <FaCar className="icon-inline cs-cat-icon" />, label: 'Auto' },
+  CAB:  { icon: <FaTaxi className="icon-inline cs-cat-icon" />, label: 'Cab'  },
 };
 
 const FARE_FIELDS = [
@@ -233,7 +248,7 @@ const CitySetup = () => {
     if (panel === PANEL.IDLE) {
       return (
         <div className="cs-idle">
-          <div className="cs-idle-icon">🗺️</div>
+          <div className="cs-idle-icon"><FaMapMarkedAlt className="icon-inline" /></div>
           <h3>Regional Coverage</h3>
           <p>
             Select a city to view and edit its fare configurations, or onboard
@@ -250,7 +265,7 @@ const CitySetup = () => {
             </div>
           )}
           <button className="cs-btn-primary" onClick={openAddFlow}>
-            + Onboard New City
+            <FaPlus className="icon-inline" /> Onboard New City
           </button>
         </div>
       );
@@ -267,7 +282,7 @@ const CitySetup = () => {
             </div>
             <div className="cs-steps">
               <span className="cs-step cs-step-active">1 Territory</span>
-              <span className="cs-step-arrow">›</span>
+              <span className="cs-step-arrow"><FaChevronRight className="icon-inline" /></span>
               <span className="cs-step">2 City &amp; Fares</span>
             </div>
           </div>
@@ -291,7 +306,7 @@ const CitySetup = () => {
                     onClick={() => handleSelectCountry(code)}
                     disabled={loading}
                   >
-                    <span className="cs-country-tile-flag">🌍</span>
+                    <span className="cs-country-tile-flag"><FaGlobe className="icon-inline" /></span>
                     <span className="cs-country-tile-code">{code}</span>
                     <span className="cs-country-tile-sub">
                       {cities.filter((c) => c.country_code === code).length} active{' '}
@@ -306,7 +321,7 @@ const CitySetup = () => {
             </>
           )}
 
-          {addError && <div className="cs-error-msg">⚠ {addError}</div>}
+          {addError && <div className="cs-error-msg"><FaExclamationTriangle className="icon-inline" /> {addError}</div>}
 
           <div className="cs-form-actions" style={{ marginTop: '8px' }}>
             <button
@@ -331,15 +346,15 @@ const CitySetup = () => {
               <p>Select a city and configure fares for all vehicle categories.</p>
             </div>
             <div className="cs-steps">
-              <span className="cs-step cs-step-done">✓ Territory</span>
-              <span className="cs-step-arrow">›</span>
+              <span className="cs-step cs-step-done"><FaCheck className="icon-inline" /> Territory</span>
+              <span className="cs-step-arrow"><FaChevronRight className="icon-inline" /></span>
               <span className="cs-step cs-step-active">2 City &amp; Fares</span>
             </div>
           </div>
 
           
           <div className="cs-country-badge">
-            <span className="cs-country-badge-flag">🌍</span>
+            <span className="cs-country-badge-flag"><FaGlobe className="icon-inline" /></span>
             <span className="cs-country-badge-code">{countryCode.toUpperCase()}</span>
             <button
               className="cs-country-change-btn"
@@ -422,7 +437,7 @@ const CitySetup = () => {
               </div>
             )}
 
-            {addError && <div className="cs-error-msg">⚠ {addError}</div>}
+            {addError && <div className="cs-error-msg"><FaExclamationTriangle className="icon-inline" /> {addError}</div>}
 
             <div className="cs-form-actions">
               <button
@@ -430,14 +445,14 @@ const CitySetup = () => {
                 className="cs-btn-secondary"
                 onClick={() => { setPanel(PANEL.ADD_STEP1); dispatch(clearAvailableCities()); }}
               >
-                ← Back
+                <FaArrowLeft className="icon-inline" /> Back
               </button>
               <button
                 type="submit"
                 className="cs-btn-primary"
                 disabled={loading || !pickedCity || availableCities.length === 0}
               >
-                {loading ? <span className="cs-spinner-sm" /> : '✓ Onboard City'}
+                {loading ? <span className="cs-spinner-sm" /> : <><FaCheck className="icon-inline" /> Onboard City</>}
               </button>
             </div>
           </form>
@@ -541,7 +556,7 @@ const CitySetup = () => {
                             onClick={() => handleSaveFare(cat)}
                             disabled={isSaving}
                           >
-                            {isSaving ? <span className="cs-spinner-sm" /> : '💾 Save'}
+                            {isSaving ? <span className="cs-spinner-sm" /> : <><FaSave className="icon-inline" /> Save</>}
                           </button>
                         </>
                       ) : (
@@ -574,12 +589,12 @@ const CitySetup = () => {
               onClick={isAddFlow ? () => setPanel(PANEL.IDLE) : openAddFlow}
               title={isAddFlow ? 'Cancel' : 'Add New City'}
             >
-              {isAddFlow ? '✕' : '+'}
+              {isAddFlow ? <FaTimes className="icon-inline" /> : <FaPlus className="icon-inline" />}
             </button>
           </div>
 
           <div className="cs-search-wrap">
-            <span className="cs-search-icon">🔍</span>
+            <span className="cs-search-icon"><FaSearch className="icon-inline" /></span>
             <input
               className="cs-search-input"
               type="text"
@@ -604,7 +619,7 @@ const CitySetup = () => {
         <div className="cs-city-list">
           {Object.keys(grouped).length === 0 ? (
             <div className="cs-empty">
-              <div className="cs-empty-icon">🌍</div>
+              <div className="cs-empty-icon"><FaGlobe className="icon-inline" /></div>
               <p>
                 {cities.length === 0
                   ? 'No cities onboarded yet.'
@@ -612,7 +627,7 @@ const CitySetup = () => {
               </p>
               {cities.length === 0 && (
                 <button className="cs-btn-primary cs-btn-sm" onClick={openAddFlow}>
-                  + Add First City
+                  <FaPlus className="icon-inline" /> Add First City
                 </button>
               )}
             </div>
@@ -639,7 +654,7 @@ const CitySetup = () => {
                     </div>
                     <div className="cs-city-row-right">
                       <span className="cs-city-cur">{city.currency}</span>
-                      <span className="cs-city-arrow">›</span>
+                      <span className="cs-city-arrow"><FaChevronRight className="icon-inline" /></span>
                     </div>
                   </button>
                 ))}

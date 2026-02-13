@@ -4,14 +4,15 @@ import { useNavigate } from "react-router-dom";
 import logo from '../../../assets/logo.png';
 import { logout } from "../../../store/authSlice";
 import "./DashboardSidebar.css";
+import { FaChartBar, FaCar, FaUsers, FaKey, FaMoneyBillWave } from 'react-icons/fa';
 
 const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
   const menu = [
-    { id: "OVERVIEW", label: "Overview", icon: "📊" },
-    { id: "VEHICLES", label: "Fleet Assets", icon: "🚗" },
-    { id: "DRIVERS", label: "Driver Roster", icon: "👥" },
-    { id: "ASSIGNMENTS", label: "Assignments", icon: "🔑" },
-    { id: "EARNINGS", label: "Financials", icon: "💰" },
+    { id: "OVERVIEW", label: "Overview", icon: <FaChartBar className="icon-inline ds-menu-icon" /> },
+    { id: "VEHICLES", label: "Fleet Assets", icon: <FaCar className="icon-inline ds-menu-icon" /> },
+    { id: "DRIVERS", label: "Driver Roster", icon: <FaUsers className="icon-inline ds-menu-icon" /> },
+    { id: "ASSIGNMENTS", label: "Assignments", icon: <FaKey className="icon-inline ds-menu-icon" /> },
+    { id: "EARNINGS", label: "Financials", icon: <FaMoneyBillWave className="icon-inline ds-menu-icon" /> },
   ];
   
   const dispatch = useDispatch();
