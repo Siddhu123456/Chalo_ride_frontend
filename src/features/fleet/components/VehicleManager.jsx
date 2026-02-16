@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchFleetVehicles, setSelectedVehicleForDocs } from "../../../store/fleetSlice";
+import { fetchFleetVehicles, setSelectedVehicleForDocs, setSelectedVehicleForManage } from "../../../store/fleetSlice";
 import VehicleDocsModal from "./VehicleDocsModal";
+import ManageAssetModal from "./ManageAssetModal";
 import "./VehicleManager.css";
 
 const FILTERS = {
@@ -13,7 +14,7 @@ const FILTERS = {
 
 const VehicleManager = ({ fleetId, onAdd }) => {
   const dispatch = useDispatch();
-  const { vehicles = [], loading = false, selectedVehicleForDocs } = useSelector(
+  const { vehicles = [], loading = false, selectedVehicleForDocs, selectedVehicleForManage } = useSelector(
     (state) => state.fleet
   );
 
@@ -104,13 +105,23 @@ const VehicleManager = ({ fleetId, onAdd }) => {
               </div>
 
               <div className="vm-card-actions">
+<<<<<<< Updated upstream
                 
+=======
+>>>>>>> Stashed changes
                 {isVerified ? (
-                  <button className="vm-btn-manage" type="button">
+                  <button 
+                    className="vm-btn-manage" 
+                    type="button"
+                    onClick={() => dispatch(setSelectedVehicleForManage(v))}
+                  >
                     Manage Asset
                   </button>
                 ) : (
+<<<<<<< Updated upstream
                   
+=======
+>>>>>>> Stashed changes
                   <button
                     className="vm-btn-outline"
                     type="button"
@@ -135,8 +146,12 @@ const VehicleManager = ({ fleetId, onAdd }) => {
         </div>
       )}
 
+<<<<<<< Updated upstream
       
+=======
+>>>>>>> Stashed changes
       {selectedVehicleForDocs && <VehicleDocsModal />}
+      {selectedVehicleForManage && <ManageAssetModal />}
     </div>
   );
 };

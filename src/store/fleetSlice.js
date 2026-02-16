@@ -4,8 +4,11 @@ import axios from "axios";
 const API_URL = "http://localhost:8000/fleet-owner";
 const WALLET_API_URL = "http://localhost:8000/wallet";
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 const getHeaders = (isMultipart = false) => {
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
@@ -33,8 +36,11 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
+<<<<<<< Updated upstream
 
 
+=======
+>>>>>>> Stashed changes
 export const checkFleetStatus = createAsyncThunk(
   "fleet/checkStatus",
   async (_, { rejectWithValue }) => {
@@ -54,7 +60,11 @@ export const fetchFleetTenants = createAsyncThunk(
     try {
       const res = await axios.get(
         `${API_URL}/tenants`,
+<<<<<<< Updated upstream
         { params: { user_id } }   
+=======
+        { params: { user_id } }
+>>>>>>> Stashed changes
       );
       return res.data;
     } catch (err) {
@@ -62,7 +72,6 @@ export const fetchFleetTenants = createAsyncThunk(
     }
   }
 );
-
 
 export const applyForFleet = createAsyncThunk(
   "fleet/apply",
@@ -185,7 +194,10 @@ export const fetchFleetDrivers = createAsyncThunk(
   }
 );
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 export const addDriverToFleet = createAsyncThunk(
   "fleet/addDriver",
   async ({ fleetId, payload }, { rejectWithValue, dispatch }) => {
@@ -248,6 +260,41 @@ export const fetchAssignments = createAsyncThunk(
   }
 );
 
+<<<<<<< Updated upstream
+=======
+export const fetchVehicleAssignment = createAsyncThunk(
+  "fleet/fetchVehicleAssignment",
+  async (vehicleId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/${vehicleId}/driver`, getHeaders());
+      return res.data;
+    } catch (err) {
+      if (err.response?.status === 404) {
+        return null;
+      }
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch vehicle assignment"));
+    }
+  }
+);
+
+export const unassignDriver = createAsyncThunk(
+  "fleet/unassignDriver",
+  async ({ fleetId, vehicleId }, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.delete(
+        `${API_URL}/fleets/${fleetId}/vehicles/${vehicleId}/unassign`,
+        getHeaders()
+      );
+      dispatch(fetchFleetVehicles(fleetId));
+      dispatch(fetchFleetDrivers(fleetId));
+      dispatch(fetchAssignments(fleetId));
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to unassign driver"));
+    }
+  }
+);
+>>>>>>> Stashed changes
 
 export const fetchWalletDetails = createAsyncThunk(
   "fleet/fetchWallet",
@@ -261,7 +308,10 @@ export const fetchWalletDetails = createAsyncThunk(
   }
 );
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 export const fetchWalletTransactions = createAsyncThunk(
   "fleet/fetchTransactions",
   async ({ page = 1, limit = 20 }, { rejectWithValue }) => {
@@ -277,6 +327,7 @@ export const fetchWalletTransactions = createAsyncThunk(
   }
 );
 
+<<<<<<< Updated upstream
 
 export const fetchPendingSettlements = createAsyncThunk(
   "fleet/fetchPendingSettlements",
@@ -358,6 +409,8 @@ export const fetchSettlementTransactions = createAsyncThunk(
 
 
 
+=======
+>>>>>>> Stashed changes
 const fleetSlice = createSlice({
   name: "fleet",
   initialState: {
@@ -388,7 +441,13 @@ const fleetSlice = createSlice({
     selectedVehicleForDocs: null,
     selectedVehicleDocStatus: null,
 
+<<<<<<< Updated upstream
     
+=======
+    selectedVehicleForManage: null,
+    vehicleAssignment: null,
+
+>>>>>>> Stashed changes
     wallet: null,
     transactions: [],
     transactionsPagination: {
@@ -430,9 +489,20 @@ const fleetSlice = createSlice({
       state.selectedVehicleDocStatus = null;
     },
 
+<<<<<<< Updated upstream
     clearSelectedSettlementDetails: (state) => {
       state.selectedSettlementTrips = [];
       state.selectedSettlementTransactions = [];
+=======
+    setSelectedVehicleForManage: (state, action) => {
+      state.selectedVehicleForManage = action.payload;
+      state.vehicleAssignment = null;
+    },
+
+    clearSelectedVehicleForManage: (state) => {
+      state.selectedVehicleForManage = null;
+      state.vehicleAssignment = null;
+>>>>>>> Stashed changes
     },
   },
 
@@ -486,7 +556,19 @@ const fleetSlice = createSlice({
         state.successMsg = "Assignment confirmed";
       })
 
+<<<<<<< Updated upstream
       
+=======
+      .addCase(fetchVehicleAssignment.fulfilled, (state, action) => {
+        state.vehicleAssignment = action.payload || null;
+      })
+
+      .addCase(unassignDriver.fulfilled, (state) => {
+        state.successMsg = "Driver unassigned successfully";
+        state.vehicleAssignment = null;
+      })
+
+>>>>>>> Stashed changes
       .addCase(fetchWalletDetails.fulfilled, (state, action) => {
         state.wallet = action.payload;
       })
@@ -543,7 +625,12 @@ export const {
   clearFleetError,
   setSelectedVehicleForDocs,
   clearSelectedVehicleForDocs,
+<<<<<<< Updated upstream
   clearSelectedSettlementDetails,
+=======
+  setSelectedVehicleForManage,
+  clearSelectedVehicleForManage,
+>>>>>>> Stashed changes
 } = fleetSlice.actions;
 
 export default fleetSlice.reducer;

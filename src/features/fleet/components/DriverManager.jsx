@@ -64,7 +64,7 @@ const DriverManager = ({ fleetId }) => {
               <th>Contact Details</th>
               <th>Category</th>
               <th>Approval Status</th>
-              <th>Action</th>
+              {/* <th>Action</th> */}
             </tr>
           </thead>
           <tbody>
@@ -90,11 +90,11 @@ const DriverManager = ({ fleetId }) => {
                     {driver.approval_status}
                   </span>
                 </td>
-                <td>
+                {/* <td>
                   <button className="dm-manage-link" type="button">
                     Manage Profile
                   </button>
-                </td>
+                </td> */}
               </tr>
             ))}
           </tbody>
