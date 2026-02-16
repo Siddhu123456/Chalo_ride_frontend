@@ -25,8 +25,6 @@ const ManageAssetModal = () => {
   const [selectedDriverId, setSelectedDriverId] = useState("");
   const [startTime, setStartTime] = useState("00:00");
   const [endTime, setEndTime] = useState("23:59");
-  const [showStatusChange, setShowStatusChange] = useState(false);
-  const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
     if (vehicle?.vehicle_id) {
@@ -38,13 +36,11 @@ const ManageAssetModal = () => {
     if (successMsg) {
       const timer = setTimeout(() => {
         dispatch(clearFleetError());
-        if (successMsg.includes("Assignment confirmed") || successMsg.includes("status updated")) {
+        if (successMsg.includes("Assignment confirmed")) {
           setShowAssignDriver(false);
-          setShowStatusChange(false);
           setSelectedDriverId("");
           setStartTime("00:00");
           setEndTime("23:59");
-          setNewStatus("");
           if (vehicle?.vehicle_id) {
             dispatch(fetchVehicleAssignment(vehicle.vehicle_id));
           }
@@ -58,11 +54,9 @@ const ManageAssetModal = () => {
     dispatch(clearSelectedVehicleForManage());
     dispatch(clearFleetError());
     setShowAssignDriver(false);
-    setShowStatusChange(false);
     setSelectedDriverId("");
     setStartTime("00:00");
     setEndTime("23:59");
-    setNewStatus("");
   };
 
   const handleShowAssignDriver = () => {
@@ -95,26 +89,6 @@ const ManageAssetModal = () => {
           start_time: startTime,
           end_time: endTime,
         },
-      })
-    );
-  };
-
-  const handleShowStatusChange = () => {
-    setNewStatus(vehicle.status);
-    setShowStatusChange(true);
-  };
-
-  const handleUpdateStatus = () => {
-    if (!newStatus) {
-      alert("Please select a status");
-      return;
-    }
-
-    dispatch(
-      updateVehicleStatus({
-        fleetId: fleet.fleet_id,
-        vehicleId: vehicle.vehicle_id,
-        status: newStatus,
       })
     );
   };
@@ -172,28 +146,6 @@ const ManageAssetModal = () => {
 
             {loading && !vehicleAssignment && !showAssignDriver ? (
               <div className="mam-loading">Loading assignment details...</div>
-            ) : vehicleAssignment && vehicleAssignment.driver_id ? (
-              <div className="mam-assignment-card">
-                <div className="mam-driver-info">
-                  <div className="mam-driver-avatar">
-                    {vehicleAssignment.driver_name?.charAt(0).toUpperCase() || "D"}
-                  </div>
-                  <div className="mam-driver-details">
-                    <h4>{vehicleAssignment.driver_name || "Unknown Driver"}</h4>
-                    {vehicleAssignment.start_time && vehicleAssignment.end_time && (
-                      <p className="mam-time-info">
-                        {vehicleAssignment.start_time} - {vehicleAssignment.end_time}
-                      </p>
-                    )}
-                    {vehicleAssignment.is_active && (
-                      <span className="mam-active-badge">Active</span>
-                    )}
-                  </div>
-                </div>
-                <button className="mam-btn-secondary" onClick={handleShowAssignDriver}>
-                  Change Driver
-                </button>
-              </div>
             ) : showAssignDriver ? (
               <div className="mam-assign-form">
                 <div className="mam-form-group">
@@ -248,58 +200,34 @@ const ManageAssetModal = () => {
                   </button>
                 </div>
               </div>
+            ) : vehicleAssignment && vehicleAssignment.driver_id ? (
+              <div className="mam-assignment-card">
+                <div className="mam-driver-info">
+                  <div className="mam-driver-avatar">
+                    {vehicleAssignment.driver_name?.charAt(0).toUpperCase() || "D"}
+                  </div>
+                  <div className="mam-driver-details">
+                    <h4>{vehicleAssignment.driver_name || "Unknown Driver"}</h4>
+                    {vehicleAssignment.start_time && vehicleAssignment.end_time && (
+                      <p className="mam-time-info">
+                        {vehicleAssignment.start_time} - {vehicleAssignment.end_time}
+                      </p>
+                    )}
+                    {vehicleAssignment.is_active && (
+                      <span className="mam-active-badge">Active</span>
+                    )}
+                  </div>
+                </div>
+                <button className="mam-btn-secondary" onClick={handleShowAssignDriver}>
+                  Change Driver
+                </button>
+              </div>
             ) : (
               <div className="mam-no-assignment">
                 <p>No driver currently assigned to this vehicle</p>
               </div>
             )}
           </div>
-
-          {/* <div className="mam-section">
-            <div className="mam-section-header">
-              <h3>Vehicle Status</h3>
-              {!showStatusChange && (
-                <button className="mam-btn-secondary" onClick={handleShowStatusChange}>
-                  Change Status
-                </button>
-              )}
-            </div>
-
-            {showStatusChange ? (
-              <div className="mam-status-form">
-                <div className="mam-form-group">
-                  <label>Select New Status</label>
-                  <select
-                    value={newStatus}
-                    onChange={(e) => setNewStatus(e.target.value)}
-                    className="mam-select"
-                  >
-                    <option value="ACTIVE">ACTIVE</option>
-                    <option value="INACTIVE">INACTIVE</option>
-                    <option value="MAINTENANCE">MAINTENANCE</option>
-                  </select>
-                </div>
-                <div className="mam-form-actions">
-                  <button
-                    className="mam-btn-secondary"
-                    onClick={() => {
-                      setShowStatusChange(false);
-                      setNewStatus("");
-                    }}
-                  >
-                    Cancel
-                  </button>
-                  <button className="mam-btn-primary" onClick={handleUpdateStatus} disabled={loading}>
-                    {loading ? "Updating..." : "Update Status"}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="mam-status-info">
-                <p>Current status: <strong>{vehicle.status}</strong></p>
-              </div>
-            )}
-          </div> */}
         </div>
       </div>
     </div>

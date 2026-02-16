@@ -30,11 +30,7 @@ const FleetDashboard = () => {
   const { fleet, loading, hasExistingFleet, docStatus, error, successMsg } = useSelector(
     (state) => state.fleet
   );
-<<<<<<< Updated upstream
   const { roles } = useSelector((state) => state.auth); 
-=======
-  const { roles } = useSelector((state) => state.auth); // Added roles selector
->>>>>>> Stashed changes
 
   const [activeTab, setActiveTab] = useState("OVERVIEW");
   const [showAddVehicleModal, setShowAddVehicleModal] = useState(false);
@@ -43,11 +39,7 @@ const FleetDashboard = () => {
   const isTenantAdmin = useMemo(() => roles?.includes("TENANT_ADMIN"), [roles]);
 
   useEffect(() => {
-<<<<<<< Updated upstream
     if (isTenantAdmin) return; 
-=======
-    if (isTenantAdmin) return; // Block logic for admins
->>>>>>> Stashed changes
     dispatch(checkFleetStatus());
   }, [dispatch, isTenantAdmin]);
 
@@ -107,10 +99,6 @@ const FleetDashboard = () => {
         <div className="fd-onboarding-content">
           <header className="fd-welcome-section">
             <div className="fd-onboard-tag">Verification Required</div>
-<<<<<<< Updated upstream
-            
-=======
->>>>>>> Stashed changes
             <h1>Welcome, {fleet.fleet_name}</h1>
             <p>Your fleet profile is currently <strong>{statusLabel}</strong>. Complete the verification below to activate your command center.</p>
           </header>

@@ -8,19 +8,11 @@ import { FaChartBar, FaCar, FaUsers, FaKey, FaMoneyBillWave } from 'react-icons/
 
 const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
   const menu = [
-<<<<<<< Updated upstream
     { id: "OVERVIEW", label: "Overview", icon: <FaChartBar className="icon-inline ds-menu-icon" /> },
     { id: "VEHICLES", label: "Fleet Assets", icon: <FaCar className="icon-inline ds-menu-icon" /> },
-    { id: "DRIVERS", label: "Driver Roster", icon: <FaUsers className="icon-inline ds-menu-icon" /> },
+    { id: "DRIVERS", label: "Driver Management", icon: <FaUsers className="icon-inline ds-menu-icon" /> },
     { id: "ASSIGNMENTS", label: "Assignments", icon: <FaKey className="icon-inline ds-menu-icon" /> },
     { id: "EARNINGS", label: "Financials", icon: <FaMoneyBillWave className="icon-inline ds-menu-icon" /> },
-=======
-    { id: "OVERVIEW", label: "Overview", icon: "fas fa-chart-pie" },
-    { id: "VEHICLES", label: "Fleet Assets", icon: "fas fa-car" },
-    { id: "DRIVERS", label: "Driver Manager", icon: "fas fa-users" },
-    { id: "ASSIGNMENTS", label: "Assignments", icon: "fas fa-key" },
-    { id: "EARNINGS", label: "Financials", icon: "fas fa-wallet" },
->>>>>>> Stashed changes
   ];
   
   const dispatch = useDispatch();
@@ -57,7 +49,7 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
             onClick={() => !item.disabled && setActiveTab(item.id)}
             disabled={item.disabled}
           >
-            <span className="ds-icon"><i className={item.icon} aria-hidden="true"></i></span>
+            <span className="ds-icon">{item.icon}</span>
             {item.label}
           </button>
         ))}

@@ -105,10 +105,6 @@ const VehicleManager = ({ fleetId, onAdd }) => {
               </div>
 
               <div className="vm-card-actions">
-<<<<<<< Updated upstream
-                
-=======
->>>>>>> Stashed changes
                 {isVerified ? (
                   <button 
                     className="vm-btn-manage" 
@@ -118,10 +114,6 @@ const VehicleManager = ({ fleetId, onAdd }) => {
                     Manage Asset
                   </button>
                 ) : (
-<<<<<<< Updated upstream
-                  
-=======
->>>>>>> Stashed changes
                   <button
                     className="vm-btn-outline"
                     type="button"
@@ -146,10 +138,6 @@ const VehicleManager = ({ fleetId, onAdd }) => {
         </div>
       )}
 
-<<<<<<< Updated upstream
-      
-=======
->>>>>>> Stashed changes
       {selectedVehicleForDocs && <VehicleDocsModal />}
       {selectedVehicleForManage && <ManageAssetModal />}
     </div>

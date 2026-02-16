@@ -562,23 +562,49 @@
 }
 
 .fin-modal-close {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: var(--theme-button-bg);
   border: none;
   border-radius: 50%;
-  font-size: 1.5rem;
-  color: var(--theme-font);
+  font-size: 1.25rem;
+  color: var(--theme-button-font);
   cursor: pointer;
   transition: var(--transition-base);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  z-index: 3;
+}
+
+.fin-modal-close svg {
+  width: 1rem;
+  height: 1rem;
+  display: block;
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 0.12rem;
+  vector-effect: non-scaling-stroke;
+}
+
+.fin-close-svg {
+  width: 1.1rem;
+  height: 1.1rem;
+  display: block;
 }
 
 .fin-modal-close:hover {
-  background: #f8f9fa;
-  color: #dc3545;
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+}
+
+/* Remove the small inline icon margins inside circular close button */
+.fin-modal-close .icon-inline {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1;
+  display: block;
 }
 
 .fin-modal-content {
