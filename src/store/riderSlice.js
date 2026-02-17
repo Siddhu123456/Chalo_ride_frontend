@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/rider";
+const API_URL = "http://192.168.3.86:8000/rider";
 
 
 const getHeaders = () => {
