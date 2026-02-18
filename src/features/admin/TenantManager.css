@@ -1,5 +1,3 @@
-
-
 :root {
     --theme-white: #fff;
     --theme-border: #a1a2a6;
@@ -8,14 +6,17 @@
     --theme-button-font: #000000;
 }
 
+/* ─── Container ────────────────────────────────────────── */
 
 .tm-container {
     padding: 40px;
     width: 100%;
     min-height: 100vh;
     background: #f8f9fa;
+    box-sizing: border-box;
 }
 
+/* ─── Notification ─────────────────────────────────────── */
 
 .tm-notification {
     padding: 16px 24px;
@@ -39,9 +40,10 @@
 
 @keyframes slideDown {
     from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ─── Header ───────────────────────────────────────────── */
 
 .tm-header {
     margin-bottom: 32px;
@@ -60,6 +62,7 @@
     margin: 0;
 }
 
+/* ─── Dashboard Grid ───────────────────────────────────── */
 
 .tm-dashboard-layout {
     display: grid;
@@ -67,6 +70,7 @@
     gap: 28px;
 }
 
+/* ─── Card ─────────────────────────────────────────────── */
 
 .tm-card {
     background: white;
@@ -78,6 +82,7 @@
 .tm-card:first-child {
     position: sticky;
     top: 20px;
+    align-self: start;
 }
 
 .tm-card h3 {
@@ -89,6 +94,7 @@
     border-bottom: 2px solid #f0f0f0;
 }
 
+/* ─── Card Form ────────────────────────────────────────── */
 
 .tm-card form {
     display: flex;
@@ -105,6 +111,8 @@
     background: #f8f9fa;
     color: var(--theme-font);
     transition: all 0.3s ease;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .tm-card input:focus,
@@ -128,6 +136,7 @@
     position: relative;
     overflow: hidden;
     z-index: 1;
+    transition: color 0.3s ease;
 }
 
 .tm-card form button::before {
@@ -142,23 +151,17 @@
     z-index: -1;
 }
 
-.tm-card form button:hover {
-    color: white;
-}
+.tm-card form button:hover { color: white; }
+.tm-card form button:hover::before { left: 0; }
+.tm-card form button:disabled { opacity: 0.6; cursor: not-allowed; }
 
-.tm-card form button:hover::before {
-    left: 0;
-}
-
-.tm-card form button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
+/* ─── Card Table ───────────────────────────────────────── */
 
 .tm-card table {
     width: 100%;
     border-collapse: collapse;
+    /* Prevent table from overflowing card on small screens */
+    table-layout: fixed;
 }
 
 .tm-card table tr {
@@ -174,10 +177,12 @@
     padding: 16px;
     font-weight: 600;
     color: var(--theme-font);
+    word-break: break-word;
 }
 
 .tm-card table td:last-child {
     text-align: right;
+    width: 100px;
 }
 
 .tm-card table button {
@@ -189,12 +194,14 @@
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .tm-card table button:hover {
     background: rgba(254, 204, 24, 0.1);
 }
 
+/* ─── Back Button ──────────────────────────────────────── */
 
 .tm-container > button {
     background: none;
@@ -213,14 +220,17 @@
     background: rgba(254, 204, 24, 0.1);
 }
 
+/* ─── Detail Title ─────────────────────────────────────── */
 
 .tm-container > h2 {
     font-size: 2.2rem;
     font-weight: 800;
     color: var(--theme-font);
     margin: 0 0 32px 0;
+    word-break: break-word;
 }
 
+/* ─── Detail Sections ──────────────────────────────────── */
 
 .tm-container section {
     background: white;
@@ -247,6 +257,7 @@
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .tm-container section select,
@@ -259,6 +270,7 @@
     border-radius: 8px;
     background: white;
     color: var(--theme-font);
+    box-sizing: border-box;
 }
 
 .tm-container section select:focus,
@@ -274,12 +286,14 @@
     gap: 6px;
     font-weight: 600;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .tm-container section input[type="checkbox"] {
     width: 18px;
     height: 18px;
     accent-color: var(--theme-button-bg);
+    flex-shrink: 0;
 }
 
 .tm-container section form button {
@@ -291,6 +305,7 @@
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s;
+    white-space: nowrap;
 }
 
 .tm-container section form button:hover {
@@ -298,6 +313,7 @@
     box-shadow: 0 4px 12px rgba(254, 204, 24, 0.3);
 }
 
+/* ─── Admin List ───────────────────────────────────────── */
 
 .tm-container section ul {
     list-style: none;
@@ -310,7 +326,10 @@
     border-bottom: 1px solid #f0f0f0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 12px;
     transition: background 0.2s;
+    word-break: break-word;
 }
 
 .tm-container section ul li:hover {
@@ -325,24 +344,72 @@
     border-radius: 6px;
     font-weight: 600;
     cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .tm-container section ul button:hover {
     background: rgba(220, 53, 69, 0.2);
 }
 
+/* ─── Tablet ───────────────────────────────────────────── */
 
 @media (max-width: 1024px) {
     .tm-container { padding: 30px; }
-    .tm-dashboard-layout { grid-template-columns: 1fr; }
-    .tm-card:first-child { position: relative; top: 0; }
+
+    .tm-dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Disable sticky when stacked — would cause weird scroll */
+    .tm-card:first-child {
+        position: relative;
+        top: 0;
+    }
 }
+
+/* ─── Mobile ───────────────────────────────────────────── */
 
 @media (max-width: 768px) {
     .tm-container { padding: 20px; }
-    .tm-header h1 { font-size: 1.8rem; }
-    .tm-card, .tm-container section { padding: 20px; }
-    .tm-container section form { flex-direction: column; }
+
+    .tm-header h1,
+    .tm-container > h2 { font-size: 1.6rem; }
+
+    .tm-header p { font-size: 0.95rem; }
+
+    .tm-card,
+    .tm-container section { padding: 20px; }
+
+    .tm-container section form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
     .tm-container section select,
-    .tm-container section input { width: 100%; min-width: 100%; }
+    .tm-container section input[type="text"],
+    .tm-container section input[placeholder] {
+        width: 100%;
+        min-width: 0;
+        flex: none;
+    }
+
+    .tm-container section form button {
+        width: 100%;
+    }
+}
+
+/* ─── Small Mobile ─────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .tm-container { padding: 16px; }
+
+    .tm-header h1,
+    .tm-container > h2 { font-size: 1.4rem; }
+
+    .tm-card { padding: 16px; }
+
+    .tm-card table td { padding: 12px 8px; font-size: 0.9rem; }
+
+    .tm-container section { padding: 16px; }
 }
