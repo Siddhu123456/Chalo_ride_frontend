@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { User, Phone, CheckCircle, Route, X } from "lucide-react";
+import { User, Phone, CheckCircle, X, Star } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
   fetchTripStatus,
   fetchTripOtp,
   cancelTrip,
+  rateTrip,
   resetTripState,
 } from "../../../store/tripSlice";
 
@@ -18,12 +19,21 @@ const ACTIVE_STATES = ["REQUESTED", "ASSIGNED", "PICKED_UP"];
 const TripTracking = ({ onNewRide }) => {
   const dispatch = useDispatch();
 
-  const { tripId, status, otp, loading, cancelling } = useSelector(
-    (state) => state.trip
-  );
+  const {
+    tripId,
+    status,
+    otp,
+    loading,
+    cancelling,
+    ratingSubmitted,
+    ratingLoading,
+    ratingError,
+  } = useSelector((state) => state.trip);
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
+  const [selectedRating, setSelectedRating] = useState(0);
+  const [hoveredRating, setHoveredRating] = useState(0);
 
   useEffect(() => {
     if (!tripId || !ACTIVE_STATES.includes(status)) return;
@@ -41,27 +51,27 @@ const TripTracking = ({ onNewRide }) => {
     }
   }, [status, tripId, dispatch]);
 
-  useEffect(() => {
-    if (status === "COMPLETED" || status === "CANCELLED") {
-      const timer = setTimeout(() => {
-        dispatch(resetTripState());
-        dispatch(resetFareState());
-        onNewRide();
-      }, 2500);
-
-      return () => clearTimeout(timer);
-    }
-  }, [status, dispatch, onNewRide]);
+  // No auto-redirect on COMPLETED — user must rate and manually dismiss
 
   const handleCancelTrip = () => {
     if (!cancelReason.trim()) {
       alert("Please provide a cancellation reason");
       return;
     }
-
     dispatch(cancelTrip({ tripId, reason: cancelReason }));
     setShowCancelModal(false);
     setCancelReason("");
+  };
+
+  const handleSubmitRating = () => {
+    if (!selectedRating) return;
+    dispatch(rateTrip({ tripId, rating: selectedRating }));
+  };
+
+  const handleReset = () => {
+    dispatch(resetTripState());
+    dispatch(resetFareState());
+    onNewRide();
   };
 
   const canCancelTrip = status === "REQUESTED" || status === "ASSIGNED";
@@ -113,9 +123,7 @@ const TripTracking = ({ onNewRide }) => {
             <div className="driver-info">
               <h5>{otp?.driver?.name}</h5>
               <p>{otp?.driver?.phone}</p>
-              <p className="vehicle-plate">
-                {otp?.vehicle?.registration_no}
-              </p>
+              <p className="vehicle-plate">{otp?.vehicle?.registration_no}</p>
             </div>
 
             {otp?.otp && (
@@ -171,9 +179,7 @@ const TripTracking = ({ onNewRide }) => {
             <div className="driver-info">
               <h5>{otp?.driver?.name}</h5>
               <p>{otp?.driver?.phone}</p>
-              <p className="vehicle-plate">
-                {otp?.vehicle?.registration_no}
-              </p>
+              <p className="vehicle-plate">{otp?.vehicle?.registration_no}</p>
             </div>
           </div>
 
@@ -193,9 +199,64 @@ const TripTracking = ({ onNewRide }) => {
           <h4>Trip Completed!</h4>
           <p>You have arrived at your destination.</p>
 
-          <div className="route-indicator">
-            <Route size={150} />
-          </div>
+          {!ratingSubmitted ? (
+            <div className="rating-section">
+              <p className="rating-label">How was your ride?</p>
+
+              <div className="star-row">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <button
+                    key={star}
+                    className={`star-btn ${
+                      star <= (hoveredRating || selectedRating) ? "active" : ""
+                    }`}
+                    onClick={() => setSelectedRating(star)}
+                    onMouseEnter={() => setHoveredRating(star)}
+                    onMouseLeave={() => setHoveredRating(0)}
+                  >
+                    <Star
+                      size={36}
+                      fill={
+                        star <= (hoveredRating || selectedRating)
+                          ? "#fecc18"
+                          : "none"
+                      }
+                      stroke={
+                        star <= (hoveredRating || selectedRating)
+                          ? "#fecc18"
+                          : "#ccc"
+                      }
+                    />
+                  </button>
+                ))}
+              </div>
+
+              {ratingError && (
+                <p className="rating-error">{ratingError}</p>
+              )}
+
+              <div className="rating-actions">
+                <button
+                  className="submit-rating-btn"
+                  onClick={handleSubmitRating}
+                  disabled={!selectedRating || ratingLoading}
+                >
+                  {ratingLoading ? "Submitting..." : "Submit Rating"}
+                </button>
+
+                <button className="skip-rating-btn" onClick={handleReset}>
+                  Skip
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="rating-thanks">
+              <p>Thanks for your feedback!</p>
+              <button className="new-ride-btn" onClick={handleReset}>
+                Book New Ride
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -208,6 +269,9 @@ const TripTracking = ({ onNewRide }) => {
           <X size={48} className="cancel-icon" />
           <h4>Trip Cancelled</h4>
           <p>Your trip has been cancelled successfully.</p>
+          <button className="new-ride-btn" onClick={handleReset}>
+            Book New Ride
+          </button>
         </div>
       </div>
     );
@@ -216,7 +280,13 @@ const TripTracking = ({ onNewRide }) => {
   return null;
 };
 
-const CancelModal = ({ cancelReason, setCancelReason, onCancel, onConfirm, cancelling }) => {
+const CancelModal = ({
+  cancelReason,
+  setCancelReason,
+  onCancel,
+  onConfirm,
+  cancelling,
+}) => {
   const cancelReasons = [
     "Driver is taking too long",
     "Found alternative transportation",
@@ -242,7 +312,9 @@ const CancelModal = ({ cancelReason, setCancelReason, onCancel, onConfirm, cance
             {cancelReasons.map((reason) => (
               <button
                 key={reason}
-                className={`reason-option ${cancelReason === reason ? "selected" : ""}`}
+                className={`reason-option ${
+                  cancelReason === reason ? "selected" : ""
+                }`}
                 onClick={() => setCancelReason(reason)}
               >
                 {reason}

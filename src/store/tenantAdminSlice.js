@@ -1,9 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://192.168.3.86:8000/tenant-admin';
-const WALLET_API_URL = 'http://192.168.3.86:8000/wallet';
-const SETTLEMENT_API_URL = 'http://192.168.3.86:8000/tenant/settlements';
+// const API_URL = 'http://192.168.3.86:8000/tenant-admin';
+const API_URL = 'http://localhost:8000/tenant-admin';
+// const WALLET_API_URL = 'http://192.168.3.86:8000/wallet';
+const WALLET_API_URL = 'http://localhost:8000/wallet';
+// const SETTLEMENT_API_URL = 'http://192.168.3.86:8000/tenant/settlements';
+const SETTLEMENT_API_URL = 'http://localhost:8000/tenant/settlements';
 
 const getHeaders = () => ({
   headers: {

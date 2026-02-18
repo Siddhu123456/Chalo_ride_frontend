@@ -734,3 +734,129 @@
         flex-direction: column;
     }
 }
+
+/* ── Rating Section (append to TripTracking.css) ── */
+
+.rating-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.rating-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #3b3e47;
+  margin: 0;
+}
+
+.star-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: transform 0.15s ease;
+  line-height: 0;
+}
+
+.star-btn:hover,
+.star-btn.active {
+  transform: scale(1.15);
+}
+
+.rating-error {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.rating-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  width: 100%;
+}
+
+.submit-rating-btn {
+  width: 100%;
+  padding: 0.875rem;
+  background: linear-gradient(135deg, #fecc18 0%, #ffd645 100%);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+.submit-rating-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 204, 24, 0.35);
+}
+
+.submit-rating-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.skip-rating-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: transparent;
+  color: #6c757d;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.skip-rating-btn:hover {
+  border-color: #adb5bd;
+  color: #3b3e47;
+}
+
+.rating-thanks {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rating-thanks p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #28a745;
+  margin: 0;
+}
+
+.new-ride-btn {
+  padding: 0.875rem 2rem;
+  background: linear-gradient(135deg, #fecc18 0%, #ffd645 100%);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
+}
+
+.new-ride-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(254, 204, 24, 0.35);
+}
