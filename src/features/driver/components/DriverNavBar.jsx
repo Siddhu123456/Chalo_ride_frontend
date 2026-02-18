@@ -2,26 +2,32 @@ import React from "react";
 import { useSelector } from "react-redux";
 import "./DriverNavBar.css";
 
-const DriverNavBar = () => {
+const DriverNavBar = ({ onMenuToggle }) => {
   const { profile, dashboardSummary } = useSelector(
     (state) => state.driver
   );
-
-  const auth = useSelector(state => state.auth);
-
-console.log("AUTH STATE:", auth);
 
   const driverName = profile?.full_name || "Driver";
   const tenantName = dashboardSummary?.tenant?.tenant_name;
   const fleetName = dashboardSummary?.fleet?.fleet_name;
 
-  console.log(tenantName);
   return (
     <nav className="driver-navbar">
+      {/* Hamburger — only visible on mobile via CSS */}
+      <button
+        className="navbar-hamburger"
+        onClick={onMenuToggle}
+        aria-label="Open menu"
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
       <div className="driver-navbar-left">
         <span className="welcome-message">
           {tenantName && (
-            <span className="tenant-name"> ·{tenantName || "ChaloRide"}</span>
+            <span className="tenant-name"> · {tenantName}</span>
           )}
         </span>
       </div>
@@ -32,7 +38,6 @@ console.log("AUTH STATE:", auth);
             <span className="fleet-name">{fleetName}</span>
           </div>
         )}
-
         <div className="driver-profile">
           <img
             src="https://via.placeholder.com/40"

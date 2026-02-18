@@ -1,3 +1,4 @@
+/* ─── Layout Shell ─────────────────────────────────────── */
 
 .driver-layout {
     display: flex;
@@ -6,32 +7,63 @@
     position: relative;
 }
 
+/* ─── Sidebar Overlay (mobile) ─────────────────────────── */
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+/* ─── Side Menu ────────────────────────────────────────── */
 
 .side-menu {
-  display: flex;
-  box-sizing: border-box;
-  flex-direction: column;
-  width: var(--side-menu-width);
-  min-height: 100vh;
-  background-color: var(--theme-white);
-  color: var(--theme-font);
-  padding: 0;
-  box-sizing: border-box;
-  border-right: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 0.125rem 0 0.625rem rgba(0, 0, 0, 0.05);
-  position: fixed; 
-  left: 0;
-  top: 0;
-  z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    width: var(--side-menu-width, 220px);
+    min-height: 100vh;
+    background-color: var(--theme-white);
+    color: var(--theme-font);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0.125rem 0 0.625rem rgba(0, 0, 0, 0.05);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
 }
+
+/* Close button inside sidebar — hidden on desktop */
+.menu-close-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    color: #888;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: auto;
+    transition: color 0.2s;
+}
+
+.menu-close-btn:hover { color: var(--theme-font); }
+
+/* ─── Main Area ────────────────────────────────────────── */
 
 .driver-main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: var(--side-menu-width); 
-    position: relative; 
+    margin-left: var(--side-menu-width, 220px);
+    position: relative;
+    min-width: 0; /* prevent flex blowout */
 }
+
+/* ─── Navbar ───────────────────────────────────────────── */
 
 .driver-navbar {
     width: 100%;
@@ -39,63 +71,103 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: var(--navbar-height);
+    height: var(--navbar-height, 64px);
     background-color: var(--theme-white);
-    padding: 0 1.875rem; 
+    padding: 0 1.875rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
-    position: sticky; 
+    position: sticky;
     top: 0;
-    z-index: 999;
+    z-index: 998;
+    gap: 1rem;
 }
+
+/* Hamburger button — hidden on desktop */
+.navbar-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.navbar-hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--theme-font);
+    border-radius: 2px;
+    transition: background 0.2s;
+}
+
+.navbar-hamburger:hover span { background: var(--theme-button-bg); }
+
+/* ─── Content Area ─────────────────────────────────────── */
 
 .driver-content-area {
-    padding: 1.875rem; 
+    padding: 1.875rem;
     flex: 1;
     overflow-y: auto;
+    min-width: 0;
 }
 
-@media (max-width: 1024px) {
-    :root {
-        --collapsed-width: 65px; 
-    }
+/* ─── Tablet — collapsed icon rail ────────────────────── */
+
+@media (max-width: 1024px) and (min-width: 769px) {
+    :root { --collapsed-width: 65px; }
 
     .side-menu {
-        width: var(--collapsed-width) !important;
+        width: var(--collapsed-width);
         align-items: center;
         padding: 15px 0;
     }
 
-    .driver-main {
-        margin-left: var(--collapsed-width) !important;
-    }
-    .driver-navbar {
-        padding: 0 1rem;
-    }
-    .fleet-info {
-        display: none; 
-    }
+    .driver-main { margin-left: var(--collapsed-width); }
+
+    .driver-navbar { padding: 0 1rem; }
+
+    .fleet-info { display: none; }
 }
 
+/* ─── Mobile — slide-in drawer ─────────────────────────── */
+
 @media (max-width: 768px) {
-    .driver-layout {
-        flex-direction: column;
-    }
+    /* Sidebar: hidden off-screen by default */
     .side-menu {
-        width: 100%;
-        min-height: auto;
-        height: var(--navbar-height); 
-        position: relative;
-        border-right: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-        box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+        transform: translateX(-100%);
+        width: 260px; /* full-width drawer */
+        box-shadow: none;
     }
-    .driver-main {
-        margin-left: 0;
-        padding-top: 0; 
+
+    /* Sidebar: visible when .open class is toggled */
+    .side-menu.open {
+        transform: translateX(0);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
     }
-    .driver-navbar {
-        position: relative; 
-        width: 100%; 
-    }
+
+    /* Show overlay and close button on mobile */
+    .sidebar-overlay { display: block; }
+    .menu-close-btn  { display: block; }
+
+    /* Show hamburger in navbar */
+    .navbar-hamburger { display: flex; }
+
+    /* Content fills full width — no sidebar margin */
+    .driver-main { margin-left: 0; }
+
+    .driver-navbar { padding: 0 1rem; }
+
+    .driver-content-area { padding: 1.25rem; }
+}
+
+/* ─── Small Mobile ─────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .driver-content-area { padding: 1rem; }
+
+    .driver-navbar { padding: 0 0.75rem; }
 }

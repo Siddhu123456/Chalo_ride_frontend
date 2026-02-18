@@ -1,31 +1,40 @@
+/* ─── Overlay ──────────────────────────────────────────── */
+
 .map-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); 
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10000; 
-    backdrop-filter: blur(5px); 
+    z-index: 10000;
+    backdrop-filter: blur(5px);
+    padding: 16px; /* stops modal touching screen edges on mobile */
+    box-sizing: border-box;
 }
+
+/* ─── Modal Content ────────────────────────────────────── */
 
 .map-modal-content {
     background-color: var(--theme-white);
     border-radius: 12px;
     padding: 2rem;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-    width: 90%;
-    max-width: 700px; 
-    max-height: 90vh; 
+    width: 100%;
+    max-width: 700px;
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     position: relative;
     box-sizing: border-box;
+    overflow-y: auto; /* scroll if content overflows on short screens */
 }
+
+/* ─── Headings ─────────────────────────────────────────── */
 
 .modal-heading {
     font-size: 1.8rem;
@@ -33,6 +42,7 @@
     margin-bottom: 0.5rem;
     font-weight: 700;
     text-align: center;
+    word-break: break-word;
 }
 
 .modal-subheading {
@@ -42,13 +52,18 @@
     margin-bottom: 1rem;
 }
 
+/* ─── Map ──────────────────────────────────────────────── */
+
 .map-container {
-    height: 350px; 
+    height: 350px;
     width: 100%;
     border-radius: 8px;
-    overflow: hidden; 
+    overflow: hidden;
     box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0; /* never let the map collapse to zero */
 }
+
+/* ─── Offer Details ────────────────────────────────────── */
 
 .modal-offer-details {
     display: flex;
@@ -59,86 +74,131 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* map-info used in JSX */
+.map-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.map-info p { margin: 0; font-size: 1rem; color: var(--theme-font); }
+
+/* ─── Actions ──────────────────────────────────────────── */
+
 .modal-actions {
     display: flex;
     gap: 1rem;
     justify-content: space-between;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .modal-actions .btn {
-    flex: 1; 
+    flex: 1;
     padding: 0.8rem 1.2rem;
     font-size: 0.9rem;
     font-weight: 600;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     color: var(--theme-white);
+    border: none;
+    box-sizing: border-box;
+    min-width: 80px;
 }
 
-.accept-confirm-btn {
-    background-color: var(--color-success);
-}
-
+/* darken() is Sass — using literal darker values */
+.accept-confirm-btn { background-color: var(--color-success, #28a745); }
 .accept-confirm-btn:hover {
-    background-color: darken(var(--color-success), 5%);
+    background-color: #218838;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
 }
 
-.reject-modal-btn {
-    background-color: var(--color-danger); 
-}
-
+.reject-modal-btn { background-color: var(--color-danger, #dc3545); }
 .reject-modal-btn:hover {
-    background-color: darken(var(--color-danger), 5%);
+    background-color: #c82333;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
 }
 
-.back-btn {
-    background-color: #6c757d; 
-    color: var(--theme-white);
-}
-
+.back-btn { background-color: #6c757d; }
 .back-btn:hover {
-    background-color: darken(#6c757d, 5%);
+    background-color: #5a6268;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(108, 117, 125, 0.3);
 }
 
+/* ─── Detail Row (used in offer details) ───────────────── */
 
+.detail-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.detail-row .detail-label {
+    min-width: 7rem;
+    font-weight: 600;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.detail-row .detail-value {
+    font-weight: 600;
+    color: var(--theme-font);
+    font-size: 0.95rem;
+    word-break: break-word;
+}
+
+/* ─── Mobile ───────────────────────────────────────────── */
 
 @media (max-width: 600px) {
     .map-modal-content {
         padding: 1.5rem;
         gap: 1rem;
     }
-    .map-container {
-        height: 250px; 
-    }
+
+    .map-container { height: 250px; }
+
+    .modal-heading { font-size: 1.5rem; }
+
     .modal-actions {
         flex-direction: column;
+        gap: 0.75rem;
     }
+
     .modal-actions .btn {
-        flex: none; 
+        flex: none;
         width: 100%;
     }
-    .modal-heading {
-        font-size: 1.5rem;
-    }
+
     .detail-row {
-        flex-direction: column; 
+        flex-direction: column;
         align-items: flex-start;
     }
+
     .detail-row .detail-label {
         min-width: unset;
         width: 100%;
         margin-bottom: 0.2rem;
-        text-align: left;
     }
-    .detail-row .detail-value {
-        text-align: left;
+
+    .detail-row .detail-value { text-align: left; }
+}
+
+/* ─── Small Mobile ─────────────────────────────────────── */
+
+@media (max-width: 390px) {
+    .map-modal-content { padding: 1.2rem; }
+
+    /* Shrink map further on very short phones so buttons stay visible */
+    .map-container { height: 200px; }
+
+    .modal-heading { font-size: 1.3rem; }
+
+    .modal-actions .btn {
+        padding: 0.7rem 1rem;
+        font-size: 0.85rem;
     }
 }

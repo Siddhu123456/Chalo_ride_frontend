@@ -140,6 +140,25 @@ const ActiveTrip = () => {
   const isRideInProgress = tripStatus === "PICKED_UP";
   const isTripCompleted = tripStatus === "COMPLETED";
 
+  // Add cardRef at the top of ActiveTrip component, alongside other refs:
+const cardRef = useRef(null);
+
+// Add this useEffect inside the component (after existing hooks):
+useEffect(() => {
+  const updateCardHeight = () => {
+    if (cardRef.current) {
+      const h = cardRef.current.offsetHeight;
+      document.documentElement.style.setProperty('--card-height', `${h}px`);
+    }
+  };
+  updateCardHeight();
+  window.addEventListener('resize', updateCardHeight);
+  return () => window.removeEventListener('resize', updateCardHeight);
+}, [tripStatus]); // re-measure when card content changes
+
+// Add ref to the bottom card div:
+// <div className="active-trip-bottom-card" ref={cardRef}>
+
   
   usePolling(
     async () => {
@@ -264,8 +283,8 @@ const ActiveTrip = () => {
         </MapContainer>
       </div>
 
-      <div className="active-trip-bottom-card">
-        <div className="card-left-section">
+<div className="active-trip-bottom-card" ref={cardRef}>
+          <div className="card-left-section">
           <div className="trip-location-info">
             <h3 className="location-label">Pickup Location:</h3>
             <p className="location-address">

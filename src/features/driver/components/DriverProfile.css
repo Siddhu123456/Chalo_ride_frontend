@@ -11,10 +11,12 @@
     --color-info: #17a2b8;
 }
 
+/* ─── Page ─────────────────────────────────────────────── */
+
 .driver-profile-page {
     padding: 2rem;
     background-color: var(--theme-light-bg);
-    min-height: calc(100vh - var(--navbar-height));
+    min-height: calc(100vh - var(--navbar-height, 0px));
     box-sizing: border-box;
 }
 
@@ -23,6 +25,7 @@
     color: var(--theme-font);
     margin-bottom: 0.5rem;
     font-weight: 700;
+    word-break: break-word;
 }
 
 .profile-tagline {
@@ -31,6 +34,8 @@
     margin-bottom: 2rem;
 }
 
+/* ─── Card ─────────────────────────────────────────────── */
+
 .profile-card {
     background-color: var(--theme-white);
     border-radius: 12px;
@@ -38,14 +43,17 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     border: 1px solid rgba(0, 0, 0, 0.05);
-    max-width: 800px; 
-    margin: 0 auto; 
+    max-width: 800px;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 .profile-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
+
+/* ─── Header ───────────────────────────────────────────── */
 
 .profile-header-section {
     display: flex;
@@ -63,11 +71,13 @@
     object-fit: cover;
     border: 3px solid var(--theme-button-bg);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
 .profile-header-info {
     display: flex;
     flex-direction: column;
+    min-width: 0; /* prevent text overflow */
 }
 
 .profile-name {
@@ -75,6 +85,7 @@
     font-weight: 700;
     color: var(--theme-font);
     margin: 0;
+    word-break: break-word;
 }
 
 .profile-status {
@@ -83,26 +94,22 @@
     margin: 0.5rem 0 0;
 }
 
+/* ─── Status Badges ────────────────────────────────────── */
+
 .status-badge {
     padding: 0.3em 0.7em;
     border-radius: 20px;
     font-weight: 600;
     font-size: 0.85em;
     color: var(--theme-white);
+    display: inline-block;
 }
 
-.status-approved {
-    background-color: var(--color-success);
-}
+.status-approved  { background-color: var(--color-success); }
+.status-pending   { background-color: var(--color-warning); color: var(--theme-font); }
+.status-rejected  { background-color: var(--color-danger); }
 
-.status-pending {
-    background-color: var(--color-warning);
-    color: var(--theme-font); 
-}
-
-.status-rejected {
-    background-color: var(--color-danger);
-}
+/* ─── Details Grid ─────────────────────────────────────── */
 
 .profile-details-grid {
     display: grid;
@@ -114,6 +121,7 @@
 .detail-item {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .detail-label {
@@ -127,17 +135,20 @@
     font-size: 1.1rem;
     color: var(--theme-font);
     font-weight: 600;
+    word-break: break-word;
 }
 
-.star-rating {
-    color: #ffc107; 
-}
+.star-rating { color: #ffc107; }
+
+/* ─── Actions ──────────────────────────────────────────── */
 
 .profile-actions {
     display: flex;
     gap: 1rem;
-    justify-content: flex-end; 
+    justify-content: flex-end;
 }
+
+/* ─── Button ───────────────────────────────────────────── */
 
 .btn {
     padding: 0.8rem 1.5rem;
@@ -146,30 +157,37 @@
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     color: var(--theme-white);
+    box-sizing: border-box;
 }
 
+/* darken() is Sass — using a literal darker yellow instead */
 .edit-profile-btn {
     background-color: var(--theme-button-bg);
     color: var(--theme-button-font);
 }
 
-.edit-profile-btn:hover {
-    background-color: darken(var(--theme-button-bg), 5%);
+.edit-profile-btn:hover:not(:disabled) {
+    background-color: #e6b800;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(254, 204, 24, 0.3);
 }
 
+.edit-profile-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
 
+/* ─── Mobile ───────────────────────────────────────────── */
 
 @media (max-width: 768px) {
-    .profile-card {
-        padding: 1.5rem;
-    }
-    .profile-heading {
-        font-size: 1.8rem;
-    }
+    .driver-profile-page { padding: 1.5rem; }
+
+    .profile-card { padding: 1.5rem; }
+
+    .profile-heading { font-size: 1.8rem; }
+
     .profile-header-section {
         flex-direction: column;
         text-align: center;
@@ -177,22 +195,48 @@
         padding-bottom: 1rem;
         margin-bottom: 1rem;
     }
+
+    .profile-header-info {
+        align-items: center; /* centre-align when stacked */
+    }
+
     .profile-main-avatar {
         width: 60px;
         height: 60px;
     }
-    .profile-name {
-        font-size: 1.5rem;
-    }
+
+    .profile-name { font-size: 1.5rem; }
+
     .profile-details-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
+
     .profile-actions {
         flex-direction: column;
         justify-content: center;
     }
-    .btn {
-        width: 100%;
+
+    .btn { width: 100%; }
+}
+
+/* ─── Small Mobile ─────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .driver-profile-page { padding: 1rem; }
+
+    .profile-card { padding: 1.2rem; }
+
+    .profile-heading { font-size: 1.5rem; }
+
+    .profile-tagline { font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+    .profile-main-avatar {
+        width: 52px;
+        height: 52px;
     }
+
+    .profile-name { font-size: 1.3rem; }
+
+    .detail-value { font-size: 1rem; }
 }

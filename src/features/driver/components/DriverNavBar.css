@@ -1,20 +1,24 @@
 .driver-navbar-left {
     display: flex;
     align-items: center;
+    min-width: 0; /* prevent text overflow */
 }
 
 .welcome-message {
     font-size: 2rem;
     font-weight: 800;
     color: var(--theme-button-bg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .driver-navbar-right {
     display: flex;
-    width: 35%;
     align-items: center;
     gap: 1.5rem;
-    justify-content: space-evenly;
+    justify-content: flex-end;
+    flex-shrink: 0; /* never squish below content size */
 }
 
 .fleet-info {
@@ -27,6 +31,7 @@
     font-weight: 500;
     color: #666;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
 }
 
 .fleet-name {
@@ -42,13 +47,8 @@
     transition: all 0.2s ease;
     padding: 0.5rem 1rem;
     border-radius: 1.5625rem;
-    justify-content: center;
-    align-items: center;
     text-align: center;
-}
-
-.driver-profile img {
-    align-self: center;
+    flex-shrink: 0;
 }
 
 .driver-profile:hover {
@@ -63,10 +63,64 @@
     object-fit: cover;
     border: 2px solid var(--theme-button-bg);
     box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
 }
 
 .driver-name {
     font-size: 1rem;
     font-weight: 600;
     color: var(--theme-font);
+    white-space: nowrap;
+}
+
+/* ─── Mobile ───────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .welcome-message {
+        font-size: 1.4rem;
+    }
+
+    .driver-navbar-right {
+        gap: 0.75rem;
+    }
+
+    .fleet-info {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+
+    .driver-profile {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .driver-name {
+        font-size: 0.9rem;
+    }
+}
+
+/* ─── Small Mobile ─────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .welcome-message {
+        font-size: 1.1rem;
+    }
+
+    /* Hide fleet pill on very small screens to save space */
+    .fleet-info {
+        display: none;
+    }
+
+    .driver-profile {
+        padding: 0.3rem 0.5rem;
+        gap: 0.4rem;
+    }
+
+    .profile-avatar {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .driver-name {
+        font-size: 0.85rem;
+    }
 }
