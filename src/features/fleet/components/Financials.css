@@ -571,11 +571,12 @@
   border: none;
   border-radius: 50%;
   font-size: 1.25rem;
-  color: var(--theme-button-font);
+  background-color: gray;
   cursor: pointer;
   transition: var(--transition-base);
   box-shadow: 0 4px 12px rgba(0,0,0,0.12);
   z-index: 3;
+  text-align: center;
 }
 
 .fin-modal-close svg {

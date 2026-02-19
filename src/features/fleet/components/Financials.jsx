@@ -339,9 +339,7 @@ const Financials = () => {
                   : "Settlement Transactions"}
               </h2>
               <button className="fin-modal-close" onClick={closeDetails} aria-label="Close">
-                <svg className="fin-close-svg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M6 6 L18 18 M6 18 L18 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                </svg>
+                x
               </button>
             </div>
 
