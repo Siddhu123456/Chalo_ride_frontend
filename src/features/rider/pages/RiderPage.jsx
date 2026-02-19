@@ -1,69 +1,92 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import RiderSideMenu from "../components/RiderSideMenu";
 import RiderNavBar from "../components/RiderNavBar";
-
 import { setPickupLocation, setCurrentLocation } from "../../../store/locationSlice";
 import { fetchRiderCity, fetchRiderProfile } from "../../../store/riderSlice";
-
 import "./RiderPage.css";
 
 const reverseGeocode = async (lat, lng) => {
   const res = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+    { headers: { "Accept-Language": "en" } }
   );
   const data = await res.json();
   return data.display_name || "Unknown location";
 };
 
+// Only re-geocode if moved more than ~50 meters
+const hasMoved = (a, b) => {
+  if (!a) return true;
+  const dx = a.lat - b.lat;
+  const dy = a.lng - b.lng;
+  return Math.sqrt(dx * dx + dy * dy) > 0.0005;
+};
 
 const RiderPage = () => {
   const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
+  const watchIdRef = useRef(null);
+  const cityFetchedRef = useRef(false);
+  const lastPositionRef = useRef(null);
 
   useEffect(() => {
-    
+    if (!token) return;
+
+    cityFetchedRef.current = false;
+    lastPositionRef.current = null;
+
     dispatch(fetchRiderProfile());
 
-    
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const { latitude, longitude } = pos.coords;
+    if (!("geolocation" in navigator)) return;
 
-          const address = await reverseGeocode(latitude, longitude);
-
-          dispatch(setPickupLocation({ lat: latitude, lng: longitude, address }));
-          dispatch(setCurrentLocation({ lat: latitude, lng: longitude }));
-          
-          dispatch(
-            fetchRiderCity({
-              lat: latitude,
-              lng: longitude,
-            })
-          );
-        },
-        () => {
-          console.warn("Location access denied by user");
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-        }
-      );
+    if (watchIdRef.current !== null) {
+      navigator.geolocation.clearWatch(watchIdRef.current);
+      watchIdRef.current = null;
     }
-  }, [dispatch]);
+
+    watchIdRef.current = navigator.geolocation.watchPosition(
+      async (pos) => {
+        const { latitude: lat, longitude: lng } = pos.coords;
+        const current = { lat, lng };
+
+        dispatch(setCurrentLocation(current));
+
+        // Only call Nominatim if position changed significantly
+        if (hasMoved(lastPositionRef.current, current)) {
+          lastPositionRef.current = current;
+          try {
+            const address = await reverseGeocode(lat, lng);
+            dispatch(setPickupLocation({ lat, lng, address }));
+          } catch (e) {
+            console.warn("Reverse geocode failed:", e);
+            dispatch(setPickupLocation({ lat, lng, address: "Unknown location" }));
+          }
+        }
+
+        if (!cityFetchedRef.current) {
+          cityFetchedRef.current = true;
+          dispatch(fetchRiderCity({ lat, lng }));
+        }
+      },
+      (err) => console.error("Location error:", err.code, err.message),
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+
+    return () => {
+      if (watchIdRef.current !== null) {
+        navigator.geolocation.clearWatch(watchIdRef.current);
+        watchIdRef.current = null;
+      }
+    };
+  }, [dispatch, token]);
 
   return (
     <div className="rider-layout">
-
       <RiderSideMenu />
-
       <main className="rider-main">
-    
         <RiderNavBar />
-
         <div className="rider-content-area">
           <Outlet />
         </div>

@@ -55,7 +55,7 @@ const RiderSideMenu = () => {
         </NavLink>
 
 
-        {roles?.includes("TENANT_ADMIN") && (
+        {!roles?.includes("TENANT_ADMIN") && (
           <NavLink
             to="/fleet-registration"
             className={({ isActive }) =>
