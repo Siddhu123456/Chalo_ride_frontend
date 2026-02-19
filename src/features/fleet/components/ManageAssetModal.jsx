@@ -6,6 +6,7 @@ import {
   clearFleetError,
   fetchAvailableDrivers,
   assignDriverToVehicle,
+  changeDriver,
 } from "../../../store/fleetSlice";
 import "./ManageAssetModal.css";
 
@@ -21,10 +22,13 @@ const ManageAssetModal = () => {
     availableDrivers,
   } = useSelector((state) => state.fleet);
 
-  const [showAssignDriver, setShowAssignDriver] = useState(false);
+  // mode: null | "assign" | "change"
+  const [mode, setMode] = useState(null);
   const [selectedDriverId, setSelectedDriverId] = useState("");
   const [startTime, setStartTime] = useState("00:00");
   const [endTime, setEndTime] = useState("23:59");
+
+  const hasDriver = vehicleAssignment && vehicleAssignment.driver_id;
 
   useEffect(() => {
     if (vehicle?.vehicle_id) {
@@ -33,64 +37,70 @@ const ManageAssetModal = () => {
   }, [vehicle?.vehicle_id, dispatch]);
 
   useEffect(() => {
-    if (successMsg) {
+    if (
+      successMsg === "Assignment confirmed" ||
+      successMsg === "Driver changed successfully"
+    ) {
       const timer = setTimeout(() => {
         dispatch(clearFleetError());
-        if (successMsg.includes("Assignment confirmed")) {
-          setShowAssignDriver(false);
-          setSelectedDriverId("");
-          setStartTime("00:00");
-          setEndTime("23:59");
-          if (vehicle?.vehicle_id) {
-            dispatch(fetchVehicleAssignment(vehicle.vehicle_id));
-          }
-        }
+        resetForm();
       }, 2000);
       return () => clearTimeout(timer);
     }
-  }, [successMsg, dispatch, vehicle?.vehicle_id]);
+  }, [successMsg, dispatch]);
 
-  const handleClose = () => {
-    dispatch(clearSelectedVehicleForManage());
-    dispatch(clearFleetError());
-    setShowAssignDriver(false);
+  const resetForm = () => {
+    setMode(null);
     setSelectedDriverId("");
     setStartTime("00:00");
     setEndTime("23:59");
   };
 
-  const handleShowAssignDriver = () => {
-    dispatch(
-      fetchAvailableDrivers({
-        fleetId: fleet.fleet_id,
-        vehicleId: vehicle.vehicle_id,
-      })
-    );
-    setShowAssignDriver(true);
+  const handleClose = () => {
+    dispatch(clearSelectedVehicleForManage());
+    dispatch(clearFleetError());
+    resetForm();
   };
 
-  const handleAssignDriver = () => {
-    if (!selectedDriverId) {
-      alert("Please select a driver");
-      return;
-    }
+  const openAssignMode = () => {
+    dispatch(fetchAvailableDrivers({ fleetId: fleet.fleet_id, vehicleId: vehicle.vehicle_id }));
+    setMode("assign");
+  };
 
-    if (!startTime || !endTime) {
-      alert("Please provide start and end times");
-      return;
-    }
+  const openChangeMode = () => {
+    dispatch(fetchAvailableDrivers({ fleetId: fleet.fleet_id, vehicleId: vehicle.vehicle_id }));
+    setMode("change");
+  };
 
-    dispatch(
-      assignDriverToVehicle({
-        fleetId: fleet.fleet_id,
-        payload: {
-          vehicle_id: vehicle.vehicle_id,
-          driver_id: parseInt(selectedDriverId),
-          start_time: startTime,
-          end_time: endTime,
-        },
-      })
-    );
+  const handleConfirm = () => {
+    if (!selectedDriverId) return alert("Please select a driver");
+    if (!startTime || !endTime) return alert("Please provide start and end times");
+
+    if (mode === "assign") {
+      dispatch(
+        assignDriverToVehicle({
+          fleetId: fleet.fleet_id,
+          payload: {
+            vehicle_id: vehicle.vehicle_id,
+            driver_id: parseInt(selectedDriverId),
+            start_time: startTime,
+            end_time: endTime,
+          },
+        })
+      );
+    } else if (mode === "change") {
+      dispatch(
+        changeDriver({
+          vehicleId: vehicle.vehicle_id,
+          fleetId: fleet.fleet_id,
+          payload: {
+            driver_id: parseInt(selectedDriverId),
+            start_time: startTime,
+            end_time: endTime,
+          },
+        })
+      );
+    }
   };
 
   if (!vehicle) return null;
@@ -98,20 +108,22 @@ const ManageAssetModal = () => {
   return (
     <div className="mam-overlay" onClick={handleClose}>
       <div className="mam-modal" onClick={(e) => e.stopPropagation()}>
+
+        {/* Header */}
         <div className="mam-header">
           <div>
-            <h2>Manage Asset</h2>
+            <h2>{hasDriver ? "Manage Asset" : "Manage Vehicle"}</h2>
             <p className="mam-vehicle-reg">{vehicle.registration_no}</p>
           </div>
-          <button className="mam-close-btn" onClick={handleClose}>
-            ×
-          </button>
+          <button className="mam-close-btn" onClick={handleClose}>×</button>
         </div>
 
         {error && <div className="mam-error">{error}</div>}
         {successMsg && <div className="mam-success">{successMsg}</div>}
 
         <div className="mam-content">
+
+          {/* Vehicle Info */}
           <div className="mam-section">
             <h3>Vehicle Information</h3>
             <div className="mam-info-grid">
@@ -134,19 +146,15 @@ const ManageAssetModal = () => {
             </div>
           </div>
 
+          {/* Driver Assignment Section */}
           <div className="mam-section">
-            <div className="mam-section-header">
-              <h3>Driver Assignment</h3>
-              {!vehicleAssignment?.driver_id && !showAssignDriver && (
-                <button className="mam-btn-secondary" onClick={handleShowAssignDriver}>
-                  Assign Driver
-                </button>
-              )}
-            </div>
+            <h3>Driver Assignment</h3>
 
-            {loading && !vehicleAssignment && !showAssignDriver ? (
+            {loading && vehicleAssignment === null && !mode ? (
               <div className="mam-loading">Loading assignment details...</div>
-            ) : showAssignDriver ? (
+
+            ) : mode ? (
+              /* Assign / Change Form */
               <div className="mam-assign-form">
                 <div className="mam-form-group">
                   <label>Select Driver</label>
@@ -163,6 +171,7 @@ const ManageAssetModal = () => {
                     ))}
                   </select>
                 </div>
+
                 <div className="mam-time-row">
                   <div className="mam-form-group">
                     <label>Start Time</label>
@@ -183,34 +192,56 @@ const ManageAssetModal = () => {
                     />
                   </div>
                 </div>
+
                 <div className="mam-form-actions">
-                  <button
-                    className="mam-btn-secondary"
-                    onClick={() => {
-                      setShowAssignDriver(false);
-                      setSelectedDriverId("");
-                      setStartTime("00:00");
-                      setEndTime("23:59");
-                    }}
-                  >
+                  <button className="mam-btn-secondary" onClick={resetForm}>
                     Cancel
                   </button>
-                  <button className="mam-btn-primary" onClick={handleAssignDriver} disabled={loading}>
-                    {loading ? "Assigning..." : "Confirm Assignment"}
+                  <button
+                    className="mam-btn-primary"
+                    onClick={handleConfirm}
+                    disabled={loading}
+                  >
+                    {loading
+                      ? mode === "change" ? "Changing..." : "Assigning..."
+                      : mode === "change" ? "Confirm Change" : "Confirm Assignment"}
                   </button>
                 </div>
               </div>
-            ) : vehicleAssignment && vehicleAssignment.driver_id ? (
+
+            ) : !hasDriver ? (
+              /* No Driver: Unassigned card */
+              <div className="mam-unassigned-card">
+                <div className="mam-unassigned-icon">🚗</div>
+                <div className="mam-unassigned-body">
+                  <h4>Vehicle Unassigned</h4>
+                  <p>
+                    This vehicle is verified and active but has no driver assigned.
+                    Assign a driver to put it into service.
+                  </p>
+                  <div className="mam-unassigned-chips">
+                    <span className="mam-chip">{vehicle.category}</span>
+                    <span className="mam-chip mam-chip--active">{vehicle.status}</span>
+                    <span className="mam-chip mam-chip--approved">{vehicle.approval_status}</span>
+                  </div>
+                </div>
+                <button className="mam-btn-primary" onClick={openAssignMode}>
+                  Assign Driver
+                </button>
+              </div>
+
+            ) : (
+              /* Has Driver: driver card + Change Driver */
               <div className="mam-assignment-card">
                 <div className="mam-driver-info">
                   <div className="mam-driver-avatar">
                     {vehicleAssignment.driver_name?.charAt(0).toUpperCase() || "D"}
                   </div>
-                  <div className="mam-driver-details">
+                  <div>
                     <h4>{vehicleAssignment.driver_name || "Unknown Driver"}</h4>
                     {vehicleAssignment.start_time && vehicleAssignment.end_time && (
                       <p className="mam-time-info">
-                        {vehicleAssignment.start_time} - {vehicleAssignment.end_time}
+                        {vehicleAssignment.start_time} – {vehicleAssignment.end_time}
                       </p>
                     )}
                     {vehicleAssignment.is_active && (
@@ -218,16 +249,13 @@ const ManageAssetModal = () => {
                     )}
                   </div>
                 </div>
-                <button className="mam-btn-secondary" onClick={handleShowAssignDriver}>
+                <button className="mam-btn-secondary" onClick={openChangeMode}>
                   Change Driver
                 </button>
               </div>
-            ) : (
-              <div className="mam-no-assignment">
-                <p>No driver currently assigned to this vehicle</p>
-              </div>
             )}
           </div>
+
         </div>
       </div>
     </div>

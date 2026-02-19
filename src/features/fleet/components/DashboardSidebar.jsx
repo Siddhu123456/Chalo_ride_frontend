@@ -11,7 +11,7 @@ const DashboardSidebar = ({ fleetName, activeTab, setActiveTab }) => {
     { id: "OVERVIEW", label: "Overview", icon: <FaChartBar className="icon-inline ds-menu-icon" /> },
     { id: "VEHICLES", label: "Fleet Assets", icon: <FaCar className="icon-inline ds-menu-icon" /> },
     { id: "DRIVERS", label: "Driver Management", icon: <FaUsers className="icon-inline ds-menu-icon" /> },
-    { id: "ASSIGNMENTS", label: "Assignments", icon: <FaKey className="icon-inline ds-menu-icon" /> },
+    // { id: "ASSIGNMENTS", label: "Assignments", icon: <FaKey className="icon-inline ds-menu-icon" /> },
     { id: "EARNINGS", label: "Financials", icon: <FaMoneyBillWave className="icon-inline ds-menu-icon" /> },
   ];
   

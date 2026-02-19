@@ -28,12 +28,8 @@
 }
 
 @keyframes mam-fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .mam-modal {
@@ -48,22 +44,17 @@
 }
 
 @keyframes mam-slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
+/* ── Header ── */
 .mam-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   padding: 2rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--theme-border-yellow);
   position: sticky;
   top: 0;
   background: var(--theme-white);
@@ -86,27 +77,59 @@
 }
 
 .mam-close-btn {
-  background: transparent;
-  border: none;
-  font-size: 2rem;
+  background: #f8f9fa;
+  border: 1.5px solid var(--theme-border);
+  font-size: 1.4rem;
   line-height: 1;
-  color: #6c757d;
+  font-family: Arial, sans-serif;
+  color: var(--theme-font);
   cursor: pointer;
   padding: 0;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: 50%;
   transition: var(--transition-base);
+  flex-shrink: 0;
 }
 
 .mam-close-btn:hover {
-  background: #f8f9fa;
-  color: var(--theme-font);
+  background: var(--theme-font);
+  color: var(--theme-white);
+  border-color: var(--theme-font);
 }
 
+/* ── Alerts ── */
+.mam-error,
+.mam-success {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 1rem 2rem 0;
+  animation: mam-slideDown 0.3s ease;
+}
+
+@keyframes mam-slideDown {
+  from { transform: translateY(-10px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+.mam-error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mam-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* ── Content ── */
 .mam-content {
   padding: 2rem;
   display: flex;
@@ -121,19 +144,16 @@
 }
 
 .mam-section h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--theme-font);
   margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.85rem;
 }
 
-.mam-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-}
-
+/* ── Vehicle info grid ── */
 .mam-info-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -151,7 +171,7 @@
 }
 
 .mam-label {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   color: #6c757d;
   font-weight: 500;
   text-transform: uppercase;
@@ -164,10 +184,11 @@
   font-weight: 600;
 }
 
+/* ── Status / Approval badges ── */
 .mam-status-badge,
 .mam-approval-badge {
   display: inline-block;
-  padding: 0.4rem 0.875rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
@@ -176,42 +197,66 @@
   white-space: nowrap;
 }
 
-.mam-status-badge.active {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  color: #155724;
-  border: 1px solid #c3e6cb;
+.mam-status-badge.active     { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.mam-status-badge.inactive   { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+.mam-status-badge.maintenance{ background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+.mam-approval-badge.approved { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.mam-approval-badge.pending  { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+.mam-approval-badge.rejected { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+/* ── Unassigned card ── */
+.mam-unassigned-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 2rem 1.5rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 2px dashed var(--theme-border);
 }
 
-.mam-status-badge.inactive {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+.mam-unassigned-icon {
+  font-size: 2.5rem;
+  line-height: 1;
 }
 
-.mam-status-badge.maintenance {
-  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-  color: #856404;
-  border: 1px solid #ffeaa7;
+.mam-unassigned-body h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0 0 0.4rem;
 }
 
-.mam-approval-badge.approved {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  color: #155724;
-  border: 1px solid #c3e6cb;
+.mam-unassigned-body p {
+  font-size: 0.875rem;
+  color: #6c757d;
+  margin: 0 0 0.75rem;
+  line-height: 1.5;
 }
 
-.mam-approval-badge.pending {
-  background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-  color: #856404;
-  border: 1px solid #ffeaa7;
+.mam-unassigned-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
 }
 
-.mam-approval-badge.rejected {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-  color: #721c24;
-  border: 1px solid #f5c6cb;
+.mam-chip {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #e9ecef;
+  color: var(--theme-font);
+  border: 1px solid var(--theme-border);
 }
 
+.mam-chip--active   { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+.mam-chip--approved { background: #d4edda; color: #155724; border-color: #c3e6cb; }
+
+/* ── Assigned driver card ── */
 .mam-assignment-card {
   display: flex;
   justify-content: space-between;
@@ -220,6 +265,7 @@
   background: #f8f9fa;
   border-radius: 8px;
   border: 1px solid #e9ecef;
+  gap: 1rem;
 }
 
 .mam-driver-info {
@@ -241,32 +287,27 @@
   font-size: 1.25rem;
   font-weight: 700;
   flex-shrink: 0;
+  border: 2px solid var(--theme-border-yellow);
 }
 
 .mam-driver-info h4 {
   font-size: 1rem;
   font-weight: 600;
   color: var(--theme-font);
-  margin: 0 0 0.25rem 0;
-}
-
-.mam-driver-info p {
-  font-size: 0.85rem;
-  color: #6c757d;
-  margin: 0;
+  margin: 0 0 0.25rem;
 }
 
 .mam-time-info {
   font-size: 0.8rem;
   color: #6c757d;
   font-weight: 500;
+  margin: 0 0 0.25rem;
 }
 
 .mam-active-badge {
   display: inline-block;
-  margin-top: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  padding: 0.2rem 0.5rem;
+  background: #d4edda;
   color: #155724;
   border: 1px solid #c3e6cb;
   border-radius: 12px;
@@ -276,20 +317,6 @@
   letter-spacing: 0.3px;
 }
 
-.mam-no-assignment {
-  padding: 1.5rem;
-  text-align: center;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px dashed #dee2e6;
-}
-
-.mam-no-assignment p {
-  margin: 0;
-  color: #6c757d;
-  font-size: 0.95rem;
-}
-
 .mam-loading {
   padding: 1.5rem;
   text-align: center;
@@ -297,8 +324,8 @@
   font-size: 0.95rem;
 }
 
-.mam-assign-form,
-.mam-status-form {
+/* ── Assign / Change form ── */
+.mam-assign-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -334,16 +361,15 @@
   font-size: 0.95rem;
   color: var(--theme-font);
   background: var(--theme-white);
-  cursor: pointer;
   transition: var(--transition-base);
   font-family: inherit;
+  outline: none;
 }
 
 .mam-select:focus,
 .mam-input:focus {
-  outline: none;
   border-color: var(--theme-border-yellow);
-  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.1);
+  box-shadow: 0 0 0 3px rgba(254, 204, 24, 0.15);
 }
 
 .mam-select:hover,
@@ -358,27 +384,9 @@
   margin-top: 0.5rem;
 }
 
-.mam-status-info {
-  padding: 1.25rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-.mam-status-info p {
-  margin: 0;
-  color: var(--theme-font);
-  font-size: 0.95rem;
-}
-
-.mam-status-info strong {
-  font-weight: 600;
-  color: var(--theme-font);
-}
-
+/* ── Buttons ── */
 .mam-btn-primary,
-.mam-btn-secondary,
-.mam-btn-danger {
+.mam-btn-secondary {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -393,13 +401,13 @@
 .mam-btn-primary {
   background: linear-gradient(135deg, var(--theme-button-bg) 0%, #ffd645 100%);
   color: var(--theme-button-font);
-  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.2);
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.25);
 }
 
 .mam-btn-primary:hover:not(:disabled) {
   background: linear-gradient(135deg, #ffd645 0%, var(--theme-button-bg) 100%);
   transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(254, 204, 24, 0.3);
+  box-shadow: 0 4px 12px rgba(254, 204, 24, 0.35);
 }
 
 .mam-btn-primary:disabled {
@@ -421,51 +429,7 @@
   box-shadow: var(--shadow-sm);
 }
 
-.mam-btn-danger {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.2);
-}
-
-.mam-btn-danger:hover {
-  background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
-  transform: translateY(-1px);
-  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.3);
-}
-
-.mam-error,
-.mam-success {
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin: 0 2rem;
-  animation: mam-slideDown 0.3s ease;
-}
-
-@keyframes mam-slideDown {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.mam-error {
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.mam-success {
-  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
+/* ── Responsive ── */
 @media (max-width: 768px) {
   .mam-modal {
     max-width: 100%;
@@ -480,26 +444,19 @@
 
   .mam-error,
   .mam-success {
-    margin: 0 1.5rem;
+    margin: 1rem 1.5rem 0;
   }
 
-  .mam-info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .mam-time-row {
-    grid-template-columns: 1fr;
-  }
+  .mam-info-grid  { grid-template-columns: 1fr; }
+  .mam-time-row   { grid-template-columns: 1fr; }
 
   .mam-assignment-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
   }
 
   .mam-form-actions {
     flex-direction: column;
-    width: 100%;
   }
 
   .mam-form-actions button {
@@ -508,16 +465,5 @@
 }
 
 @media (max-width: 480px) {
-  .mam-header h2 {
-    font-size: 1.5rem;
-  }
-
-  .mam-section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .mam-section-header button {
-    width: 100%;
-  }
+  .mam-header h2 { font-size: 1.5rem; }
 }

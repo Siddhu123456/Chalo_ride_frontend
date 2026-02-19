@@ -53,7 +53,7 @@ export const fetchFleetTenants = createAsyncThunk(
     try {
       const res = await axios.get(
         `${API_URL}/tenants`,
-        { params: { user_id } }   
+        { params: { user_id } }
       );
       return res.data;
     } catch (err) {
@@ -77,8 +77,7 @@ export const fetchDocStatus = createAsyncThunk(
   "fleet/fetchDocStatus",
   async (fleetId, { rejectWithValue }) => {
     try {
-      return (await axios.get(`${API_URL}/fleets/${fleetId}/documents/status`, getHeaders()))
-        .data;
+      return (await axios.get(`${API_URL}/fleets/${fleetId}/documents/status`, getHeaders())).data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Failed to fetch document status"));
     }
@@ -121,12 +120,27 @@ export const fetchFleetVehicles = createAsyncThunk(
   }
 );
 
+// GET /fleets/{fleet_id}/vehicles/unassigned — vehicles with no active driver assignment
+export const fetchUnassignedVehicles = createAsyncThunk(
+  "fleet/fetchUnassignedVehicles",
+  async (fleetId, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/fleets/${fleetId}/vehicles/unassigned`,
+        getHeaders()
+      );
+      return Array.isArray(res.data) ? res.data : [];
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to fetch unassigned vehicles"));
+    }
+  }
+);
+
 export const addVehicle = createAsyncThunk(
   "fleet/addVehicle",
   async ({ fleetId, vehicleData }, { rejectWithValue }) => {
     try {
-      return (await axios.post(`${API_URL}/fleets/${fleetId}/vehicles`, vehicleData, getHeaders()))
-        .data;
+      return (await axios.post(`${API_URL}/fleets/${fleetId}/vehicles`, vehicleData, getHeaders())).data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Failed to add vehicle"));
     }
@@ -137,8 +151,7 @@ export const fetchVehicleDocStatus = createAsyncThunk(
   "fleet/fetchVehicleDocStatus",
   async (vehicleId, { rejectWithValue }) => {
     try {
-      return (await axios.get(`${API_URL}/vehicles/${vehicleId}/documents/status`, getHeaders()))
-        .data;
+      return (await axios.get(`${API_URL}/vehicles/${vehicleId}/documents/status`, getHeaders())).data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Failed to fetch vehicle doc status"));
     }
@@ -204,7 +217,6 @@ export const fetchAvailableDrivers = createAsyncThunk(
         `${API_URL}/fleets/${fleetId}/drivers/available?vehicle_id=${vehicleId}`,
         getHeaders()
       );
-
       return res.data?.drivers || [];
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Failed to fetch available drivers"));
@@ -225,10 +237,34 @@ export const assignDriverToVehicle = createAsyncThunk(
       dispatch(fetchFleetVehicles(fleetId));
       dispatch(fetchFleetDrivers(fleetId));
       dispatch(fetchAssignments(fleetId));
+      dispatch(fetchUnassignedVehicles(fleetId));
 
       return res.data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Driver assignment failed"));
+    }
+  }
+);
+
+// PUT /{vehicle_id}/driver — change an existing driver assignment
+export const changeDriver = createAsyncThunk(
+  "fleet/changeDriver",
+  async ({ vehicleId, fleetId, payload }, { rejectWithValue, dispatch }) => {
+    try {
+      const res = await axios.put(
+        `${API_URL}/${vehicleId}/driver`,
+        payload,
+        getHeaders()
+      );
+
+      dispatch(fetchFleetVehicles(fleetId));
+      dispatch(fetchFleetDrivers(fleetId));
+      dispatch(fetchVehicleAssignment(vehicleId));
+      dispatch(fetchUnassignedVehicles(fleetId));
+
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Failed to change driver"));
     }
   }
 );
@@ -252,9 +288,7 @@ export const fetchVehicleAssignment = createAsyncThunk(
       const res = await axios.get(`${API_URL}/${vehicleId}/driver`, getHeaders());
       return res.data;
     } catch (err) {
-      if (err.response?.status === 404) {
-        return null;
-      }
+      if (err.response?.status === 404) return null;
       return rejectWithValue(getErrorMsg(err, "Failed to fetch vehicle assignment"));
     }
   }
@@ -325,7 +359,6 @@ export const paySettlement = createAsyncThunk(
         {},
         getHeaders()
       );
-      
       dispatch(fetchPendingSettlements());
       dispatch(fetchSettlementHistory());
       dispatch(fetchWalletDetails());
@@ -385,6 +418,7 @@ const fleetSlice = createSlice({
     hasExistingFleet: null,
 
     vehicles: [],
+    unassignedVehicles: [],       // vehicles with no active driver
     drivers: [],
     availableDrivers: [],
     assignments: [],
@@ -455,7 +489,7 @@ const fleetSlice = createSlice({
       state.selectedSettlementTrips = [];
       state.selectedSettlementTransactions = [];
     },
-    
+
     setSelectedVehicleForManage: (state, action) => {
       state.selectedVehicleForManage = action.payload;
       state.vehicleAssignment = null;
@@ -481,6 +515,9 @@ const fleetSlice = createSlice({
       })
       .addCase(fetchFleetVehicles.fulfilled, (state, action) => {
         state.vehicles = action.payload || [];
+      })
+      .addCase(fetchUnassignedVehicles.fulfilled, (state, action) => {
+        state.unassignedVehicles = action.payload || [];
       })
       .addCase(fetchFleetDrivers.fulfilled, (state, action) => {
         state.drivers = action.payload || [];
@@ -515,6 +552,11 @@ const fleetSlice = createSlice({
 
       .addCase(assignDriverToVehicle.fulfilled, (state) => {
         state.successMsg = "Assignment confirmed";
+      })
+
+      .addCase(changeDriver.fulfilled, (state, action) => {
+        state.vehicleAssignment = action.payload;
+        state.successMsg = "Driver changed successfully";
       })
 
       .addCase(fetchVehicleAssignment.fulfilled, (state, action) => {

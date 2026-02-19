@@ -158,7 +158,7 @@ const FleetDashboard = () => {
             <VehicleManager fleetId={fleet?.fleet_id} onAdd={() => setShowAddVehicleModal(true)} />
           )}
           {activeTab === "DRIVERS" && <DriverManager fleetId={fleet?.fleet_id} />}
-          {activeTab === "ASSIGNMENTS" && <AssignmentManager fleetId={fleet?.fleet_id} />}
+          {/* {activeTab === "ASSIGNMENTS" && <AssignmentManager fleetId={fleet?.fleet_id} />} */}
           {activeTab === "EARNINGS" && <Financials />}
         </div>
       </main>

@@ -426,3 +426,120 @@
     font-size: 1.25rem;
   }
 }
+
+/* ── Paste these rules into your existing VehicleManager.css ── */
+
+/* Unassigned section wrapper */
+.vm-unassigned-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: #fffbf0;
+  border: 2px solid var(--theme-border-yellow);
+  border-radius: 12px;
+}
+
+.vm-unassigned-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.vm-unassigned-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.vm-unassigned-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--theme-button-bg);
+  border: 2px solid #d4a500;
+  flex-shrink: 0;
+  animation: vm-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes vm-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(254, 204, 24, 0.5); }
+  50%       { box-shadow: 0 0 0 6px rgba(254, 204, 24, 0); }
+}
+
+.vm-unassigned-title h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+}
+
+.vm-unassigned-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  background: var(--theme-button-bg);
+  color: var(--theme-button-font);
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.vm-unassigned-subtitle {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* Unassigned card highlight */
+.vm-card--unassigned {
+  border-color: var(--theme-border-yellow) !important;
+  background: #fffdf0;
+}
+
+/* No Driver pill */
+.vm-pill-unassigned {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--theme-button-bg);
+  color: var(--theme-button-font);
+  border: 1px solid #d4a500;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* Urgent assign button */
+.vm-btn-manage--urgent {
+  background: var(--theme-button-bg) !important;
+  color: var(--theme-button-font) !important;
+  border-color: var(--theme-border-yellow) !important;
+  box-shadow: 0 2px 8px rgba(254, 204, 24, 0.3);
+}
+
+.vm-btn-manage--urgent:hover {
+  background: #ffd645 !important;
+  box-shadow: 0 4px 12px rgba(254, 204, 24, 0.4);
+}
+
+/* Main section header (shown only when unassigned section is visible) */
+.vm-main-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.vm-main-header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--theme-font);
+  margin: 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--theme-border-yellow);
+}

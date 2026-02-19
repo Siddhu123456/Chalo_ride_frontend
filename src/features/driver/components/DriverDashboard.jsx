@@ -155,7 +155,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {recentTrips.length > 0 && (
+        {/* {recentTrips.length > 0 && (
           <div className="card recent-trips-card">
             <h2 className="card-section-title">Recent Trips</h2>
 
@@ -177,10 +177,8 @@ const Dashboard = () => {
                 </li>
               ))}
             </ul>
-
-            <button className="view-all-btn">View All Trips</button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

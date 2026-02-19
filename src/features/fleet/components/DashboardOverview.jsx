@@ -69,17 +69,6 @@ const DashboardOverview = ({ onAddVehicle }) => {
           )}
         </div>
 
-        
-        <div className="do-side-card">
-          <h3>Quick Actions</h3>
-          <div className="do-actions">
-            <button className="do-action-btn" onClick={onAddVehicle}>
-              Add Vehicle
-            </button>
-            <button className="do-action-btn">Generate Report</button>
-            <button className="do-action-btn logout">Emergency Protocol</button>
-          </div>
-        </div>
       </div>
     </div>
   );

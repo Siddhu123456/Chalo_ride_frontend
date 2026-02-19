@@ -15,7 +15,7 @@ const AssignedVehicle = () => {
     (state) => state.driver
   );
 
-  
+
   useEffect(() => {
     dispatch(fetchCurrentVehicleAssignment());
   }, [dispatch]);
@@ -35,7 +35,7 @@ const AssignedVehicle = () => {
         Details of the vehicle currently assigned to you.
       </p>
 
-      
+
       {vehicleAssignment ? (
         <div className="vehicle-assignment-card card">
           <div className="vehicle-header-section">
@@ -91,27 +91,6 @@ const AssignedVehicle = () => {
               </div>
             )}
 
-            {vehicleAssignment.start_time && (
-              <div className="detail-item">
-                <span className="detail-label">
-                  Assignment Start:
-                </span>
-                <span className="detail-value">
-                  {new Date(
-                    vehicleAssignment.start_time
-                  ).toLocaleDateString()}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <div className="vehicle-actions">
-            <button className="btn report-issue-btn">
-              Report Vehicle Issue
-            </button>
-            <button className="btn view-documents-btn">
-              View Vehicle Documents
-            </button>
           </div>
         </div>
       ) : (

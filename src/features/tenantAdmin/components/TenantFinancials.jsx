@@ -19,7 +19,6 @@ import {
   FaFileAlt,
   FaBuilding,
   FaCheck,
-  FaTimes,
   FaChevronLeft,
   FaChevronRight,
 } from 'react-icons/fa';
@@ -30,7 +29,7 @@ const TenantFinancials = () => {
     wallet,
     transactions,
     transactionsPagination,
-    verifiedFleets,  
+    verifiedFleets,
     selectedFleetId,
     fleetPendingCommission,
     fleetUnsettledTrips,
@@ -43,24 +42,18 @@ const TenantFinancials = () => {
   const [txPage, setTxPage] = useState(1);
   const [viewingTrips, setViewingTrips] = useState(null);
 
-  
   useEffect(() => {
-    console.log('TenantFinancials: Fetching wallet and verified fleets');
     dispatch(fetchTenantWallet());
     dispatch(fetchVerifiedFleets());
   }, [dispatch]);
 
-  
   useEffect(() => {
     if (!wallet) return;
-    console.log('TenantFinancials: Fetching transactions - page:', txPage);
     dispatch(fetchTenantWalletTransactions({ page: txPage, limit: 20 }));
   }, [wallet, txPage, dispatch]);
 
-  
   useEffect(() => {
     if (selectedFleetId && activeTab === 'SETTLEMENTS') {
-      console.log('TenantFinancials: Fetching settlement data for fleet:', selectedFleetId);
       dispatch(fetchFleetPendingCommission(selectedFleetId));
       dispatch(fetchFleetUnsettledTrips(selectedFleetId));
       dispatch(fetchFleetSettlementHistory(selectedFleetId));
@@ -68,44 +61,27 @@ const TenantFinancials = () => {
   }, [selectedFleetId, activeTab, dispatch]);
 
   const formatCurrency = (value) =>
-    new Intl.NumberFormat('en-IN', {
-      style: 'currency',
-      currency: 'INR',
-    }).format(parseFloat(value || 0));
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(parseFloat(value || 0));
 
   const formatDate = (date) => {
     if (!date) return '—';
-    return new Intl.DateTimeFormat('en-IN', {
-      dateStyle: 'medium',
-      timeStyle: 'short',
-    }).format(new Date(date));
+    return new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(date));
   };
 
   const totalPages = Math.ceil(
     (transactionsPagination?.total || 0) / (transactionsPagination?.limit || 1)
   );
 
-  const handleFleetSelect = (fleetId) => {
-    console.log('TenantFinancials: Fleet selected:', fleetId);
-    dispatch(setSelectedFleetId(fleetId));
-  };
+  const handleFleetSelect = (fleetId) => dispatch(setSelectedFleetId(fleetId));
 
   const handleCreateSettlement = async () => {
     if (!selectedFleetId) return;
-    if (
-      window.confirm(
-        `Create settlement for ${formatCurrency(
-          fleetPendingCommission?.total_commission
-        )}?`
-      )
-    ) {
-      console.log('TenantFinancials: Creating settlement for fleet:', selectedFleetId);
+    if (window.confirm(`Create settlement for ${formatCurrency(fleetPendingCommission?.total_commission)}?`)) {
       await dispatch(createFleetSettlement(selectedFleetId));
     }
   };
 
   const handleViewSettlementTrips = (settlementId) => {
-    console.log('TenantFinancials: Viewing trips for settlement:', settlementId);
     setViewingTrips(settlementId);
     dispatch(fetchSettlementTrips(settlementId));
   };
@@ -117,33 +93,23 @@ const TenantFinancials = () => {
 
   const getStatusBadge = (status) => {
     const statusMap = {
-      PENDING: { label: 'Pending', className: 'status-pending' },
-      COMPLETED: { label: 'Paid', className: 'status-completed' },
+      PENDING:   { label: 'Pending',   className: 'status-pending' },
+      COMPLETED: { label: 'Paid',      className: 'status-completed' },
       CANCELLED: { label: 'Cancelled', className: 'status-cancelled' },
     };
     const config = statusMap[status] || { label: status, className: '' };
     return <span className={`tfin-status-badge ${config.className}`}>{config.label}</span>;
   };
 
-  const getDirectionBadge = (direction) => {
-    return (
-      <span className={`tfin-direction-badge ${direction.toLowerCase()}`}>
-        {direction === 'CREDIT' ? '+' : '−'}
-      </span>
-    );
-  };
-
-  console.log('TenantFinancials: Render state', {
-    activeTab,
-    hasWallet: !!wallet,
-    verifiedFleetsCount: verifiedFleets?.length || 0,
-    selectedFleetId,
-    hasPendingCommission: !!fleetPendingCommission,
-  });
+  const getDirectionBadge = (direction) => (
+    <span className={`tfin-direction-badge ${direction.toLowerCase()}`}>
+      {direction === 'CREDIT' ? '+' : '−'}
+    </span>
+  );
 
   return (
     <div className="tfin-container">
-      
+
       <div className="tfin-header">
         <div>
           <h1 className="tfin-title">Financial Management</h1>
@@ -151,7 +117,6 @@ const TenantFinancials = () => {
         </div>
       </div>
 
-      
       <div className="tfin-balance-card">
         <div className="tfin-balance-content">
           <span className="tfin-balance-label">Tenant Wallet Balance</span>
@@ -160,9 +125,8 @@ const TenantFinancials = () => {
         </div>
       </div>
 
-      
       <div className="tfin-tabs">
-          {['WALLET', 'SETTLEMENTS'].map((tab) => (
+        {['WALLET', 'SETTLEMENTS'].map((tab) => (
           <button
             key={tab}
             className={`tfin-tab ${activeTab === tab ? 'active' : ''}`}
@@ -175,9 +139,8 @@ const TenantFinancials = () => {
         ))}
       </div>
 
-      
       <div className="tfin-content">
-        
+
         {activeTab === 'WALLET' && (
           <div className="tfin-section">
             <h2 className="tfin-section-title">Transaction History</h2>
@@ -205,16 +168,10 @@ const TenantFinancials = () => {
                     <tbody>
                       {transactions.map((tx) => (
                         <tr key={tx.transaction_id}>
-                          <td>
-                            <span className="tfin-id">#{tx.transaction_id}</span>
-                          </td>
+                          <td><span className="tfin-id">#{tx.transaction_id}</span></td>
                           <td>{getDirectionBadge(tx.direction)}</td>
-                          <td className="tfin-amount">
-                            <strong>{formatCurrency(tx.amount)}</strong>
-                          </td>
-                          <td>
-                            <span className="tfin-reason">{tx.reason}</span>
-                          </td>
+                          <td className="tfin-amount"><strong>{formatCurrency(tx.amount)}</strong></td>
+                          <td><span className="tfin-reason">{tx.reason}</span></td>
                           <td>{tx.trip_id ? `#${tx.trip_id}` : '—'}</td>
                           <td className="tfin-date">{formatDate(tx.created_on)}</td>
                         </tr>
@@ -223,24 +180,13 @@ const TenantFinancials = () => {
                   </table>
                 </div>
 
-                
                 {totalPages > 1 && (
                   <div className="tfin-pagination">
-            <button
-                      className="tfin-page-btn"
-                      disabled={txPage === 1}
-                      onClick={() => setTxPage(txPage - 1)}
-                    >
-              <FaChevronLeft className="icon-inline" /> Previous
+                    <button className="tfin-page-btn" disabled={txPage === 1} onClick={() => setTxPage(txPage - 1)}>
+                      <FaChevronLeft className="icon-inline" /> Previous
                     </button>
-                    <span className="tfin-page-info">
-                      Page {txPage} of {totalPages}
-                    </span>
-                    <button
-                      className="tfin-page-btn"
-                      disabled={txPage === totalPages}
-                      onClick={() => setTxPage(txPage + 1)}
-                    >
+                    <span className="tfin-page-info">Page {txPage} of {totalPages}</span>
+                    <button className="tfin-page-btn" disabled={txPage === totalPages} onClick={() => setTxPage(txPage + 1)}>
                       Next <FaChevronRight className="icon-inline" />
                     </button>
                   </div>
@@ -250,10 +196,8 @@ const TenantFinancials = () => {
           </div>
         )}
 
-        
         {activeTab === 'SETTLEMENTS' && (
           <div className="tfin-section">
-            
             <div className="tfin-fleet-selector">
               <h3 className="tfin-selector-label">Select Fleet</h3>
               {!verifiedFleets || verifiedFleets.length === 0 ? (
@@ -269,9 +213,7 @@ const TenantFinancials = () => {
                   {verifiedFleets.map((fleet) => (
                     <button
                       key={fleet.fleet_id}
-                      className={`tfin-fleet-card ${
-                        selectedFleetId === fleet.fleet_id ? 'active' : ''
-                      }`}
+                      className={`tfin-fleet-card ${selectedFleetId === fleet.fleet_id ? 'active' : ''}`}
                       onClick={() => handleFleetSelect(fleet.fleet_id)}
                     >
                       <div className="tfin-fleet-icon"><FaBuilding className="icon-inline" /></div>
@@ -288,20 +230,14 @@ const TenantFinancials = () => {
               )}
             </div>
 
-            
             {selectedFleetId && (
               <>
-                
                 {fleetPendingCommission && (
                   <div className="tfin-commission-card">
                     <div className="tfin-commission-header">
                       <h3>Unsettled Commission</h3>
                       {fleetPendingCommission.total_unsettled_trips > 0 && (
-                        <button
-                          className="tfin-btn-create"
-                          onClick={handleCreateSettlement}
-                          disabled={loading}
-                        >
+                        <button className="tfin-btn-create" onClick={handleCreateSettlement} disabled={loading}>
                           Create Settlement
                         </button>
                       )}
@@ -309,21 +245,16 @@ const TenantFinancials = () => {
                     <div className="tfin-commission-stats">
                       <div className="tfin-stat-box">
                         <span className="tfin-stat-label">Total Trips</span>
-                        <span className="tfin-stat-value">
-                          {fleetPendingCommission.total_unsettled_trips}
-                        </span>
+                        <span className="tfin-stat-value">{fleetPendingCommission.total_unsettled_trips}</span>
                       </div>
                       <div className="tfin-stat-box highlight">
                         <span className="tfin-stat-label">Total Commission</span>
-                        <span className="tfin-stat-value">
-                          {formatCurrency(fleetPendingCommission.total_commission)}
-                        </span>
+                        <span className="tfin-stat-value">{formatCurrency(fleetPendingCommission.total_commission)}</span>
                       </div>
                     </div>
                   </div>
                 )}
 
-                
                 {fleetUnsettledTrips && fleetUnsettledTrips.length > 0 && (
                   <div className="tfin-trips-section">
                     <h3 className="tfin-section-subtitle">Unsettled Trips</h3>
@@ -339,15 +270,9 @@ const TenantFinancials = () => {
                         <tbody>
                           {fleetUnsettledTrips.map((trip) => (
                             <tr key={trip.trip_id}>
-                              <td>
-                                <span className="tfin-id">#{trip.trip_id}</span>
-                              </td>
-                              <td className="tfin-amount">
-                                <strong>{formatCurrency(trip.platform_fee)}</strong>
-                              </td>
-                              <td className="tfin-date">
-                                {formatDate(trip.completed_at)}
-                              </td>
+                              <td><span className="tfin-id">#{trip.trip_id}</span></td>
+                              <td className="tfin-amount"><strong>{formatCurrency(trip.platform_fee)}</strong></td>
+                              <td className="tfin-date">{formatDate(trip.completed_at)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -356,13 +281,12 @@ const TenantFinancials = () => {
                   </div>
                 )}
 
-                
                 <div className="tfin-history-section">
                   <h3 className="tfin-section-subtitle">Settlement History</h3>
                   {loading && (!fleetSettlementHistory || fleetSettlementHistory.length === 0) ? (
                     <div className="tfin-loading">Loading history…</div>
                   ) : !fleetSettlementHistory || fleetSettlementHistory.length === 0 ? (
-                      <div className="tfin-empty">
+                    <div className="tfin-empty">
                       <div className="tfin-empty-icon"><FaFileAlt className="icon-inline" /></div>
                       <p>No settlement history</p>
                     </div>
@@ -382,26 +306,13 @@ const TenantFinancials = () => {
                         <tbody>
                           {fleetSettlementHistory.map((settlement) => (
                             <tr key={settlement.settlement_id}>
-                              <td>
-                                <span className="tfin-id">#{settlement.settlement_id}</span>
-                              </td>
-                              <td className="tfin-amount">
-                                <strong>{formatCurrency(settlement.total_commission)}</strong>
-                              </td>
+                              <td><span className="tfin-id">#{settlement.settlement_id}</span></td>
+                              <td className="tfin-amount"><strong>{formatCurrency(settlement.total_commission)}</strong></td>
                               <td>{getStatusBadge(settlement.status)}</td>
-                              <td className="tfin-date">
-                                {formatDate(settlement.created_on)}
-                              </td>
-                              <td className="tfin-date">
-                                {formatDate(settlement.paid_on)}
-                              </td>
+                              <td className="tfin-date">{formatDate(settlement.created_on)}</td>
+                              <td className="tfin-date">{formatDate(settlement.paid_on)}</td>
                               <td>
-                                <button
-                                  className="tfin-btn-link"
-                                  onClick={() =>
-                                    handleViewSettlementTrips(settlement.settlement_id)
-                                  }
-                                >
+                                <button className="tfin-btn-link" onClick={() => handleViewSettlementTrips(settlement.settlement_id)}>
                                   View Trips
                                 </button>
                               </td>
@@ -418,14 +329,15 @@ const TenantFinancials = () => {
         )}
       </div>
 
-      
+      {/* Trips Modal */}
       {viewingTrips && (
         <div className="tfin-modal-overlay" onClick={closeTripsModal}>
           <div className="tfin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="tfin-modal-header">
-              <h2>Settlement Trips - #{viewingTrips}</h2>
-              <button className="tfin-modal-close" onClick={closeTripsModal}>
-                <FaTimes className="icon-inline" />
+              <h2>Settlement Trips — #{viewingTrips}</h2>
+              {/* Plain × character — no icon dependency */}
+              <button className="tfin-modal-close" onClick={closeTripsModal} aria-label="Close">
+                ×
               </button>
             </div>
 
@@ -444,12 +356,8 @@ const TenantFinancials = () => {
                     <tbody>
                       {selectedSettlementTrips.map((trip) => (
                         <tr key={trip.trip_id}>
-                          <td>
-                            <span className="tfin-id">#{trip.trip_id}</span>
-                          </td>
-                          <td className="tfin-amount">
-                            <strong>{formatCurrency(trip.commission_amount)}</strong>
-                          </td>
+                          <td><span className="tfin-id">#{trip.trip_id}</span></td>
+                          <td className="tfin-amount"><strong>{formatCurrency(trip.commission_amount)}</strong></td>
                         </tr>
                       ))}
                     </tbody>
