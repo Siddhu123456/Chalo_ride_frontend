@@ -80,7 +80,7 @@ const Register = ({ onRegisterSuccess }) => {
 
         <div className="phone-flex-row">
           <div className="form-row code-box">
-            <label>Code</label>
+            <label>Country Code</label>
             <select name="country_code" value={formData.country_code} onChange={handleChange}>
               {countries.length === 0 && <option>Loading...</option>}
 

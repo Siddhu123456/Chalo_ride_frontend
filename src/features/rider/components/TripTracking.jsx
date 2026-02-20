@@ -37,11 +37,9 @@ const TripTracking = ({ onNewRide }) => {
 
   useEffect(() => {
     if (!tripId || !ACTIVE_STATES.includes(status)) return;
-
     const interval = setInterval(() => {
       dispatch(fetchTripStatus(tripId));
     }, 5000);
-
     return () => clearInterval(interval);
   }, [tripId, status, dispatch]);
 
@@ -50,8 +48,6 @@ const TripTracking = ({ onNewRide }) => {
       dispatch(fetchTripOtp(tripId));
     }
   }, [status, tripId, dispatch]);
-
-  // No auto-redirect on COMPLETED — user must rate and manually dismiss
 
   const handleCancelTrip = () => {
     if (!cancelReason.trim()) {
@@ -76,82 +72,28 @@ const TripTracking = ({ onNewRide }) => {
 
   const canCancelTrip = status === "REQUESTED" || status === "ASSIGNED";
 
+  /* ── SEARCHING ── */
   if (loading || status === "REQUESTED") {
     return (
-      <div className="panel-card fade-in">
-        <div className="status-view searching">
-          <div className="spinner"></div>
-          <h4>Searching for a driver...</h4>
-          <p>We're finding the best driver for you</p>
-
-          {canCancelTrip && (
-            <button
-              className="cancel-trip-btn"
-              onClick={() => setShowCancelModal(true)}
-              disabled={cancelling}
-            >
-              <X size={16} />
-              Cancel Trip
-            </button>
-          )}
-        </div>
-
-        {showCancelModal && (
-          <CancelModal
-            cancelReason={cancelReason}
-            setCancelReason={setCancelReason}
-            onCancel={() => setShowCancelModal(false)}
-            onConfirm={handleCancelTrip}
-            cancelling={cancelling}
-          />
-        )}
-      </div>
-    );
-  }
-
-  if (status === "ASSIGNED") {
-    return (
-      <div className="panel-card fade-in">
-        <div className="status-view assigned">
-          <h3 className="panel-title">Driver is on the way!</h3>
-
-          <div className="driver-card">
-            <div className="driver-avatar">
-              <User />
+      <div className="tt-card fade-in">
+        <div className="tt-inner">
+          <div className="tt-center-view">
+            <div className="tt-pulse-ring">
+              <div className="tt-pulse-core" />
             </div>
-
-            <div className="driver-info">
-              <h5>{otp?.driver?.name}</h5>
-              <p>{otp?.driver?.phone}</p>
-              <p className="vehicle-plate">{otp?.vehicle?.registration_no}</p>
-            </div>
-
-            {otp?.otp && (
-              <div className="otp-display">
-                <span>OTP</span>
-                <strong>{otp.otp}</strong>
-              </div>
-            )}
-          </div>
-
-          <div className="action-buttons">
-            <button className="call-btn">
-              <Phone size={16} /> Call Driver
-            </button>
-
+            <h3 className="tt-title">Finding your driver</h3>
+            <p className="tt-subtitle">Hang tight, we're on it…</p>
             {canCancelTrip && (
               <button
-                className="cancel-trip-btn secondary"
+                className="tt-cancel-standalone"
                 onClick={() => setShowCancelModal(true)}
                 disabled={cancelling}
               >
-                <X size={16} />
-                Cancel Trip
+                <X size={15} /> Cancel Trip
               </button>
             )}
           </div>
         </div>
-
         {showCancelModal && (
           <CancelModal
             cancelReason={cancelReason}
@@ -165,94 +107,145 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
+  /* ── ASSIGNED ── */
+  if (status === "ASSIGNED") {
+    return (
+      <div className="tt-card fade-in">
+        <div className="tt-inner">
+          <div className="tt-badge">Driver Assigned</div>
+          <h3 className="tt-title">On the way!</h3>
+
+          <div className="tt-driver-card">
+            <div className="tt-avatar">
+              <User size={22} />
+            </div>
+            <div className="tt-driver-details">
+              <span className="tt-driver-name">{otp?.driver?.name || "—"}</span>
+              <span className="tt-driver-meta">{otp?.driver?.phone}</span>
+              <span className="tt-plate">{otp?.vehicle?.registration_no}</span>
+            </div>
+            {otp?.otp && (
+              <div className="tt-otp-badge">
+                <span className="tt-otp-label">OTP</span>
+                <span className="tt-otp-code">{otp.otp}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="tt-actions">
+            <button className="tt-call-btn">
+              <Phone size={15} /> Call Driver
+            </button>
+            {canCancelTrip && (
+              <button
+                className="tt-cancel-btn"
+                onClick={() => setShowCancelModal(true)}
+                disabled={cancelling}
+              >
+                <X size={15} /> Cancel
+              </button>
+            )}
+          </div>
+        </div>
+        {showCancelModal && (
+          <CancelModal
+            cancelReason={cancelReason}
+            setCancelReason={setCancelReason}
+            onCancel={() => setShowCancelModal(false)}
+            onConfirm={handleCancelTrip}
+            cancelling={cancelling}
+          />
+        )}
+      </div>
+    );
+  }
+
+  /* ── PICKED UP ── */
   if (status === "PICKED_UP") {
     return (
-      <div className="panel-card fade-in">
-        <div className="status-view assigned">
-          <h3 className="panel-title">Trip in progress</h3>
+      <div className="tt-card fade-in">
+        <div className="tt-inner">
+          <div className="tt-badge in-progress">In Progress</div>
+          <h3 className="tt-title">Enjoy your ride!</h3>
 
-          <div className="driver-card">
-            <div className="driver-avatar">
-              <User />
+          <div className="tt-driver-card">
+            <div className="tt-avatar">
+              <User size={22} />
             </div>
-
-            <div className="driver-info">
-              <h5>{otp?.driver?.name}</h5>
-              <p>{otp?.driver?.phone}</p>
-              <p className="vehicle-plate">{otp?.vehicle?.registration_no}</p>
+            <div className="tt-driver-details">
+              <span className="tt-driver-name">{otp?.driver?.name || "—"}</span>
+              <span className="tt-driver-meta">{otp?.driver?.phone}</span>
+              <span className="tt-plate">{otp?.vehicle?.registration_no}</span>
             </div>
           </div>
 
-          <button className="call-btn">
-            <Phone size={16} /> Call Driver
+          <button className="tt-call-btn full">
+            <Phone size={15} /> Call Driver
           </button>
         </div>
       </div>
     );
   }
 
+  /* ── COMPLETED ── */
   if (status === "COMPLETED") {
     return (
-      <div className="panel-card fade-in">
-        <div className="status-view completed">
-          <CheckCircle size={48} className="success-icon" />
-          <h4>Trip Completed!</h4>
-          <p>You have arrived at your destination.</p>
-
+      <div className="tt-card fade-in">
+        <div className="tt-inner">
           {!ratingSubmitted ? (
-            <div className="rating-section">
-              <p className="rating-label">How was your ride?</p>
-
-              <div className="star-row">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <button
-                    key={star}
-                    className={`star-btn ${
-                      star <= (hoveredRating || selectedRating) ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedRating(star)}
-                    onMouseEnter={() => setHoveredRating(star)}
-                    onMouseLeave={() => setHoveredRating(0)}
-                  >
-                    <Star
-                      size={36}
-                      fill={
-                        star <= (hoveredRating || selectedRating)
-                          ? "#fecc18"
-                          : "none"
-                      }
-                      stroke={
-                        star <= (hoveredRating || selectedRating)
-                          ? "#fecc18"
-                          : "#ccc"
-                      }
-                    />
-                  </button>
-                ))}
+            <>
+              <div className="tt-center-view">
+                <div className="tt-success-circle">
+                  <CheckCircle size={30} />
+                </div>
+                <h3 className="tt-title">Trip Completed!</h3>
+                <p className="tt-subtitle">You've arrived at your destination.</p>
               </div>
 
-              {ratingError && (
-                <p className="rating-error">{ratingError}</p>
-              )}
+              <div className="tt-rating-box">
+                <p className="tt-rating-label">How was your experience?</p>
+                <div className="tt-stars">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      className="tt-star-btn"
+                      onClick={() => setSelectedRating(star)}
+                      onMouseEnter={() => setHoveredRating(star)}
+                      onMouseLeave={() => setHoveredRating(0)}
+                    >
+                      <Star
+                        size={36}
+                        fill={star <= (hoveredRating || selectedRating) ? "#fecc18" : "none"}
+                        stroke={star <= (hoveredRating || selectedRating) ? "#fecc18" : "#d1d5db"}
+                        strokeWidth={1.5}
+                      />
+                    </button>
+                  ))}
+                </div>
+                {ratingError && <p className="tt-error">{ratingError}</p>}
+              </div>
 
-              <div className="rating-actions">
+              <div className="tt-rating-actions">
                 <button
-                  className="submit-rating-btn"
+                  className="tt-primary-btn"
                   onClick={handleSubmitRating}
                   disabled={!selectedRating || ratingLoading}
                 >
-                  {ratingLoading ? "Submitting..." : "Submit Rating"}
+                  {ratingLoading ? "Submitting…" : "Submit Rating"}
                 </button>
-
-                <button className="skip-rating-btn" onClick={handleReset}>
-                  Skip
+                <button className="tt-ghost-btn" onClick={handleReset}>
+                  Skip for now
                 </button>
               </div>
-            </div>
+            </>
           ) : (
-            <div className="rating-thanks">
-              <p>Thanks for your feedback!</p>
-              <button className="new-ride-btn" onClick={handleReset}>
+            <div className="tt-center-view">
+              <div className="tt-success-circle">
+                <CheckCircle size={30} />
+              </div>
+              <h3 className="tt-title">Thanks for rating!</h3>
+              <p className="tt-subtitle">Your feedback helps us improve.</p>
+              <button className="tt-primary-btn" onClick={handleReset}>
                 Book New Ride
               </button>
             </div>
@@ -262,16 +255,21 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
+  /* ── CANCELLED ── */
   if (status === "CANCELLED") {
     return (
-      <div className="panel-card fade-in">
-        <div className="status-view cancelled">
-          <X size={48} className="cancel-icon" />
-          <h4>Trip Cancelled</h4>
-          <p>Your trip has been cancelled successfully.</p>
-          <button className="new-ride-btn" onClick={handleReset}>
-            Book New Ride
-          </button>
+      <div className="tt-card fade-in">
+        <div className="tt-inner">
+          <div className="tt-center-view">
+            <div className="tt-cancel-circle">
+              <X size={28} />
+            </div>
+            <h3 className="tt-title">Trip Cancelled</h3>
+            <p className="tt-subtitle">Your trip has been cancelled.</p>
+            <button className="tt-primary-btn" onClick={handleReset}>
+              Book New Ride
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -280,13 +278,8 @@ const TripTracking = ({ onNewRide }) => {
   return null;
 };
 
-const CancelModal = ({
-  cancelReason,
-  setCancelReason,
-  onCancel,
-  onConfirm,
-  cancelling,
-}) => {
+/* ── CANCEL MODAL ── */
+const CancelModal = ({ cancelReason, setCancelReason, onCancel, onConfirm, cancelling }) => {
   const cancelReasons = [
     "Driver is taking too long",
     "Found alternative transportation",
@@ -296,53 +289,44 @@ const CancelModal = ({
   ];
 
   return (
-    <div className="cancel-modal-overlay" onClick={onCancel}>
-      <div className="cancel-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="cancel-modal-header">
+    <div className="tt-modal-overlay" onClick={onCancel}>
+      <div className="tt-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="tt-modal-header">
           <h3>Cancel Trip</h3>
-          <button className="close-btn" onClick={onCancel}>
-            ×
-          </button>
+          <button className="tt-modal-close" onClick={onCancel}>×</button>
         </div>
-
-        <div className="cancel-modal-body">
-          <p>Please select a reason for cancellation:</p>
-
-          <div className="reason-options">
+        <div className="tt-modal-body">
+          <p>Select a reason for cancellation:</p>
+          <div className="tt-reasons">
             {cancelReasons.map((reason) => (
               <button
                 key={reason}
-                className={`reason-option ${
-                  cancelReason === reason ? "selected" : ""
-                }`}
+                className={`tt-reason ${cancelReason === reason ? "selected" : ""}`}
                 onClick={() => setCancelReason(reason)}
               >
                 {reason}
               </button>
             ))}
           </div>
-
           {cancelReason === "Other" && (
             <textarea
-              className="custom-reason"
-              placeholder="Please specify your reason..."
-              value={cancelReason === "Other" ? "" : cancelReason}
+              className="tt-custom-reason"
+              placeholder="Please describe your reason…"
               onChange={(e) => setCancelReason(e.target.value)}
               rows={3}
             />
           )}
         </div>
-
-        <div className="cancel-modal-footer">
-          <button className="modal-btn secondary" onClick={onCancel}>
+        <div className="tt-modal-footer">
+          <button className="tt-modal-btn secondary" onClick={onCancel}>
             Go Back
           </button>
           <button
-            className="modal-btn danger"
+            className="tt-modal-btn danger"
             onClick={onConfirm}
             disabled={!cancelReason || cancelling}
           >
-            {cancelling ? "Cancelling..." : "Confirm Cancel"}
+            {cancelling ? "Cancelling…" : "Confirm Cancel"}
           </button>
         </div>
       </div>

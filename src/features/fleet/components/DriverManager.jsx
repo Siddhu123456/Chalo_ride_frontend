@@ -41,7 +41,7 @@ const DriverManager = ({ fleetId }) => {
     <div className="dm-container">
       <div className="dm-header">
         <div className="dm-title-box">
-          <h2>Driver Roster</h2>
+          <h2>Driver Manager</h2>
           <p>Manage and onboard drivers to your fleet operations.</p>
         </div>
 

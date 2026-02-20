@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const API_URL = "http://192.168.3.86:8000/fleet-owner";
-const API_URL = "http://localhost:8000/fleet-owner";
-// const WALLET_API_URL = "http://192.168.3.86:8000/wallet";
-const WALLET_API_URL = "http://localhost:8000/wallet";
+const API_URL = "http://192.168.3.86:8000/fleet-owner";
+// const API_URL = "http://localhost:8000/fleet-owner";
+const WALLET_API_URL = "http://192.168.3.86:8000/wallet";
+// const WALLET_API_URL = "http://localhost:8000/wallet";
 
 
 const getHeaders = (isMultipart = false) => {
@@ -609,7 +609,7 @@ const fleetSlice = createSlice({
       .addMatcher((action) => action.type.endsWith("/fulfilled"), (state) => {
         state.loading = false;
       })
-
+// const API_URL = 'http://192.168.3.86:8000/admin';
       .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";

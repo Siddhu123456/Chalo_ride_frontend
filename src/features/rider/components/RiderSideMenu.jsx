@@ -13,7 +13,7 @@ const RiderSideMenu = () => {
   const roles = useSelector((state) => state.auth.roles);
 
   const handleLogout = () => {
-    dispatch(logout());        
+    dispatch(logout());
     localStorage.clear();
 
     navigate("/auth", { replace: true });
@@ -55,7 +55,7 @@ const RiderSideMenu = () => {
         </NavLink>
 
 
-        {!roles?.includes("TENANT_ADMIN") && (
+        {!roles?.includes("FLEET_OWNER") && !roles?.includes("TENANT_ADMIN") && (
           <NavLink
             to="/fleet-registration"
             className={({ isActive }) =>

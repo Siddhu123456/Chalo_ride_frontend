@@ -288,7 +288,7 @@ const ActiveTrip = () => {
               </h2>
 
               <div className="otp-helper-row">
-                <button
+                {/* <button
                     className="btn-text-only"
                     onClick={handleGenerateOtp}
                     style={{ 
@@ -302,7 +302,7 @@ const ActiveTrip = () => {
                     }}
                 >
                     Resend/Generate OTP
-                </button>
+                </button> */}
               </div>
 
               <form

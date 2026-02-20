@@ -5,72 +5,92 @@ import './TripSummary.css';
 const TripSummary = ({ ride, pickup, drop, onConfirm, onChange }) => {
   if (!ride) return null;
 
-  const breakup = ride.breakup || {};
-
-  const baseFare = breakup.base_fare ?? 0;
+  const breakup      = ride.breakup || {};
+  const baseFare     = breakup.base_fare     ?? 0;
   const distanceFare = breakup.distance_fare ?? 0;
-  const platformFee = breakup.platform_fee ?? 0;
-  const totalFare = breakup.total_fare ?? ride.price ?? 0;
-  const distanceKm = breakup.distance_km ?? null;
+  const platformFee  = breakup.platform_fee  ?? 0;
+  const totalFare    = breakup.total_fare    ?? ride.price ?? 0;
+  const distanceKm   = breakup.distance_km   ?? null;
 
   return (
-    <div className="panel-card fade-in">
-      <h3 className="panel-title">Confirm Your Ride</h3>
+    <div className="ts-card fade-in">
+      <div className="ts-inner">
 
-      <div className="summary-card">
-        <h4>{ride.tenant_name || ride.name}</h4>
-        <span className="summary-price">
-          ₹{Math.round(totalFare)}
-        </span>
-      </div>
+        {/* Header */}
+        <h3 className="ts-title">Confirm Your Ride</h3>
 
-      <div className="route-display">
-        <div className="route-point">
-          <MapPin size={16} className="icon pickup-icon" />
-          <span>{pickup}</span>
+        {/* Ride name + price — full width */}
+        <div className="ts-summary-row">
+          <span className="ts-ride-name">{ride.tenant_name || ride.name}</span>
+          <span className="ts-ride-price">₹{Math.round(totalFare)}</span>
         </div>
 
-        <div className="route-line"></div>
-
-        <div className="route-point">
-          <Navigation size={16} className="icon drop-icon" />
-          <span>{drop}</span>
-        </div>
-      </div>
-
-      <div className="fare-breakup">
-        <div className="fare-line">
-          <span>Base Fare</span>
-          <span>₹{Math.round(baseFare)}</span>
-        </div>
-
-        {distanceKm !== null && (
-          <div className="fare-line">
-            <span>Distance Fare ({distanceKm} km)</span>
-            <span>₹{Math.round(distanceFare)}</span>
+        {/* Route — locations shown fully, no truncation */}
+        <div className="ts-route">
+          <div className="ts-route-point">
+            <div className="ts-route-icon pickup">
+              <MapPin size={14} />
+            </div>
+            <div className="ts-route-text">
+              <span className="ts-route-label">Pickup</span>
+              <span className="ts-route-value">{pickup}</span>
+            </div>
           </div>
-        )}
 
-        {platformFee > 0 && (
-          <div className="fare-line">
-            <span>Platform Fee</span>
-            <span>₹{Math.round(platformFee)}</span>
+          <div className="ts-route-connector">
+            <div className="ts-connector-dot" />
+            <div className="ts-connector-line" />
+            <div className="ts-connector-dot" />
           </div>
-        )}
 
-        <div className="fare-line total">
-          <span>Total Payable</span>
-          <span>₹{Math.round(totalFare)}</span>
+          <div className="ts-route-point">
+            <div className="ts-route-icon drop">
+              <Navigation size={14} />
+            </div>
+            <div className="ts-route-text">
+              <span className="ts-route-label">Drop</span>
+              <span className="ts-route-value">{drop}</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div className="booking-actions">
-        <button className="secondary-btn" onClick={onChange}>
-          Change Ride
-        </button>
-        <button className="primary-btn" onClick={onConfirm}>
-          Confirm Booking
-        </button>
+        {/* Fare breakup */}
+        <div className="ts-breakup">
+          <div className="ts-fare-row">
+            <span>Base Fare</span>
+            <span>₹{Math.round(baseFare)}</span>
+          </div>
+
+          {distanceKm !== null && (
+            <div className="ts-fare-row">
+              <span>Distance ({distanceKm} km)</span>
+              <span>₹{Math.round(distanceFare)}</span>
+            </div>
+          )}
+
+          {platformFee > 0 && (
+            <div className="ts-fare-row">
+              <span>Platform Fee</span>
+              <span>₹{Math.round(platformFee)}</span>
+            </div>
+          )}
+
+          <div className="ts-fare-row total">
+            <span>Total Payable</span>
+            <span>₹{Math.round(totalFare)}</span>
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="ts-actions">
+          <button className="ts-secondary-btn" onClick={onChange}>
+            Change Ride
+          </button>
+          <button className="ts-primary-btn" onClick={onConfirm}>
+            Confirm Booking
+          </button>
+        </div>
+
       </div>
     </div>
   );

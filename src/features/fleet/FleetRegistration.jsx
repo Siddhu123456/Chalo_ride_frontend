@@ -31,20 +31,20 @@ const FleetRegistration = () => {
 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
-  
+
   const isTenantAdmin = useMemo(
     () => roles?.includes("TENANT_ADMIN"),
     [roles]
   );
 
-  
+
   useEffect(() => {
     if (!isTenantAdmin) {
       dispatch(checkFleetStatus());
     }
   }, [dispatch, isTenantAdmin]);
 
-  
+
   useEffect(() => {
     if (
       !isTenantAdmin &&
@@ -55,14 +55,8 @@ const FleetRegistration = () => {
     }
   }, [dispatch, hasExistingFleet, isTenantAdmin, user]);
 
-  
-  useEffect(() => {
-    if (fleetApplied) {
-      setShowSuccessDialog(true);
-    }
-  }, [fleetApplied]);
 
-  const handleApply = (e) => {
+  const handleApply = async (e) => {
     e.preventDefault();
 
     if (!formData.tenant_id) {
@@ -70,14 +64,17 @@ const FleetRegistration = () => {
       return;
     }
 
-    dispatch(
+    const result = await dispatch(
       applyForFleet({
         tenant_id: Number(formData.tenant_id),
         fleet_name: formData.fleet_name.trim()
       })
     );
-  };
 
+    if (result?.meta?.requestStatus === "fulfilled") {
+      setShowSuccessDialog(true);
+    }
+  };
   const handleDialogConfirm = () => {
     dispatch(logout());
     localStorage.clear();
@@ -108,7 +105,7 @@ const FleetRegistration = () => {
   return (
     <>
       <div className="fleet-reg-layout">
-        
+
         <div
           className="fleet-reg-hero"
           style={{
@@ -124,11 +121,11 @@ const FleetRegistration = () => {
           </div>
         </div>
 
-        
+
         <div className="fleet-reg-form-pane">
           <div className="fleet-reg-form-container">
             <div className="fleet-reg-top-brand">
-              <img src={logo} alt="ChaloRide Logo" className="fleet-reg-top-logo"/>
+              <img src={logo} alt="ChaloRide Logo" className="fleet-reg-top-logo" />
               <span className="fleet-reg-top-badge">FLEET</span>
             </div>
 
@@ -193,7 +190,7 @@ const FleetRegistration = () => {
         </div>
       </div>
 
-      
+
       {showSuccessDialog && (
         <div className="fleet-dialog-backdrop">
           <div className="fleet-dialog">
@@ -201,15 +198,24 @@ const FleetRegistration = () => {
             <p>
               Your fleet registration has been submitted successfully.
               <br />
-              Please login again to upload documents for verification.
+              Please login again to upload documents for verification, or go to
+              your dashboard.
             </p>
 
-            <button
-              className="fleet-dialog-btn"
-              onClick={handleDialogConfirm}
-            >
-              Login Again
-            </button>
+            <div className="fleet-dialog-actions">
+              {/* <button
+                className="fleet-dialog-btn fleet-dialog-btn--secondary"
+                onClick={() => navigate("/dashboard", { replace: true })}
+              >
+                Go to Dashboard
+              </button> */}
+              <button
+                className="fleet-dialog-btn"
+                onClick={handleDialogConfirm}
+              >
+                Login Again as Fleet Owner
+              </button>
+            </div>
           </div>
         </div>
       )}

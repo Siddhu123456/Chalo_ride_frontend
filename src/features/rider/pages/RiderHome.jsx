@@ -9,6 +9,7 @@ import {
   useMapEvents,
 } from "react-leaflet";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
 import { fetchFareEstimates } from "../../../store/fareSlice";
 import { requestTrip } from "../../../store/tripSlice";
@@ -22,23 +23,38 @@ import TripTracking from "../components/TripTracking";
 import "./RiderHome.css";
 
 
+// Fix broken Leaflet default icons in bundled apps
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
 
 const pickupIcon = L.icon({
-  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/green-dot.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
 });
 
 const dropIcon = L.icon({
-  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/red-dot.png",
-  iconSize: [32, 32],
-  iconAnchor: [16, 32],
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
 });
 
 const currentLocationIcon = L.icon({
-  iconUrl: "https://maps.gstatic.com/mapfiles/ms2/micons/blue-dot.png",
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
 });
 
 
@@ -49,7 +65,6 @@ const reverseGeocode = async (lat, lng) => {
   const data = await res.json();
   return data.display_name || "Unknown location";
 };
-
 
 
 const MapClickHandler = ({ enabled, onPick }) => {
@@ -69,11 +84,9 @@ const MapClickHandler = ({ enabled, onPick }) => {
 const RiderHome = () => {
   const dispatch = useDispatch();
 
-
   const pickup = useSelector((s) => s.location.pickup);
   const drop = useSelector((s) => s.location.drop);
   const currentLocation = useSelector((s) => s.location.currentLocation);
-
 
   const [step, setStep] = useState("location");
   const [activePick, setActivePick] = useState("pickup");
@@ -96,7 +109,6 @@ const RiderHome = () => {
     }
   };
 
-
   const handleLocationConfirm = async () => {
     if (!pickup?.lat || !drop?.lat) return;
 
@@ -113,7 +125,6 @@ const RiderHome = () => {
 
     setStep("fare");
   };
-
 
   const handleBookingConfirm = async () => {
     if (!pickup || !drop || !selectedRide || !cityId) return;
@@ -145,11 +156,7 @@ const RiderHome = () => {
 
   const handleRideSelect = () => setStep("summary");
   const handleChangeRide = () => setStep("fare");
-
-  const handleNewRide = () => {
-    setStep("location");
-  };
-
+  const handleNewRide = () => setStep("location");
 
   const renderControlPanel = () => {
     if (trip.tripId && trip.status && step === "tracking") {
@@ -184,12 +191,10 @@ const RiderHome = () => {
     }
   };
 
-
   const mapCenter = [
     pickup?.lat || currentLocation?.lat || 17.385,
     pickup?.lng || currentLocation?.lng || 78.4867,
   ];
-
 
   return (
     <div className="rider-home-layout">
@@ -208,7 +213,6 @@ const RiderHome = () => {
 
           <MapClickHandler enabled={!isMapLocked} onPick={handleMapPick} />
 
-         
           {currentLocation?.lat && (
             <Marker
               position={[currentLocation.lat, currentLocation.lng]}
@@ -230,7 +234,6 @@ const RiderHome = () => {
             </Marker>
           )}
 
-          
           {pickup?.lat && drop?.lat && (
             <Polyline
               positions={[
