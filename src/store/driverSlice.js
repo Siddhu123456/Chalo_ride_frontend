@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API = "http://192.168.3.86:8000";
-// const API = "http://localhost:8000";
+// const API = "http://192.168.3.86:8000";
+const API = "http://localhost:8000";
 
 const authHeader = () => ({
   headers: {

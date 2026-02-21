@@ -1,8 +1,16 @@
 import React from 'react';
-import { MapPin, Navigation, MapPinned } from 'lucide-react';
+import { MapPin, Navigation, MapPinned, AlertTriangle } from 'lucide-react';
 import './LocationPicker.css';
 
-const LocationPicker = ({ pickup, drop, onConfirm, onPickupFocus, onDropFocus }) => {
+const LocationPicker = ({
+  pickup,
+  drop,
+  onConfirm,
+  onPickupFocus,
+  onDropFocus,
+  sameCityError,
+  checkingCity,
+}) => {
   return (
     <div className="panel-card fade-in">
       <div className="panel-inner">
@@ -32,12 +40,20 @@ const LocationPicker = ({ pickup, drop, onConfirm, onPickupFocus, onDropFocus })
             />
           </div>
         </div>
+
+        {sameCityError && (
+          <div className="same-city-error">
+            <AlertTriangle size={16} className="error-icon" />
+            <span>{sameCityError}</span>
+          </div>
+        )}
+
         <button
           className="primary-btn"
           onClick={onConfirm}
-          disabled={!pickup || !drop}
+          disabled={!pickup || !drop || checkingCity}
         >
-          Confirm Location
+          {checkingCity ? 'Checking...' : 'Confirm Location'}
         </button>
       </div>
     </div>

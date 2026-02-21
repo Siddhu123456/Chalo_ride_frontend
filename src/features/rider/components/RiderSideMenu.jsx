@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import logo from "../../../assets/logo.png";
 import { logout } from "../../../store/authSlice";
 import "./RiderSideMenu.css";
@@ -15,7 +14,6 @@ const RiderSideMenu = () => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.clear();
-
     navigate("/auth", { replace: true });
   };
 
@@ -54,17 +52,18 @@ const RiderSideMenu = () => {
           Profile
         </NavLink>
 
-
-        {!roles?.includes("FLEET_OWNER") && !roles?.includes("TENANT_ADMIN") && (
-          <NavLink
-            to="/fleet-registration"
-            className={({ isActive }) =>
-              `menu-item-rider ${isActive ? "active-rider" : ""}`
-            }
-          >
-            Fleet Registration
-          </NavLink>
-        )}
+        {roles?.length > 0 &&
+          !roles.includes("FLEET_OWNER") &&
+          !roles.includes("TENANT_ADMIN") && (
+            <NavLink
+              to="/fleet-registration"
+              className={({ isActive }) =>
+                `menu-item-rider ${isActive ? "active-rider" : ""}`
+              }
+            >
+              Fleet Registration
+            </NavLink>
+          )}
 
         <button
           onClick={handleLogout}

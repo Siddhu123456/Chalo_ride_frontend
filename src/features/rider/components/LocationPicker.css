@@ -78,6 +78,29 @@
     color: var(--theme-button-bg);
 }
 
+/* ── Same-city error banner ── */
+.same-city-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #fff3cd;
+    border: 1.5px solid #f59e0b;
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 1rem;
+    color: #92400e;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.same-city-error .error-icon {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #f59e0b;
+}
+
 .primary-btn {
     width: 100%;
     padding: 16px;
@@ -112,17 +135,23 @@
     z-index: -1;
 }
 
-.primary-btn:hover {
+.primary-btn:hover:not(:disabled) {
     background-color: transparent;
     color: white;
 }
 
-.primary-btn:hover::before {
+.primary-btn:hover:not(:disabled)::before {
     left: 0;
 }
 
-.primary-btn:active {
+.primary-btn:active:not(:disabled) {
     transform: scale(0.98);
+}
+
+.primary-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .fade-in {
