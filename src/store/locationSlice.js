@@ -35,7 +35,10 @@ const locationSlice = createSlice({
       state.isLoadingLocation = action.payload;
     },
     resetLocations: (state) => {
-      return initialState;
+      state.pickup = initialState.pickup;
+      state.drop = initialState.drop;
+      state.isLoadingLocation = false;
+      // keep currentLocation unchanged
     },
   },
 });

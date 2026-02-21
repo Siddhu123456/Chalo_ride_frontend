@@ -13,10 +13,6 @@ const SideMenu = () => {
 
   
   const demoCurrentShift = { isActive: true, activeTrip: null }; 
-  
-
-  
-  
 
   const handleLogout = () => {
     dispatch(logout());        

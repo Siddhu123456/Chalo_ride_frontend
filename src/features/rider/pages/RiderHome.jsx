@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Polyline,
   Tooltip,
+  useMap,
   useMapEvents,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import axios from "axios";
 
-import { fetchFareEstimates } from "../../../store/fareSlice";
-import { requestTrip } from "../../../store/tripSlice";
-import { setPickupLocation, setDropLocation } from "../../../store/locationSlice";
+import { fetchFareEstimates, resetFareState } from "../../../store/fareSlice";
+import { requestTrip, resetTripState } from "../../../store/tripSlice";
+import {
+  setPickupLocation,
+  setDropLocation,
+  resetLocations,
+} from "../../../store/locationSlice";
 
 import LocationPicker from "../components/LocationPicker";
 import FareDiscovery from "../components/FareDiscovery";
@@ -22,6 +28,8 @@ import TripSummary from "../components/TripSummary";
 import TripTracking from "../components/TripTracking";
 
 import "./RiderHome.css";
+
+/* ───────── Leaflet Marker Fix ───────── */
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -34,29 +42,36 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
+/* ───────── Icons ───────── */
+
 const pickupIcon = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
 
 const dropIcon = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
 
 const currentLocationIcon = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
   iconSize: [25, 41],
   iconAnchor: [12, 41],
 });
 
-// const API_URL = "http://192.168.3.86:8000/trips";
-const API_URL = "http://localhost:8000/trips";
+/* ───────── Reverse Geocoding ───────── */
 
 const geocodeCache = new Map();
 
@@ -69,15 +84,20 @@ const reverseGeocode = async (lat, lng) => {
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
     );
     const data = await res.json();
-    const address = [data.locality, data.city || data.principalSubdivision, data.countryName]
-      .filter(Boolean)
-      .join(", ") || "Unknown location";
+
+    const address =
+      [data.locality, data.city || data.principalSubdivision, data.countryName]
+        .filter(Boolean)
+        .join(", ") || "Current Location";
+
     geocodeCache.set(key, address);
     return address;
   } catch {
-    return "Unknown location";
+    return "Current Location";
   }
 };
+
+/* ───────── Map Click Handler ───────── */
 
 const MapClickHandler = ({ enabled, onPick }) => {
   useMapEvents(
@@ -92,6 +112,57 @@ const MapClickHandler = ({ enabled, onPick }) => {
   return null;
 };
 
+/* ───────── Route Machine ───────── */
+
+const RouteMachine = ({ pickup, drop }) => {
+  const map = useMap();
+  const controlRef = useRef(null);
+
+  useEffect(() => {
+    if (!pickup?.lat || !drop?.lat) return;
+
+    if (controlRef.current) {
+      map.removeControl(controlRef.current);
+      controlRef.current = null;
+    }
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(pickup.lat, pickup.lng),
+        L.latLng(drop.lat, drop.lng),
+      ],
+      lineOptions: {
+        styles: [{ color: "#4361ee", weight: 5, opacity: 0.9 }],
+      },
+      addWaypoints: false,
+      draggableWaypoints: false,
+      routeWhileDragging: false,
+      fitSelectedRoutes: true,
+      show: false,
+      createMarker: () => null,
+      router: L.Routing.osrmv1({
+        serviceUrl: "https://router.project-osrm.org/route/v1",
+      }),
+    });
+
+    routingControl.on("routesfound", () => {
+      const container = routingControl.getContainer();
+      if (container) container.style.display = "none";
+    });
+
+    routingControl.addTo(map);
+    controlRef.current = routingControl;
+
+    return () => {
+      if (controlRef.current) map.removeControl(controlRef.current);
+    };
+  }, [pickup, drop, map]);
+
+  return null;
+};
+
+/* ───────────────── COMPONENT ───────────────── */
+
 const RiderHome = () => {
   const dispatch = useDispatch();
 
@@ -99,58 +170,92 @@ const RiderHome = () => {
   const drop = useSelector((s) => s.location.drop);
   const currentLocation = useSelector((s) => s.location.currentLocation);
 
+  const selectedRide = useSelector((s) => s.fare.selectedRide);
+  const cityId = useSelector((s) => s.fare.cityId);
+  const trip = useSelector((s) => s.trip);
+
   const [step, setStep] = useState("location");
   const [activePick, setActivePick] = useState("pickup");
   const [checkingCity, setCheckingCity] = useState(false);
   const [sameCityError, setSameCityError] = useState(null);
 
-  const selectedRide = useSelector((s) => s.fare.selectedRide);
-  const cityId = useSelector((s) => s.fare.cityId);
-  const trip = useSelector((s) => s.trip);
+  const [mapKey, setMapKey] = useState(0);
+
+  /* ⭐ Prevent instant auto-pickup after reset */
+  const [autoPickupEnabled, setAutoPickupEnabled] = useState(true);
 
   const isMapLocked = step !== "location";
+  const showRoute = step !== "location" && pickup?.lat && drop?.lat;
+
+  /* ───────── DEFAULT PICKUP = CURRENT LOCATION ───────── */
+
+  useEffect(() => {
+    if (
+      autoPickupEnabled &&
+      step === "location" &&
+      currentLocation?.lat &&
+      currentLocation?.lng &&
+      !pickup?.lat
+    ) {
+      reverseGeocode(currentLocation.lat, currentLocation.lng).then(
+        (address) => {
+          dispatch(
+            setPickupLocation({
+              lat: currentLocation.lat,
+              lng: currentLocation.lng,
+              address,
+            })
+          );
+        }
+      );
+    }
+  }, [autoPickupEnabled, currentLocation, pickup?.lat, step, dispatch]);
+
+  /* ───────── Re-enable auto pickup after reset ───────── */
+
+  useEffect(() => {
+    if (!autoPickupEnabled) {
+      const t = setTimeout(() => setAutoPickupEnabled(true), 800);
+      return () => clearTimeout(t);
+    }
+  }, [autoPickupEnabled]);
+
+  /* ───────── Map Click ───────── */
 
   const handleMapPick = ({ lat, lng }) => {
     if (isMapLocked) return;
-    setSameCityError(null);
 
-    const type = activePick;
-    const pinAction = type === "pickup" ? setPickupLocation : setDropLocation;
+    const action =
+      activePick === "pickup" ? setPickupLocation : setDropLocation;
 
-    // Pin drops instantly
-    dispatch(pinAction({ lat, lng, address: "Locating..." }));
+    dispatch(action({ lat, lng, address: "Locating..." }));
 
-    // Address resolves in background
-    reverseGeocode(lat, lng).then((address) => {
-      dispatch(pinAction({ lat, lng, address }));
-    });
+    reverseGeocode(lat, lng).then((address) =>
+      dispatch(action({ lat, lng, address }))
+    );
   };
+
+  /* ───────── Confirm Locations ───────── */
 
   const handleLocationConfirm = async () => {
     if (!pickup?.lat || !drop?.lat) return;
 
-    setSameCityError(null);
     setCheckingCity(true);
+    setSameCityError(null);
 
     try {
       const token = localStorage.getItem("token");
 
-      // Fire both in parallel
       const [sameCityRes] = await Promise.all([
         axios.post(
-          `${API_URL}/same-city`,
+          "http://localhost:8000/trips/same-city",
           {
             pickup_lat: pickup.lat,
             pickup_lng: pickup.lng,
             drop_lat: drop.lat,
             drop_lng: drop.lng,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         ),
         dispatch(
           fetchFareEstimates({
@@ -165,22 +270,21 @@ const RiderHome = () => {
       ]);
 
       if (!sameCityRes.data) {
-        setSameCityError("Pickup and drop locations must be within the same city.");
+        setSameCityError("Pickup and drop must be in the same city.");
         return;
       }
-    } catch (err) {
-      setSameCityError("Could not verify locations. Please try again.");
-      return;
+
+      setStep("fare");
+    } catch {
+      setSameCityError("Location verification failed.");
     } finally {
       setCheckingCity(false);
     }
-
-    setStep("fare");
   };
 
-  const handleBookingConfirm = async () => {
-    if (!pickup || !drop || !selectedRide || !cityId) return;
+  /* ───────── Booking ───────── */
 
+  const handleBookingConfirm = async () => {
     const payload = {
       tenant_id: selectedRide.tenant_id,
       city_id: cityId,
@@ -203,46 +307,50 @@ const RiderHome = () => {
     }
   };
 
-  const handleRideSelect = () => setStep("summary");
-  const handleChangeRide = () => setStep("fare");
+  /* ───────── NEW RIDE RESET ───────── */
+
   const handleNewRide = () => {
-    setSameCityError(null);
+    dispatch(resetTripState());
+    dispatch(resetFareState());
+    dispatch(resetLocations());
+
+    setAutoPickupEnabled(false); // ⭐ key fix
     setStep("location");
+    setMapKey((k) => k + 1);
   };
+
+  /* ───────── Control Panel ───────── */
 
   const renderControlPanel = () => {
     if (trip.tripId && trip.status && step === "tracking") {
       return <TripTracking onNewRide={handleNewRide} />;
     }
 
-    switch (step) {
-      case "fare":
-        return <FareDiscovery onRideSelect={handleRideSelect} />;
+    if (step === "fare")
+      return <FareDiscovery onRideSelect={() => setStep("summary")} />;
 
-      case "summary":
-        return (
-          <TripSummary
-            ride={selectedRide}
-            pickup={pickup?.address}
-            drop={drop?.address}
-            onConfirm={handleBookingConfirm}
-            onChange={handleChangeRide}
-          />
-        );
+    if (step === "summary")
+      return (
+        <TripSummary
+          ride={selectedRide}
+          pickup={pickup?.address}
+          drop={drop?.address}
+          onConfirm={handleBookingConfirm}
+          onChange={() => setStep("fare")}
+        />
+      );
 
-      default:
-        return (
-          <LocationPicker
-            pickup={pickup?.address || ""}
-            drop={drop?.address || ""}
-            onConfirm={handleLocationConfirm}
-            onPickupFocus={() => setActivePick("pickup")}
-            onDropFocus={() => setActivePick("drop")}
-            sameCityError={sameCityError}
-            checkingCity={checkingCity}
-          />
-        );
-    }
+    return (
+      <LocationPicker
+        pickup={pickup?.address || ""}
+        drop={drop?.address || ""}
+        onConfirm={handleLocationConfirm}
+        onPickupFocus={() => setActivePick("pickup")}
+        onDropFocus={() => setActivePick("drop")}
+        sameCityError={sameCityError}
+        checkingCity={checkingCity}
+      />
+    );
   };
 
   const mapCenter = [
@@ -254,6 +362,7 @@ const RiderHome = () => {
     <div className="rider-home-layout">
       <div className="map-section">
         <MapContainer
+          key={mapKey}
           center={mapCenter}
           zoom={13}
           style={{ height: "100%", width: "100%" }}
@@ -272,7 +381,7 @@ const RiderHome = () => {
               position={[currentLocation.lat, currentLocation.lng]}
               icon={currentLocationIcon}
             >
-              <Tooltip>Your Current Location</Tooltip>
+              <Tooltip>Your Location</Tooltip>
             </Marker>
           )}
 
@@ -288,16 +397,7 @@ const RiderHome = () => {
             </Marker>
           )}
 
-          {pickup?.lat && drop?.lat && (
-            <Polyline
-              positions={[
-                [pickup.lat, pickup.lng],
-                [drop.lat, drop.lng],
-              ]}
-              color="#fecc18"
-              weight={4}
-            />
-          )}
+          {showRoute && <RouteMachine pickup={pickup} drop={drop} />}
         </MapContainer>
       </div>
 

@@ -135,7 +135,7 @@
 }
 
 .view-map-btn:hover {
-    background-color: darken(var(--theme-button-bg), 5%);
+    background-color: black;    
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(254, 204, 24, 0.3);
 }
