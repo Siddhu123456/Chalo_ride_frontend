@@ -19,9 +19,6 @@ const getErrorMsg = (err, fallback = "Something went wrong") => {
   return err?.message || fallback;
 };
 
-
-
-
 export const fetchRiderCity = createAsyncThunk(
   "rider/fetchCity",
   async ({ lat, lng }, { rejectWithValue }) => {
@@ -37,15 +34,11 @@ export const fetchRiderCity = createAsyncThunk(
   }
 );
 
-
 export const fetchRiderProfile = createAsyncThunk(
   "rider/fetchProfile",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(
-        `${API_URL}/profile`,
-        getHeaders()
-      );
+      const res = await axios.get(`${API_URL}/profile`, getHeaders());
       return res.data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Profile fetch failed"));
@@ -53,15 +46,11 @@ export const fetchRiderProfile = createAsyncThunk(
   }
 );
 
-
 export const fetchRiderStatistics = createAsyncThunk(
   "rider/fetchStatistics",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(
-        `${API_URL}/statistics`,
-        getHeaders()
-      );
+      const res = await axios.get(`${API_URL}/statistics`, getHeaders());
       return res.data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Statistics fetch failed"));
@@ -69,24 +58,34 @@ export const fetchRiderStatistics = createAsyncThunk(
   }
 );
 
-
 export const fetchRiderTripHistory = createAsyncThunk(
   "rider/trips/history",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get(
-        `${API_URL}/trips/history`,
-        getHeaders()
-      );
+      const res = await axios.get(`${API_URL}/trips/history`, getHeaders());
       return res.data;
     } catch (err) {
-      return rejectWithValue(
-        getErrorMsg(err, "Trip history fetch failed")
-      );
+      return rejectWithValue(getErrorMsg(err, "Trip history fetch failed"));
     }
   }
 );
 
+// Fetch nearby drivers within 10km of pickup location
+export const fetchNearbyDrivers = createAsyncThunk(
+  "rider/fetchNearbyDrivers",
+  async ({ city_id, pickup_lat, pickup_lng }, { rejectWithValue }) => {
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/rider/trips/nearby-10km",
+        { city_id, pickup_lat, pickup_lng },
+        getHeaders()
+      );
+      return res.data.drivers; // array of NearbyDriverResponse
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Nearby drivers fetch failed"));
+    }
+  }
+);
 
 const riderSlice = createSlice({
   name: "rider",
@@ -95,25 +94,27 @@ const riderSlice = createSlice({
     city: null,
     profile: null,
     statistics: null,
-    tripHistory: [],     
+    tripHistory: [],
+    nearbyDrivers: [],       // all nearby drivers (raw, unfiltered)
 
     loadingCity: false,
     loadingProfile: false,
     loadingStatistics: false,
-    loadingTripHistory: false, 
+    loadingTripHistory: false,
+    loadingNearbyDrivers: false,
 
     error: null,
   },
 
-
-  reducers: {},
+  reducers: {
+    clearNearbyDrivers: (state) => {
+      state.nearbyDrivers = [];
+    },
+  },
 
   extraReducers: (builder) => {
     builder
-      
-      .addCase(fetchRiderCity.pending, (state) => {
-        state.loadingCity = true;
-      })
+      .addCase(fetchRiderCity.pending, (state) => { state.loadingCity = true; })
       .addCase(fetchRiderCity.fulfilled, (state, action) => {
         state.loadingCity = false;
         state.city = action.payload;
@@ -123,10 +124,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      
-      .addCase(fetchRiderProfile.pending, (state) => {
-        state.loadingProfile = true;
-      })
+      .addCase(fetchRiderProfile.pending, (state) => { state.loadingProfile = true; })
       .addCase(fetchRiderProfile.fulfilled, (state, action) => {
         state.loadingProfile = false;
         state.profile = action.payload;
@@ -136,10 +134,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      
-      .addCase(fetchRiderStatistics.pending, (state) => {
-        state.loadingStatistics = true;
-      })
+      .addCase(fetchRiderStatistics.pending, (state) => { state.loadingStatistics = true; })
       .addCase(fetchRiderStatistics.fulfilled, (state, action) => {
         state.loadingStatistics = false;
         state.statistics = action.payload;
@@ -149,10 +144,7 @@ const riderSlice = createSlice({
         state.error = action.payload;
       })
 
-      
-      .addCase(fetchRiderTripHistory.pending, (state) => {
-        state.loadingTripHistory = true;
-      })
+      .addCase(fetchRiderTripHistory.pending, (state) => { state.loadingTripHistory = true; })
       .addCase(fetchRiderTripHistory.fulfilled, (state, action) => {
         state.loadingTripHistory = false;
         state.tripHistory = action.payload;
@@ -160,9 +152,21 @@ const riderSlice = createSlice({
       .addCase(fetchRiderTripHistory.rejected, (state, action) => {
         state.loadingTripHistory = false;
         state.error = action.payload;
-      });
+      })
 
+      .addCase(fetchNearbyDrivers.pending, (state) => {
+        state.loadingNearbyDrivers = true;
+      })
+      .addCase(fetchNearbyDrivers.fulfilled, (state, action) => {
+        state.loadingNearbyDrivers = false;
+        state.nearbyDrivers = action.payload;
+      })
+      .addCase(fetchNearbyDrivers.rejected, (state, action) => {
+        state.loadingNearbyDrivers = false;
+        state.error = action.payload;
+      });
   },
 });
 
+export const { clearNearbyDrivers } = riderSlice.actions;
 export default riderSlice.reducer;

@@ -9,7 +9,7 @@ import "./RiderPage.css";
 
 const reverseGeocode = async (lat, lng) => {
   const res = await fetch(
-    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+    `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`,
     { headers: { "Accept-Language": "en" } }
   );
   const data = await res.json();

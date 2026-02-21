@@ -102,3 +102,56 @@
         padding: 16px;
     }
 }
+
+/* ═══════════════════════════════════════════════
+   NEARBY DRIVER PIN MARKERS
+   Add these to the bottom of your RiderHome.css
+   ═══════════════════════════════════════════════ */
+
+.rh-driver-pin {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease;
+  cursor: default;
+}
+
+.rh-driver-pin:hover {
+  transform: scale(1.15);
+}
+
+.rh-driver-pin--cab {
+  background: linear-gradient(135deg, #fecc18, #f59e0b);
+}
+
+.rh-driver-pin--auto {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.rh-driver-pin--bike {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+/* Accepted driver — larger, pulsing ring, stronger shadow */
+.rh-driver-pin--accepted {
+  width: 46px;
+  height: 46px;
+  font-size: 1.35rem;
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 4px rgba(254, 204, 24, 0.4),
+    0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: rh-accepted-pulse 2s ease-out infinite;
+}
+
+@keyframes rh-accepted-pulse {
+  0%   { box-shadow: 0 0 0 0   rgba(254,204,24,0.5), 0 4px 16px rgba(0,0,0,0.3); }
+  70%  { box-shadow: 0 0 0 10px rgba(254,204,24,0),  0 4px 16px rgba(0,0,0,0.3); }
+  100% { box-shadow: 0 0 0 0   rgba(254,204,24,0),   0 4px 16px rgba(0,0,0,0.3); }
+}
