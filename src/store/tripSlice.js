@@ -130,8 +130,8 @@ const tripSlice = createSlice({
       })
       .addCase(requestTrip.fulfilled, (state, action) => {
         state.requesting = false;
-        state.tripId = action.payload.trip_id;
-        state.status = action.payload.status;
+        state.tripId     = action.payload.trip_id;
+        state.status     = action.payload.status;
         state.fareAmount = action.payload.fare_amount;
       })
       .addCase(requestTrip.rejected, (state, action) => {
@@ -144,30 +144,12 @@ const tripSlice = createSlice({
       .addCase(fetchTripOtp.fulfilled, (state, action) => {
         state.otp = action.payload;
       })
-      .addCase(cancelTrip.pending, (state) => {
-        state.cancelling = true;
-      })
-      .addCase(cancelTrip.fulfilled, (state) => {
-        state.cancelling = false;
-        state.status = "CANCELLED";
-      })
-      .addCase(cancelTrip.rejected, (state, action) => {
-        state.cancelling = false;
-        state.error = action.payload;
-      })
-      .addCase(rateTrip.pending, (state) => {
-        state.ratingLoading = true;
-        state.ratingError = null;
-      })
-      .addCase(rateTrip.fulfilled, (state, action) => {
-        state.ratingLoading = false;
-        state.rating = action.payload;
-        state.ratingSubmitted = true;
-      })
-      .addCase(rateTrip.rejected, (state, action) => {
-        state.ratingLoading = false;
-        state.ratingError = action.payload;
-      });
+      .addCase(cancelTrip.pending,  (state) => { state.cancelling = true; })
+      .addCase(cancelTrip.fulfilled,(state) => { state.cancelling = false; state.status = "CANCELLED"; })
+      .addCase(cancelTrip.rejected, (state, action) => { state.cancelling = false; state.error = action.payload; })
+      .addCase(rateTrip.pending,  (state) => { state.ratingLoading = true; state.ratingError = null; })
+      .addCase(rateTrip.fulfilled,(state, action) => { state.ratingLoading = false; state.rating = action.payload; state.ratingSubmitted = true; })
+      .addCase(rateTrip.rejected, (state, action) => { state.ratingLoading = false; state.ratingError = action.payload; });
   },
 });
 

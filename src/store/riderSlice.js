@@ -6,11 +6,7 @@ const API_URL = "http://localhost:8000/rider";
 
 const getHeaders = () => {
   const token = localStorage.getItem("token");
-  return {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
+  return { headers: { Authorization: `Bearer ${token}` } };
 };
 
 const getErrorMsg = (err, fallback = "Something went wrong") => {
@@ -23,10 +19,7 @@ export const fetchRiderCity = createAsyncThunk(
   "rider/fetchCity",
   async ({ lat, lng }, { rejectWithValue }) => {
     try {
-      const res = await axios.get(
-        `${API_URL}/city?lat=${lat}&lng=${lng}`,
-        getHeaders()
-      );
+      const res = await axios.get(`${API_URL}/city?lat=${lat}&lng=${lng}`, getHeaders());
       return res.data;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "City detection failed"));
@@ -70,7 +63,6 @@ export const fetchRiderTripHistory = createAsyncThunk(
   }
 );
 
-// Fetch nearby drivers within 10km of pickup location
 export const fetchNearbyDrivers = createAsyncThunk(
   "rider/fetchNearbyDrivers",
   async ({ city_id, pickup_lat, pickup_lng }, { rejectWithValue }) => {
@@ -80,93 +72,86 @@ export const fetchNearbyDrivers = createAsyncThunk(
         { city_id, pickup_lat, pickup_lng },
         getHeaders()
       );
-      return res.data.drivers; // array of NearbyDriverResponse
+      return res.data.drivers;
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Nearby drivers fetch failed"));
     }
   }
 );
 
+export const fetchActiveTrip = createAsyncThunk(
+  "rider/fetchActiveTrip",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get(`${API_URL}/trips/active`, getHeaders());
+      return res.data; // { trip: { driver_id, status, ... } | null }
+    } catch (err) {
+      return rejectWithValue(getErrorMsg(err, "Active trip fetch failed"));
+    }
+  }
+);
+
 const riderSlice = createSlice({
   name: "rider",
-
   initialState: {
     city: null,
     profile: null,
     statistics: null,
     tripHistory: [],
-    nearbyDrivers: [],       // all nearby drivers (raw, unfiltered)
+    nearbyDrivers: [],
+    assignedDriverId: null,
 
     loadingCity: false,
     loadingProfile: false,
     loadingStatistics: false,
     loadingTripHistory: false,
     loadingNearbyDrivers: false,
-
     error: null,
   },
-
   reducers: {
     clearNearbyDrivers: (state) => {
       state.nearbyDrivers = [];
     },
+    clearAssignedDriver: (state) => {
+      state.assignedDriverId = null;
+    },
   },
-
   extraReducers: (builder) => {
     builder
-      .addCase(fetchRiderCity.pending, (state) => { state.loadingCity = true; })
-      .addCase(fetchRiderCity.fulfilled, (state, action) => {
-        state.loadingCity = false;
-        state.city = action.payload;
-      })
-      .addCase(fetchRiderCity.rejected, (state, action) => {
-        state.loadingCity = false;
-        state.error = action.payload;
-      })
+      .addCase(fetchRiderCity.pending,   (state) => { state.loadingCity = true; })
+      .addCase(fetchRiderCity.fulfilled, (state, action) => { state.loadingCity = false; state.city = action.payload; })
+      .addCase(fetchRiderCity.rejected,  (state, action) => { state.loadingCity = false; state.error = action.payload; })
 
-      .addCase(fetchRiderProfile.pending, (state) => { state.loadingProfile = true; })
-      .addCase(fetchRiderProfile.fulfilled, (state, action) => {
-        state.loadingProfile = false;
-        state.profile = action.payload;
-      })
-      .addCase(fetchRiderProfile.rejected, (state, action) => {
-        state.loadingProfile = false;
-        state.error = action.payload;
-      })
+      .addCase(fetchRiderProfile.pending,   (state) => { state.loadingProfile = true; })
+      .addCase(fetchRiderProfile.fulfilled, (state, action) => { state.loadingProfile = false; state.profile = action.payload; })
+      .addCase(fetchRiderProfile.rejected,  (state, action) => { state.loadingProfile = false; state.error = action.payload; })
 
-      .addCase(fetchRiderStatistics.pending, (state) => { state.loadingStatistics = true; })
-      .addCase(fetchRiderStatistics.fulfilled, (state, action) => {
-        state.loadingStatistics = false;
-        state.statistics = action.payload;
-      })
-      .addCase(fetchRiderStatistics.rejected, (state, action) => {
-        state.loadingStatistics = false;
-        state.error = action.payload;
-      })
+      .addCase(fetchRiderStatistics.pending,   (state) => { state.loadingStatistics = true; })
+      .addCase(fetchRiderStatistics.fulfilled, (state, action) => { state.loadingStatistics = false; state.statistics = action.payload; })
+      .addCase(fetchRiderStatistics.rejected,  (state, action) => { state.loadingStatistics = false; state.error = action.payload; })
 
-      .addCase(fetchRiderTripHistory.pending, (state) => { state.loadingTripHistory = true; })
-      .addCase(fetchRiderTripHistory.fulfilled, (state, action) => {
-        state.loadingTripHistory = false;
-        state.tripHistory = action.payload;
-      })
-      .addCase(fetchRiderTripHistory.rejected, (state, action) => {
-        state.loadingTripHistory = false;
-        state.error = action.payload;
-      })
+      .addCase(fetchRiderTripHistory.pending,   (state) => { state.loadingTripHistory = true; })
+      .addCase(fetchRiderTripHistory.fulfilled, (state, action) => { state.loadingTripHistory = false; state.tripHistory = action.payload; })
+      .addCase(fetchRiderTripHistory.rejected,  (state, action) => { state.loadingTripHistory = false; state.error = action.payload; })
 
-      .addCase(fetchNearbyDrivers.pending, (state) => {
-        state.loadingNearbyDrivers = true;
-      })
+      .addCase(fetchNearbyDrivers.pending,   (state) => { state.loadingNearbyDrivers = true; })
       .addCase(fetchNearbyDrivers.fulfilled, (state, action) => {
         state.loadingNearbyDrivers = false;
         state.nearbyDrivers = action.payload;
       })
-      .addCase(fetchNearbyDrivers.rejected, (state, action) => {
+      .addCase(fetchNearbyDrivers.rejected,  (state, action) => {
         state.loadingNearbyDrivers = false;
         state.error = action.payload;
+      })
+
+      .addCase(fetchActiveTrip.fulfilled, (state, action) => {
+        const trip = action.payload?.trip;
+        if (trip?.driver_id) {
+          state.assignedDriverId = trip.driver_id;
+        }
       });
   },
 });
 
-export const { clearNearbyDrivers } = riderSlice.actions;
+export const { clearNearbyDrivers, clearAssignedDriver } = riderSlice.actions;
 export default riderSlice.reducer;

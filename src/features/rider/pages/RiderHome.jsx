@@ -13,13 +13,18 @@ import "leaflet/dist/leaflet.css";
 import axios from "axios";
 
 import { fetchFareEstimates, resetFareState } from "../../../store/fareSlice";
-import { requestTrip, resetTripState, fetchTripStatus } from "../../../store/tripSlice";
+import { requestTrip, resetTripState } from "../../../store/tripSlice";
 import {
   setPickupLocation,
   setDropLocation,
   resetLocations,
 } from "../../../store/locationSlice";
-import { fetchNearbyDrivers, clearNearbyDrivers } from "../../../store/riderSlice";
+import {
+  fetchNearbyDrivers,
+  fetchActiveTrip,
+  clearNearbyDrivers,
+  clearAssignedDriver,
+} from "../../../store/riderSlice";
 
 import LocationPicker from "../components/LocationPicker";
 import FareDiscovery from "../components/FareDiscovery";
@@ -44,77 +49,43 @@ L.Icon.Default.mergeOptions({
 const pickupIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconSize: [25, 41], iconAnchor: [12, 41],
 });
-
 const dropIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconSize: [25, 41], iconAnchor: [12, 41],
 });
-
 const currentLocationIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
+  iconSize: [25, 41], iconAnchor: [12, 41],
 });
 
 /* ───────── Driver Icons ───────── */
-const driverIconMap = {
-  CAB: L.divIcon({
+const makeDriverIcon = (key, accepted = false) => {
+  const emojis = { cab: "🚕", auto: "🛺", bike: "🏍️" };
+  return L.divIcon({
     className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--cab">🚕</div>`,
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
-  }),
-  AUTO: L.divIcon({
-    className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--auto">🛺</div>`,
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
-  }),
-  BIKE: L.divIcon({
-    className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--bike">🏍️</div>`,
-    iconSize: [36, 36],
-    iconAnchor: [18, 18],
-  }),
+    html: `<div class="rh-driver-pin rh-driver-pin--${key}${accepted ? " rh-driver-pin--accepted" : ""}">${emojis[key] ?? "🚕"}</div>`,
+    iconSize: accepted ? [46, 46] : [36, 36],
+    iconAnchor: accepted ? [23, 23] : [18, 18],
+  });
 };
 
-// Accepted driver gets a larger, highlighted version
-const acceptedDriverIconMap = {
-  CAB: L.divIcon({
-    className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--cab rh-driver-pin--accepted">🚕</div>`,
-    iconSize: [46, 46],
-    iconAnchor: [23, 23],
-  }),
-  AUTO: L.divIcon({
-    className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--auto rh-driver-pin--accepted">🛺</div>`,
-    iconSize: [46, 46],
-    iconAnchor: [23, 23],
-  }),
-  BIKE: L.divIcon({
-    className: "",
-    html: `<div class="rh-driver-pin rh-driver-pin--bike rh-driver-pin--accepted">🏍️</div>`,
-    iconSize: [46, 46],
-    iconAnchor: [23, 23],
-  }),
+const DRIVER_ICONS = {
+  CAB:  { normal: makeDriverIcon("cab"),  accepted: makeDriverIcon("cab",  true) },
+  AUTO: { normal: makeDriverIcon("auto"), accepted: makeDriverIcon("auto", true) },
+  BIKE: { normal: makeDriverIcon("bike"), accepted: makeDriverIcon("bike", true) },
 };
 
-const getDriverIcon = (vehicleCategory) =>
-  driverIconMap[vehicleCategory] || driverIconMap.CAB;
-
-const getAcceptedDriverIcon = (vehicleCategory) =>
-  acceptedDriverIconMap[vehicleCategory] || acceptedDriverIconMap.CAB;
+const getIcon = (category, accepted = false) => {
+  const set = DRIVER_ICONS[category] ?? DRIVER_ICONS.CAB;
+  return accepted ? set.accepted : set.normal;
+};
 
 /* ───────── Geocode Cache ───────── */
 const geocodeCache = new Map();
-
 const reverseGeocode = async (lat, lng) => {
   const key = `${lat.toFixed(4)},${lng.toFixed(4)}`;
   if (geocodeCache.has(key)) return geocodeCache.get(key);
@@ -123,22 +94,16 @@ const reverseGeocode = async (lat, lng) => {
       `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`
     );
     const data = await res.json();
-    const address =
-      [data.locality, data.city || data.principalSubdivision, data.countryName]
-        .filter(Boolean)
-        .join(", ") || "Current Location";
+    const address = [data.locality, data.city || data.principalSubdivision, data.countryName]
+      .filter(Boolean).join(", ") || "Current Location";
     geocodeCache.set(key, address);
     return address;
-  } catch {
-    return "Current Location";
-  }
+  } catch { return "Current Location"; }
 };
 
 /* ───────── Map Click Handler ───────── */
 const MapClickHandler = ({ enabled, onPick }) => {
-  useMapEvents(
-    enabled ? { click(e) { onPick(e.latlng); } } : {}
-  );
+  useMapEvents(enabled ? { click(e) { onPick(e.latlng); } } : {});
   return null;
 };
 
@@ -158,8 +123,7 @@ const decodePolyline = (encoded) => {
   return points;
 };
 
-/* ───────── Route Layer Component ───────── */
-// from/to: [lat, lng]  color: hex  dashed: bool
+/* ───────── Route Layer ───────── */
 const RouteLayer = ({ from, to, color = "#4361ee", dashed = false }) => {
   const map = useMap();
   const layersRef = useRef([]);
@@ -168,36 +132,23 @@ const RouteLayer = ({ from, to, color = "#4361ee", dashed = false }) => {
     if (!from || !to) return;
     let cancelled = false;
 
-    const fetchRoute = async () => {
+    (async () => {
       try {
-        const url =
-          `https://router.project-osrm.org/route/v1/driving/` +
-          `${from[1]},${from[0]};${to[1]},${to[0]}` +
-          `?overview=full&geometries=polyline`;
-        const res = await fetch(url);
-        const data = await res.json();
+        const url = `https://router.project-osrm.org/route/v1/driving/${from[1]},${from[0]};${to[1]},${to[0]}?overview=full&geometries=polyline`;
+        const data = await fetch(url).then((r) => r.json());
         if (cancelled || data.code !== "Ok" || !data.routes?.[0]) return;
 
         const coords = decodePolyline(data.routes[0].geometry);
-
         layersRef.current.forEach((l) => { try { map.removeLayer(l); } catch {} });
-        layersRef.current = [];
 
         const outline = L.polyline(coords, { color: "#fff", weight: 9, opacity: 0.5, lineCap: "round", lineJoin: "round" });
         const route   = L.polyline(coords, { color, weight: 5, opacity: 1, dashArray: dashed ? "10 7" : null, lineCap: "round", lineJoin: "round" });
 
-        outline.addTo(map);
-        route.addTo(map);
-        outline.bringToFront();
-        route.bringToFront();
-
+        outline.addTo(map); route.addTo(map);
+        outline.bringToFront(); route.bringToFront();
         layersRef.current = [outline, route];
-      } catch (err) {
-        console.warn("Route fetch failed:", err);
-      }
-    };
-
-    fetchRoute();
+      } catch (e) { console.warn("Route fetch failed", e); }
+    })();
 
     return () => {
       cancelled = true;
@@ -209,6 +160,60 @@ const RouteLayer = ({ from, to, color = "#4361ee", dashed = false }) => {
   return null;
 };
 
+/* ───────── Debug Panel ───────── */
+// const DebugPanel = ({ step, tripStatus, assignedDriverId, nearbySnapshot, acceptedDriver, driverToPickupRoute, visibleDrivers }) => {
+//   useEffect(() => {
+//     console.group("🚖 RiderHome Debug");
+//     console.log("step              :", step);
+//     console.log("trip.status       :", tripStatus);
+//     console.log("assignedDriverId  :", assignedDriverId);
+//     console.log("nearbySnapshot ids:", nearbySnapshot?.map((d) => d.driver_id));
+//     console.log("acceptedDriver    :", acceptedDriver);
+//     console.log("driverRoute       :", driverToPickupRoute);
+//     console.log("visibleDrivers #  :", visibleDrivers?.length);
+//     console.groupEnd();
+//   });
+
+//   const rows = [
+//     ["step",              step],
+//     ["trip.status",       tripStatus ?? "null"],
+//     ["assignedDriverId",  String(assignedDriverId ?? "null")],
+//     ["snapshot ids",      `[${nearbySnapshot?.map((d) => d.driver_id).join(", ") ?? ""}]`],
+//     ["acceptedDriver",    acceptedDriver
+//       ? `✅ id=${acceptedDriver.driver_id} [${acceptedDriver.latitude?.toFixed(4)}, ${acceptedDriver.longitude?.toFixed(4)}]`
+//       : "❌ not found in snapshot"],
+//     ["driverRoute",       driverToPickupRoute
+//       ? `✅ from [${driverToPickupRoute.from?.map((v) => v.toFixed(3)).join(", ")}]`
+//       : "❌ null"],
+//     ["visibleDrivers #",  visibleDrivers?.length ?? 0],
+//   ];
+
+//   return (
+//     <div style={{
+//       position: "fixed", bottom: 12, left: 12, zIndex: 99999,
+//       background: "rgba(0,0,0,0.88)", color: "#00ff88",
+//       fontFamily: "'Courier New', monospace", fontSize: 11,
+//       padding: "10px 14px", borderRadius: 10, maxWidth: 420,
+//       pointerEvents: "none", lineHeight: 1.75,
+//       border: "1px solid rgba(0,255,136,0.2)",
+//     }}>
+//       <div style={{ color: "#fecc18", fontWeight: "bold", marginBottom: 6, fontSize: 12 }}>
+//         🚖 RiderHome Debug
+//       </div>
+//       {rows.map(([label, value]) => (
+//         <div key={label}>
+//           <span style={{ color: "#999" }}>{label.padEnd(18)}: </span>
+//           <span style={{
+//             color: String(value).startsWith("✅") ? "#00ff88"
+//               : String(value).startsWith("❌") ? "#ff4444"
+//               : "#fff",
+//           }}>{value}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
 /* ═══════════════════════════════════════════════
    COMPONENT
    ═══════════════════════════════════════════════ */
@@ -218,93 +223,120 @@ const RiderHome = () => {
   const pickup          = useSelector((s) => s.location.pickup);
   const drop            = useSelector((s) => s.location.drop);
   const currentLocation = useSelector((s) => s.location.currentLocation);
+  const selectedRide    = useSelector((s) => s.fare.selectedRide);
+  const cityId          = useSelector((s) => s.fare.cityId);
+  const trip            = useSelector((s) => s.trip);
 
-  const selectedRide  = useSelector((s) => s.fare.selectedRide);
-  const cityId        = useSelector((s) => s.fare.cityId);
-  const trip          = useSelector((s) => s.trip);
+  const nearbyDrivers    = useSelector((s) => s.rider.nearbyDrivers);
+  const riderCity        = useSelector((s) => s.rider.city);
+  const assignedDriverId = useSelector((s) => s.rider.assignedDriverId);
 
-  const nearbyDrivers = useSelector((s) => s.rider.nearbyDrivers);
-  const riderCity     = useSelector((s) => s.rider.city);
-
-  const [step, setStep]                     = useState("location");
-  const [activePick, setActivePick]         = useState("pickup");
-  const [checkingCity, setCheckingCity]     = useState(false);
-  const [sameCityError, setSameCityError]   = useState(null);
-  const [mapKey, setMapKey]                 = useState(0);
+  const [step, setStep]                           = useState("location");
+  const [activePick, setActivePick]               = useState("pickup");
+  const [checkingCity, setCheckingCity]           = useState(false);
+  const [sameCityError, setSameCityError]         = useState(null);
+  const [mapKey, setMapKey]                       = useState(0);
   const [autoPickupEnabled, setAutoPickupEnabled] = useState(true);
 
-  const isMapLocked = step !== "location";
-  const showPickupToDropRoute = step !== "location" && step !== "tracking" && pickup?.lat && drop?.lat;
+  /*
+   * SNAPSHOT of nearbyDrivers taken at the moment the rider confirms booking.
+   * At that point all candidate drivers are still online/available.
+   * When the driver accepts (assignedDriverId arrives), we search THIS snapshot
+   * — not the live nearbyDrivers which by then may have dropped the driver.
+   */
+  const [nearbySnapshot, setNearbySnapshot] = useState([]);
 
-  /* ───────── Accepted driver from nearbyDrivers ───────── */
-  // Once trip is ASSIGNED, we have trip.driverId — find that driver in nearbyDrivers
+  const isMapLocked           = step !== "location";
+  const showPickupToDropRoute =
+    pickup?.lat &&
+    drop?.lat &&
+    (
+      step === "fare" ||
+      step === "summary" ||
+      (step === "tracking" &&
+        (trip?.status === "REQUESTED" || trip?.status === "PICKED_UP"))
+    );
+  const cityIdToUse = riderCity?.city_id || cityId;
+
+  /* ─── Poll fetchActiveTrip every 5s while REQUESTED/ASSIGNED ─── */
+  useEffect(() => {
+    if (step !== "tracking") return;
+    if (!["REQUESTED", "ASSIGNED"].includes(trip.status)) return;
+
+    dispatch(fetchActiveTrip());
+    const id = setInterval(() => dispatch(fetchActiveTrip()), 5000);
+    return () => clearInterval(id);
+  }, [step, trip.status, dispatch]);
+
+  /*
+   * acceptedDriver: find assignedDriverId in the snapshot taken at booking time.
+   * The snapshot was captured when all filtered drivers were still available,
+   * so the driver who accepted will be in there even after dropping from live list.
+   */
   const acceptedDriver = useMemo(() => {
-    if (!trip?.driverId || !nearbyDrivers?.length) return null;
-    return nearbyDrivers.find((d) => d.driver_id === trip.driverId) || null;
-  }, [trip?.driverId, nearbyDrivers]);
+    if (!assignedDriverId || !nearbySnapshot.length) return null;
+    return nearbySnapshot.find((d) => d.driver_id === assignedDriverId) ?? null;
+  }, [assignedDriverId, nearbySnapshot]);
 
-  /* ───────── Visible drivers on map ───────── */
+  /* ─── Visible driver markers ─── */
   const visibleDrivers = useMemo(() => {
-    if (!nearbyDrivers?.length) return [];
-
-    // Tracking step: show only the accepted driver (if we have their location)
     if (step === "tracking") {
-      if (!acceptedDriver) return [];
-      return [acceptedDriver];
+      // Driver accepted and found in snapshot → show only them
+      if (acceptedDriver) return [{ ...acceptedDriver, isAccepted: true }];
+
+      // Still REQUESTED — show filtered live nearby so map isn't empty
+      if (nearbyDrivers?.length && selectedRide) {
+        return nearbyDrivers.filter(
+          (d) => d.vehicle_category === selectedRide.vehicle_category &&
+                 d.tenant_id === selectedRide.tenant_id
+        );
+      }
+      return nearbyDrivers ?? [];
     }
 
-    // Fare / summary: filter by selected vehicle_category + tenant_id
+    if (!nearbyDrivers?.length) return [];
+
     if ((step === "fare" || step === "summary") && selectedRide) {
       return nearbyDrivers.filter(
-        (d) =>
-          d.vehicle_category === selectedRide.vehicle_category &&
-          d.tenant_id === selectedRide.tenant_id
+        (d) => d.vehicle_category === selectedRide.vehicle_category &&
+               d.tenant_id === selectedRide.tenant_id
       );
     }
 
-    // Location step: show all nearby drivers
     return nearbyDrivers;
   }, [nearbyDrivers, step, selectedRide, acceptedDriver]);
 
-  /* ───────── Route from accepted driver → pickup (tracking step) ───────── */
-  // Only show while driver is heading to pickup (ASSIGNED status)
+  /* ─── Driver → Pickup route (ASSIGNED only) ─── */
   const driverToPickupRoute = useMemo(() => {
-    if (step !== "tracking") return null;
+    if (step !== "tracking")         return null;
     if (trip?.status !== "ASSIGNED") return null;
-    if (!acceptedDriver || !pickup?.lat) return null;
+    if (!acceptedDriver)             return null;
+    if (!pickup?.lat)                return null;
     return {
       from: [acceptedDriver.latitude, acceptedDriver.longitude],
       to:   [pickup.lat, pickup.lng],
     };
   }, [step, trip?.status, acceptedDriver, pickup]);
 
-  /* ───────── Fetch nearby drivers when city + pickup ready ───────── */
+  /* ─── Fetch nearby drivers (non-tracking steps) ─── */
   useEffect(() => {
-    const cityIdToUse = riderCity?.city_id || cityId;
     if (!cityIdToUse || !pickup?.lat || !pickup?.lng) return;
-
+    if (step === "tracking") return;
     dispatch(fetchNearbyDrivers({
-      city_id:    cityIdToUse,
+      city_id: cityIdToUse,
       pickup_lat: pickup.lat,
       pickup_lng: pickup.lng,
     }));
-  }, [riderCity?.city_id, cityId, pickup?.lat, pickup?.lng, dispatch]);
+  }, [cityIdToUse, pickup?.lat, pickup?.lng, dispatch, step]);
 
-  /* ───────── Auto-set pickup from current location ───────── */
+  /* ─── Auto-set pickup from current location ─── */
   useEffect(() => {
-    if (
-      autoPickupEnabled &&
-      step === "location" &&
-      currentLocation?.lat &&
-      !pickup?.lat
-    ) {
-      reverseGeocode(currentLocation.lat, currentLocation.lng).then((address) => {
-        dispatch(setPickupLocation({ lat: currentLocation.lat, lng: currentLocation.lng, address }));
-      });
-    }
+    if (!autoPickupEnabled || step !== "location" || !currentLocation?.lat || pickup?.lat) return;
+    reverseGeocode(currentLocation.lat, currentLocation.lng).then((address) => {
+      dispatch(setPickupLocation({ lat: currentLocation.lat, lng: currentLocation.lng, address }));
+    });
   }, [autoPickupEnabled, currentLocation, pickup?.lat, step, dispatch]);
 
-  /* ───────── Re-enable auto pickup after reset ───────── */
   useEffect(() => {
     if (!autoPickupEnabled) {
       const t = setTimeout(() => setAutoPickupEnabled(true), 800);
@@ -312,7 +344,7 @@ const RiderHome = () => {
     }
   }, [autoPickupEnabled]);
 
-  /* ───────── Map click ───────── */
+  /* ─── Map click ─── */
   const handleMapPick = ({ lat, lng }) => {
     if (isMapLocked) return;
     setSameCityError(null);
@@ -321,12 +353,11 @@ const RiderHome = () => {
     reverseGeocode(lat, lng).then((address) => dispatch(action({ lat, lng, address })));
   };
 
-  /* ───────── Confirm Locations ───────── */
+  /* ─── Confirm locations ─── */
   const handleLocationConfirm = async () => {
     if (!pickup?.lat || !drop?.lat) return;
     setCheckingCity(true);
     setSameCityError(null);
-
     try {
       const token = localStorage.getItem("token");
       const [sameCityRes] = await Promise.all([
@@ -340,12 +371,7 @@ const RiderHome = () => {
           drop_lat: drop.lat, drop_lng: drop.lng, drop_address: drop.address,
         })),
       ]);
-
-      if (!sameCityRes.data) {
-        setSameCityError("Pickup and drop must be in the same city.");
-        return;
-      }
-
+      if (!sameCityRes.data) { setSameCityError("Pickup and drop must be in the same city."); return; }
       setStep("fare");
     } catch {
       setSameCityError("Location verification failed.");
@@ -354,7 +380,7 @@ const RiderHome = () => {
     }
   };
 
-  /* ───────── Booking ───────── */
+  /* ─── Book ride ─── */
   const handleBookingConfirm = async () => {
     const payload = {
       tenant_id:        selectedRide.tenant_id,
@@ -371,27 +397,39 @@ const RiderHome = () => {
 
     const result = await dispatch(requestTrip(payload));
     if (requestTrip.fulfilled.match(result)) {
+      /*
+       * Snapshot the current nearbyDrivers RIGHT NOW — at this exact moment
+       * all the filtered drivers (matching vehicle + tenant) are still online.
+       * One of them will accept and become the assignedDriverId.
+       * We'll search this snapshot to find them later.
+       */
+      const filtered = (nearbyDrivers ?? []).filter(
+        (d) => d.vehicle_category === selectedRide.vehicle_category &&
+               d.tenant_id === selectedRide.tenant_id
+      );
+      setNearbySnapshot(filtered);
       setStep("tracking");
     }
   };
 
-  /* ───────── New Ride Reset ───────── */
+  /* ─── New ride reset ─── */
   const handleNewRide = () => {
     dispatch(resetTripState());
     dispatch(resetFareState());
     dispatch(resetLocations());
     dispatch(clearNearbyDrivers());
+    dispatch(clearAssignedDriver());
+    setNearbySnapshot([]);
     setAutoPickupEnabled(false);
     setSameCityError(null);
     setStep("location");
     setMapKey((k) => k + 1);
   };
 
-  /* ───────── Control Panel ───────── */
+  /* ─── Control panel ─── */
   const renderControlPanel = () => {
-    if (trip.tripId && trip.status && step === "tracking") {
+    if (trip.tripId && trip.status && step === "tracking")
       return <TripTracking onNewRide={handleNewRide} />;
-    }
     if (step === "fare")
       return <FareDiscovery onRideSelect={() => setStep("summary")} />;
     if (step === "summary")
@@ -424,6 +462,19 @@ const RiderHome = () => {
 
   return (
     <div className="rider-home-layout">
+
+      {/* ══ DEBUG PANEL — remove once confirmed working ══ */}
+      {/* <DebugPanel
+        step={step}
+        tripStatus={trip?.status}
+        assignedDriverId={assignedDriverId}
+        nearbySnapshot={nearbySnapshot}
+        acceptedDriver={acceptedDriver}
+        driverToPickupRoute={driverToPickupRoute}
+        visibleDrivers={visibleDrivers}
+      /> */}
+      {/* ════════════════════════════════════════════════ */}
+
       <div className="map-section">
         <MapContainer
           key={mapKey}
@@ -440,29 +491,25 @@ const RiderHome = () => {
 
           <MapClickHandler enabled={!isMapLocked} onPick={handleMapPick} />
 
-          {/* Current location */}
           {currentLocation?.lat && (
             <Marker position={[currentLocation.lat, currentLocation.lng]} icon={currentLocationIcon}>
               <Tooltip>Your Location</Tooltip>
             </Marker>
           )}
 
-          {/* Pickup */}
           {pickup?.lat && (
             <Marker position={[pickup.lat, pickup.lng]} icon={pickupIcon}>
               <Tooltip permanent>Pickup</Tooltip>
             </Marker>
           )}
 
-          {/* Drop */}
           {drop?.lat && (
             <Marker position={[drop.lat, drop.lng]} icon={dropIcon}>
               <Tooltip permanent>Drop</Tooltip>
             </Marker>
           )}
 
-          {/* Pickup → Drop route (fare/summary steps) */}
-          {showPickupToDropRoute && (
+          {showPickupToDropRoute && pickup?.lat && drop?.lat && (
             <RouteLayer
               from={[pickup.lat, pickup.lng]}
               to={[drop.lat, drop.lng]}
@@ -470,7 +517,6 @@ const RiderHome = () => {
             />
           )}
 
-          {/* Driver → Pickup route (tracking + ASSIGNED) */}
           {driverToPickupRoute && (
             <RouteLayer
               from={driverToPickupRoute.from}
@@ -480,21 +526,17 @@ const RiderHome = () => {
             />
           )}
 
-          {/* Nearby / filtered driver markers */}
-          {visibleDrivers.map((driver) => {
-            const isAccepted = acceptedDriver?.driver_id === driver.driver_id;
-            return (
-              <Marker
-                key={driver.driver_id}
-                position={[driver.latitude, driver.longitude]}
-                icon={isAccepted ? getAcceptedDriverIcon(driver.vehicle_category) : getDriverIcon(driver.vehicle_category)}
-              >
-                <Tooltip direction="top" offset={[0, isAccepted ? -23 : -18]}>
-                  {isAccepted ? "Your Driver" : driver.vehicle_category}
-                </Tooltip>
-              </Marker>
-            );
-          })}
+          {visibleDrivers.map((driver) => (
+            <Marker
+              key={`${driver.driver_id}-${driver.isAccepted ? "acc" : "near"}`}
+              position={[driver.latitude, driver.longitude]}
+              icon={getIcon(driver.vehicle_category, !!driver.isAccepted)}
+            >
+              <Tooltip direction="top" offset={[0, driver.isAccepted ? -23 : -18]}>
+                {driver.isAccepted ? "Your Driver" : driver.vehicle_category}
+              </Tooltip>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
 
