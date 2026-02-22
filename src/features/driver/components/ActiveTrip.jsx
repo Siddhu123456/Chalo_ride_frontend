@@ -106,6 +106,25 @@ const ActiveTrip = () => {
 
   const { activeTrip, tripStatus, profile } = useSelector((s) => s.driver);
 
+  const cancelHandledRef = useRef(false);
+
+useEffect(() => {
+  if (cancelHandledRef.current) return;
+
+  const ACTIVE_DRIVER_STATES = ["ASSIGNED", "PICKED_UP"];
+
+  const tripMissing = !activeTrip;
+  const notActiveState =
+    tripStatus && !ACTIVE_DRIVER_STATES.includes(tripStatus);
+
+  if (tripMissing || notActiveState) {
+    cancelHandledRef.current = true;
+
+    alert("❌ Trip was cancelled by the rider");
+    navigate("/driver/trip-offers", { replace: true });
+  }
+}, [activeTrip, tripStatus, navigate]);
+
   const [otpInputs,   setOtpInputs]   = useState(["", "", "", ""]);
   const [otpError,    setOtpError]    = useState("");
   const [routePoints, setRoutePoints] = useState([]);
@@ -149,22 +168,6 @@ const ActiveTrip = () => {
     };
   }, []);
 
-  // ─── PHASE-LEVEL route fetch ─────────────────────────────────────────────
-  //
-  // Strategy that guarantees the loader never gets stuck:
-  //
-  // ASSIGNED phase:
-  //   Step 1 — immediately fetch pickup→drop. No GPS needed. Loader clears fast.
-  //   Step 2 — in parallel, try to get GPS. If it arrives within a reasonable
-  //            time, fetch driver→pickup and replace the route silently.
-  //            If GPS fails, the pickup→drop route stays — still useful.
-  //
-  // PICKED_UP phase:
-  //   Fetch pickup→drop immediately. Same as step 1 above.
-  //
-  // This means the map ALWAYS shows a route and ALWAYS clears the loader,
-  // regardless of GPS availability.
-  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!pickupCoords || !dropCoords) return;
 
