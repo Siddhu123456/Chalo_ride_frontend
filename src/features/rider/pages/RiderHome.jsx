@@ -362,7 +362,7 @@ const RiderHome = () => {
       const token = localStorage.getItem("token");
       const [sameCityRes] = await Promise.all([
         axios.post(
-          "http://localhost:8000/trips/same-city",
+          "http://192.168.3.86:8000/trips/same-city",
           { pickup_lat: pickup.lat, pickup_lng: pickup.lng, drop_lat: drop.lat, drop_lng: drop.lng },
           { headers: { Authorization: `Bearer ${token}` } }
         ),

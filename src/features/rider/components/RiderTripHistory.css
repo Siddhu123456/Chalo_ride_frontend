@@ -1,5 +1,3 @@
-
-
 .trip-history-container {
   padding: 30px 40px;
   max-width: 100%;
@@ -57,6 +55,7 @@
 
 .search-box svg {
   color: #999;
+  flex-shrink: 0;
 }
 
 .search-box input {
@@ -65,10 +64,26 @@
   outline: none;
   font-size: 1rem;
   color: var(--theme-font);
+  background: transparent;
+
+  /* Fix browser autofill turning background black */
+  -webkit-text-fill-color: var(--theme-font);
+}
+
+/* Override Chrome/Safari autofill background */
+.search-box input:-webkit-autofill,
+.search-box input:-webkit-autofill:hover,
+.search-box input:-webkit-autofill:focus,
+.search-box input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: var(--theme-font) !important;
+  background-color: white !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 .search-box input::placeholder {
-  background-color: var(--theme-white);
+  color: #aaa;
+  background-color: transparent;
 }
 
 .filter-group {

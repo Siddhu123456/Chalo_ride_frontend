@@ -1,12 +1,9 @@
-
-
 .trip-history-container {
   padding: 30px 40px;
   max-width: 100%;
   width: 100%;
   margin: 0;
 }
-
 
 .history-header {
   display: flex;
@@ -27,7 +24,6 @@
   color: #777;
   font-size: 1rem;
 }
-
 
 .history-controls {
   display: flex;
@@ -57,6 +53,7 @@
 
 .search-box svg {
   color: #999;
+  flex-shrink: 0;
 }
 
 .search-box input {
@@ -65,10 +62,22 @@
   outline: none;
   font-size: 1rem;
   color: var(--theme-font);
+  background: transparent;
+  -webkit-text-fill-color: var(--theme-font);
+}
+
+.search-box input:-webkit-autofill,
+.search-box input:-webkit-autofill:hover,
+.search-box input:-webkit-autofill:focus,
+.search-box input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  -webkit-text-fill-color: var(--theme-font) !important;
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 .search-box input::placeholder {
-  background-color: var(--theme-white);
+  color: #aaa;
+  background-color: transparent;
 }
 
 .filter-group {
@@ -101,13 +110,11 @@
   background: transparent;
 }
 
-
 .trips-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
-
 
 .no-trips {
   background: white;
@@ -123,7 +130,6 @@
   color: #777;
 }
 
-
 .trip-card {
   background: white;
   border-radius: 16px;
@@ -138,7 +144,6 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   border-color: var(--theme-button-bg);
 }
-
 
 .trip-header {
   display: flex;
@@ -161,15 +166,6 @@
   font-size: 1.05rem;
 }
 
-.trip-tenant {
-  padding: 4px 12px;
-  background: rgba(254, 204, 24, 0.1);
-  border-radius: 6px;
-  color: var(--theme-button-bg);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
 .trip-status-badge {
   padding: 6px 16px;
   border-radius: 20px;
@@ -187,7 +183,6 @@
   background: rgba(220, 53, 69, 0.15);
   color: #dc3545;
 }
-
 
 .trip-route {
   margin-bottom: 20px;
@@ -249,7 +244,6 @@
 .route-point.pickup {
   margin-bottom: 20px;
 }
-
 
 .trip-details {
   display: grid;
@@ -315,14 +309,9 @@
   color: var(--theme-button-bg);
 }
 
-
 @media (max-width: 1024px) {
   .trip-history-container {
     padding: 24px 30px;
-  }
-
-  .trips-list {
-    grid-template-columns: 1fr;
   }
 }
 

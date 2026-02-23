@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const API_URL = "http://192.168.3.86:8000/rider";
-const API_URL = "http://localhost:8000/rider";
+const API_URL = "http://192.168.3.86:8000/rider";
+// const API_URL = "http://localhost:8000/rider";
 
 const getHeaders = () => {
   const token = localStorage.getItem("token");
@@ -68,7 +68,7 @@ export const fetchNearbyDrivers = createAsyncThunk(
   async ({ city_id, pickup_lat, pickup_lng }, { rejectWithValue }) => {
     try {
       const res = await axios.post(
-        "http://localhost:8000/rider/trips/nearby-10km",
+        `${API_URL}/trips/nearby-10km`,
         { city_id, pickup_lat, pickup_lng },
         getHeaders()
       );
