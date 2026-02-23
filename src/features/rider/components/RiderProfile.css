@@ -76,7 +76,7 @@
   font-weight: 600;
 }
 
-/* FIX: was `.status-badge .active` (descendant) — must be `.status-badge.active` (chained) */
+
 .status-badge.ACTIVE {
   background: rgba(40, 167, 69, 0.15);
   color: #28a745;

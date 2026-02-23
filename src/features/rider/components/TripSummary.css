@@ -1,6 +1,4 @@
-/* ─────────────────────────────────────────
-   TripSummary — balanced height, full location display
-   ───────────────────────────────────────── */
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -11,7 +9,6 @@
   animation: fadeIn 0.4s ease-in-out;
 }
 
-/* ── Outer card ── */
 .ts-card {
   background: #ffffff;
   border-radius: 16px;
@@ -27,7 +24,6 @@
   box-sizing: border-box;
 }
 
-/* ── Inner container ── */
 .ts-inner {
   width: 100%;
   max-height: 100%;
@@ -40,7 +36,6 @@
 }
 .ts-inner::-webkit-scrollbar { display: none; }
 
-/* ── Title ── */
 .ts-title {
   font-size: 1.15rem;
   font-weight: 700;
@@ -48,7 +43,6 @@
   margin: 0;
 }
 
-/* ── Ride name + price row — full width ── */
 .ts-summary-row {
   display: flex;
   justify-content: space-between;
@@ -82,7 +76,6 @@
   margin-left: 0.75rem;
 }
 
-/* ── Route — expanded, locations wrap fully ── */
 .ts-route {
   background: #f8f9fa;
   border-radius: 12px;
@@ -101,7 +94,6 @@
   gap: 0.75rem;
 }
 
-/* Icon circle */
 .ts-route-icon {
   width: 30px;
   height: 30px;
@@ -123,7 +115,6 @@
   color: var(--theme-button-bg);
 }
 
-/* Text block — label + full location value */
 .ts-route-text {
   display: flex;
   flex-direction: column;
@@ -144,18 +135,17 @@
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--theme-font);
-  /* allow full wrap — no truncation */
+  
   white-space: normal;
   word-break: break-word;
   line-height: 1.4;
 }
 
-/* Connector between pickup and drop */
 .ts-route-connector {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 6px 0 6px 14px; /* aligns with icon center */
+  padding: 6px 0 6px 14px; 
   gap: 0;
 }
 
@@ -170,14 +160,14 @@
 .ts-connector-line {
   flex: 1;
   height: 1px;
-  /* vertical dashed line using rotation trick */
+  
   width: 2px;
   height: 18px;
   border-left: 2px dashed #d1d5db;
   margin: 0 auto;
 }
 
-/* Override connector layout to be vertical */
+
 .ts-route-connector {
   display: flex;
   flex-direction: column;
@@ -186,7 +176,7 @@
   gap: 2px;
 }
 
-/* ── Fare breakup ── */
+
 .ts-breakup {
   border-top: 1px solid #e9ecef;
   padding-top: 0.5rem;
@@ -216,7 +206,7 @@
   color: var(--theme-button-bg);
 }
 
-/* ── Buttons ── */
+
 .ts-actions {
   display: flex;
   gap: 0.75rem;
@@ -283,7 +273,7 @@
 .ts-secondary-btn:hover::before { transform: translateX(0); }
 .ts-secondary-btn:active { transform: scale(0.98); }
 
-/* ── Responsive ── */
+
 @media (max-width: 480px) {
   .ts-card { padding: 14px; }
   .ts-actions { flex-direction: column; }

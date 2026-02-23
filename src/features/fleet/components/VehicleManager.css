@@ -427,9 +427,9 @@
   }
 }
 
-/* ── Paste these rules into your existing VehicleManager.css ── */
 
-/* Unassigned section wrapper */
+
+
 .vm-unassigned-section {
   display: flex;
   flex-direction: column;
@@ -495,13 +495,13 @@
   margin: 0;
 }
 
-/* Unassigned card highlight */
+
 .vm-card--unassigned {
   border-color: var(--theme-border-yellow) !important;
   background: #fffdf0;
 }
 
-/* No Driver pill */
+
 .vm-pill-unassigned {
   display: inline-block;
   padding: 2px 8px;
@@ -515,7 +515,7 @@
   letter-spacing: 0.3px;
 }
 
-/* Urgent assign button */
+
 .vm-btn-manage--urgent {
   background: var(--theme-button-bg) !important;
   color: var(--theme-button-font) !important;
@@ -528,7 +528,7 @@
   box-shadow: 0 4px 12px rgba(254, 204, 24, 0.4);
 }
 
-/* Main section header (shown only when unassigned section is visible) */
+
 .vm-main-section {
   display: flex;
   flex-direction: column;

@@ -16,7 +16,7 @@ const reverseGeocode = async (lat, lng) => {
   return data.display_name || "Unknown location";
 };
 
-// Only re-geocode if moved more than ~50 meters
+
 const hasMoved = (a, b) => {
   if (!a) return true;
   const dx = a.lat - b.lat;
@@ -53,7 +53,7 @@ const RiderPage = () => {
 
         dispatch(setCurrentLocation(current));
 
-        // Only call Nominatim if position changed significantly
+        
         if (hasMoved(lastPositionRef.current, current)) {
           lastPositionRef.current = current;
           try {

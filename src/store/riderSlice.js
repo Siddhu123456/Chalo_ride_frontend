@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL = "http://192.168.3.86:8000/rider";
-// const API_URL = "http://localhost:8000/rider";
+
 
 const getHeaders = () => {
   const token = localStorage.getItem("token");
@@ -84,7 +84,7 @@ export const fetchActiveTrip = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get(`${API_URL}/trips/active`, getHeaders());
-      return res.data; // { trip: { driver_id, status, ... } | null }
+      return res.data; 
     } catch (err) {
       return rejectWithValue(getErrorMsg(err, "Active trip fetch failed"));
     }

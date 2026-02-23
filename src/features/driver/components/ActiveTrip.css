@@ -1,6 +1,4 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   ActiveTrip.css
-   ═══════════════════════════════════════════════════════════════════════════ */
+
 
 :root {
   --at-red:     #ff3b30;
@@ -13,20 +11,16 @@
   --at-danger:  #dc3545;
 }
 
-/* ── Page: full viewport height minus navbar ── */
+
 .at-page {
   position: relative;
   width: 100%;
   height: calc(100vh - var(--navbar-height, 70px));
   overflow: hidden;
-  background: #e8eaed;    /* visible while tiles load */
+  background: #e8eaed;    
 }
 
-/* ── Map wrap: absolute, fills entire page ──────────────────────────────────
-   Because it's position:absolute with inset:0, "height:100%" on
-   .at-map resolves to the page height — a real px value — which is what
-   Leaflet needs to render tiles.
-────────────────────────────────────────────────────────────────────────────── */
+
 .at-map-wrap {
   position: absolute;
   inset: 0;
@@ -35,10 +29,10 @@
 
 .at-map {
   width: 100%;
-  height: 100%;   /* resolves to parent's px height — Leaflet renders correctly */
+  height: 100%;   
 }
 
-/* ── Route loading overlay ── */
+
 .at-map-loader {
   position: absolute;
   inset: 0;
@@ -68,7 +62,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Phase chip (top-center, floats over map) ── */
+
 .at-phase-chip {
   position: absolute;
   top: 14px;
@@ -141,7 +135,7 @@
   background: var(--at-success);
 }
 
-/* ── Legend (bottom-left, floats over map) ── */
+
 .at-legend {
   position: absolute;
   bottom: 14px;
@@ -185,7 +179,7 @@
   background: var(--at-indigo);
 }
 
-/* ── Bottom card (floats over map) ── */
+
 .at-card {
   position: absolute;
   bottom: 0;
@@ -214,7 +208,7 @@
   border-radius: 2px;
 }
 
-/* ── Left: addresses ── */
+
 .at-card__left {
   flex: 1;
   min-width: 0;
@@ -274,7 +268,7 @@
   opacity: 0.4;
 }
 
-/* ── Divider ── */
+
 .at-card__divider {
   width: 1px;
   align-self: stretch;
@@ -282,7 +276,7 @@
   flex-shrink: 0;
 }
 
-/* ── Right: action panel ── */
+
 .at-card__right {
   flex: 1;
   min-width: 0;
@@ -307,7 +301,7 @@
 
 .at-section-sub strong { color: var(--at-font); }
 
-/* ── OTP section ── */
+
 .at-otp-section {
   display: flex;
   flex-direction: column;
@@ -362,7 +356,7 @@
   font-weight: 500;
 }
 
-/* ── Progress / Completed ── */
+
 .at-progress-section,
 .at-completed-section {
   display: flex;
@@ -398,7 +392,7 @@
   margin-bottom: 0.625rem;
 }
 
-/* ── Buttons ── */
+
 .at-btn {
   display: inline-flex;
   align-items: center;
@@ -452,9 +446,7 @@
   box-shadow: 0 6px 18px rgba(67, 97, 238, 0.4);
 }
 
-/* ══════════════════════════════════════════════
-   CUSTOM MARKER STYLES
-   ══════════════════════════════════════════════ */
+
 
 .at-pin {
   display: flex;
@@ -522,9 +514,7 @@
   z-index: 1;
 }
 
-/* ══════════════════════════════════════════════
-   TOOLTIP STYLES
-   ══════════════════════════════════════════════ */
+
 
 .at-tooltip.leaflet-tooltip {
   background: transparent !important;
@@ -578,7 +568,7 @@
 .at-tooltip--drop   .at-tooltip__inner strong { color: #818cf8; }
 .at-tooltip--driver .at-tooltip__inner strong { color: #fb8080; }
 
-/* ── Responsive ── */
+
 @media (max-width: 992px) {
   .at-card {
     flex-direction: column;

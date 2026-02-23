@@ -188,7 +188,7 @@ const RiderHome = () => {
     );
   const cityIdToUse = riderCity?.city_id || cityId;
 
-  /* ─── Poll fetchActiveTrip every 5s while REQUESTED/ASSIGNED ─── */
+  
   useEffect(() => {
     if (step !== "tracking") return;
     if (!["REQUESTED", "ASSIGNED"].includes(trip.status)) return;
@@ -263,7 +263,7 @@ const RiderHome = () => {
     }
   }, [autoPickupEnabled]);
 
-  /* ─── Map click ─── */
+  
   const handleMapPick = ({ lat, lng }) => {
     if (isMapLocked) return;
     setSameCityError(null);
@@ -323,7 +323,7 @@ const RiderHome = () => {
     }
   };
 
-  /* ─── New ride reset ─── */
+  
   const handleNewRide = () => {
     dispatch(resetTripState());
     dispatch(resetFareState());

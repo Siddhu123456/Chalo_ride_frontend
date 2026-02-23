@@ -78,7 +78,7 @@
     color: var(--theme-button-bg);
 }
 
-/* ── Same-city error banner ── */
+
 .same-city-error {
     display: flex;
     align-items: flex-start;

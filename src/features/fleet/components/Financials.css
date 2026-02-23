@@ -600,7 +600,7 @@
   filter: brightness(0.95);
 }
 
-/* Remove the small inline icon margins inside circular close button */
+
 .fin-modal-close .icon-inline {
   margin: 0;
   font-size: 1rem;

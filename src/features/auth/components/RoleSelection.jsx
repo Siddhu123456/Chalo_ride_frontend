@@ -71,9 +71,7 @@ const RoleSelection = ({ onBack }) => {
           </button>
         ))}
 
-        {/* <button className="back-link" onClick={onBack}>
-          Use a different account
-        </button> */}
+        
       </div>
     </>
   );

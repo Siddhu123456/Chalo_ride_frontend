@@ -52,13 +52,13 @@ const Routing = ({ from, to, color = "#4361ee", dashed = false }) => {
 
         const coords = decodePolyline(data.routes[0].geometry);
 
-        // Remove previous layers
+        
         layersRef.current.forEach((l) => {
           try { map.removeLayer(l); } catch {}
         });
         layersRef.current = [];
 
-        // White outline for depth
+        
         const outline = L.polyline(coords, {
           color: "#ffffff",
           weight: 9,
@@ -67,7 +67,7 @@ const Routing = ({ from, to, color = "#4361ee", dashed = false }) => {
           lineJoin: "round",
         });
 
-        // Coloured route on top
+        
         const route = L.polyline(coords, {
           color,
           weight: 5,
@@ -77,11 +77,11 @@ const Routing = ({ from, to, color = "#4361ee", dashed = false }) => {
           lineJoin: "round",
         });
 
-        // Add to map in order: outline first, route on top
+        
         outline.addTo(map);
         route.addTo(map);
 
-        // Bring both to front so they sit above the tile layer
+        
         outline.bringToFront();
         route.bringToFront();
 

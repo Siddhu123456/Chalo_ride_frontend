@@ -155,30 +155,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* {recentTrips.length > 0 && (
-          <div className="card recent-trips-card">
-            <h2 className="card-section-title">Recent Trips</h2>
-
-            <ul className="recent-trips-list">
-              {recentTrips.map((trip) => (
-                <li key={trip.trip_id} className="trip-item">
-                  <span className="trip-id">#{trip.trip_id}</span>
-                  <span className={`trip-status status-${trip.status.toLowerCase()}`}>
-                    {trip.status}
-                  </span>
-                  <span className="trip-earnings">
-                    ₹{trip.fare_amount.toFixed(2)}
-                  </span>
-                  <span className="trip-date">
-                    {trip.completed_at
-                      ? new Date(trip.completed_at).toLocaleDateString()
-                      : "-"}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )} */}
+        
       </div>
     </div>
   );

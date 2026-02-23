@@ -31,7 +31,7 @@ const RiderTripHistory = () => {
     dispatch(fetchRiderTripHistory());
   }, [dispatch]);
 
-  // Debug — remove once working
+  
   useEffect(() => {
     if (tripHistory.length) {
       console.log("Sample trip:", tripHistory[0]);
@@ -75,12 +75,12 @@ const RiderTripHistory = () => {
       (trip.pickup_address  && trip.pickup_address.toLowerCase().includes(q))  ||
       (trip.drop_address    && trip.drop_address.toLowerCase().includes(q))    ||
       (trip.tenant_name     && trip.tenant_name.toLowerCase().includes(q))     ||
-      // trip_id can be a number or uuid — convert safely
+      
       (trip.trip_id != null && String(trip.trip_id).toLowerCase().includes(q))
     );
 
-    // status from backend is uppercase e.g. "COMPLETED"
-    // dropdown values are also uppercase — keep them consistent
+    
+    
     const matchesFilter =
       filterStatus === "all" ||
       (trip.status && trip.status.toUpperCase() === filterStatus);
@@ -115,7 +115,7 @@ const RiderTripHistory = () => {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            {/* Values are UPPERCASE to match backend status strings exactly */}
+            
             <option value="all">All Trips</option>
             <option value="COMPLETED">Completed</option>
             <option value="CANCELLED">Cancelled</option>

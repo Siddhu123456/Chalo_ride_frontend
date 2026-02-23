@@ -22,7 +22,7 @@ const ManageAssetModal = () => {
     availableDrivers,
   } = useSelector((state) => state.fleet);
 
-  // mode: null | "assign" | "change"
+  
   const [mode, setMode] = useState(null);
   const [selectedDriverId, setSelectedDriverId] = useState("");
   const [startTime, setStartTime] = useState("00:00");
@@ -109,7 +109,7 @@ const ManageAssetModal = () => {
     <div className="mam-overlay" onClick={handleClose}>
       <div className="mam-modal" onClick={(e) => e.stopPropagation()}>
 
-        {/* Header */}
+        
         <div className="mam-header">
           <div>
             <h2>{hasDriver ? "Manage Asset" : "Manage Vehicle"}</h2>
@@ -123,7 +123,7 @@ const ManageAssetModal = () => {
 
         <div className="mam-content">
 
-          {/* Vehicle Info */}
+          
           <div className="mam-section">
             <h3>Vehicle Information</h3>
             <div className="mam-info-grid">
@@ -146,7 +146,7 @@ const ManageAssetModal = () => {
             </div>
           </div>
 
-          {/* Driver Assignment Section */}
+          
           <div className="mam-section">
             <h3>Driver Assignment</h3>
 
@@ -154,7 +154,7 @@ const ManageAssetModal = () => {
               <div className="mam-loading">Loading assignment details...</div>
 
             ) : mode ? (
-              /* Assign / Change Form */
+              
               <div className="mam-assign-form">
                 <div className="mam-form-group">
                   <label>Select Driver</label>
@@ -210,7 +210,7 @@ const ManageAssetModal = () => {
               </div>
 
             ) : !hasDriver ? (
-              /* No Driver: Unassigned card */
+              
               <div className="mam-unassigned-card">
                 <div className="mam-unassigned-icon">🚗</div>
                 <div className="mam-unassigned-body">
@@ -231,7 +231,7 @@ const ManageAssetModal = () => {
               </div>
 
             ) : (
-              /* Has Driver: driver card + Change Driver */
+              
               <div className="mam-assignment-card">
                 <div className="mam-driver-info">
                   <div className="mam-driver-avatar">

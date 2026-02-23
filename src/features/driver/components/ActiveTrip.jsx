@@ -30,7 +30,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl:     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-/* ─── OSRM fetch ─────────────────────────────────────────────────────────── */
+
 function decodePolyline(encoded) {
   const coords = [];
   let index = 0, lat = 0, lng = 0;
@@ -60,7 +60,7 @@ async function fetchRoute(from, to, signal) {
   return [];
 }
 
-/* ─── Marker icons ────────────────────────────────────────────────────────── */
+
 const pickupMarkerIcon = L.divIcon({
   className: "",
   html: `<div class="at-pin at-pin--green"><div class="at-pin__head"></div><div class="at-pin__tail"></div></div>`,
@@ -77,7 +77,7 @@ const driverMarkerIcon = L.divIcon({
   iconSize: [44, 44], iconAnchor: [22, 22], tooltipAnchor: [22, -22],
 });
 
-/* ─── FitBounds ──────────────────────────────────────────────────────────── */
+
 const FitBounds = ({ points, trigger }) => {
   const map    = useMap();
   const didFit = useRef(false);
@@ -93,12 +93,12 @@ const FitBounds = ({ points, trigger }) => {
       );
       didFit.current = true;
     } catch (_) {}
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [trigger]);
   return null;
 };
 
-/* ─── ActiveTrip ─────────────────────────────────────────────────────────── */
+
 const ActiveTrip = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -133,18 +133,18 @@ useEffect(() => {
 
   const otpInputRefs = useRef([]);
   const watchIdRef   = useRef(null);
-  const abortRef     = useRef(null);  // for phase-level route fetches
-  const gpsFetchRef  = useRef(null);  // for the upgrade fetch (driver→pickup)
+  const abortRef     = useRef(null);  
+  const gpsFetchRef  = useRef(null);  
   const prevPhase    = useRef(tripStatus);
 
   const pickupCoords = useMemo(
     () => activeTrip ? [activeTrip.pickup_lat, activeTrip.pickup_lng] : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
     [activeTrip?.pickup_lat, activeTrip?.pickup_lng]
   );
   const dropCoords = useMemo(
     () => activeTrip ? [activeTrip.drop_lat, activeTrip.drop_lng] : null,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
     [activeTrip?.drop_lat, activeTrip?.drop_lng]
   );
 
@@ -152,7 +152,7 @@ useEffect(() => {
   const isRideInProgress = tripStatus === "PICKED_UP";
   const isTripCompleted  = tripStatus === "COMPLETED";
 
-  // ── GPS watch — only for moving the driver marker ──
+  
   useEffect(() => {
     if (!("geolocation" in navigator)) return;
     watchIdRef.current = navigator.geolocation.watchPosition(
@@ -171,7 +171,7 @@ useEffect(() => {
   useEffect(() => {
     if (!pickupCoords || !dropCoords) return;
 
-    // Reset on phase change
+    
     if (prevPhase.current !== tripStatus) {
       prevPhase.current = tripStatus;
       setRouteReady(false);
@@ -180,7 +180,7 @@ useEffect(() => {
 
     if (isTripCompleted) return;
 
-    // Cancel any in-flight requests from previous phase
+    
     if (abortRef.current) abortRef.current.abort();
     if (gpsFetchRef.current) gpsFetchRef.current.abort();
 
@@ -188,14 +188,14 @@ useEffect(() => {
     abortRef.current = mainCtrl;
     setRouteReady(false);
 
-    // Step 1: fetch pickup→drop immediately (works for both phases)
+    
     fetchRoute(pickupCoords, dropCoords, mainCtrl.signal).then((pts) => {
       if (mainCtrl.signal.aborted) return;
       setRoutePoints(pts);
-      setRouteReady(true); // loader clears immediately
+      setRouteReady(true); 
     });
 
-    // Step 2: for ASSIGNED phase only — try to upgrade to driver→pickup
+    
     if (isOtpWaiting) {
       const gpsCtrl = new AbortController();
       gpsFetchRef.current = gpsCtrl;
@@ -203,7 +203,7 @@ useEffect(() => {
       const tryGpsUpgrade = async () => {
         let driverSnap = null;
 
-        // Try browser GPS with a 6s timeout
+        
         try {
           driverSnap = await new Promise((resolve, reject) => {
             const tid = setTimeout(() => reject(new Error("timeout")), 6000);
@@ -217,14 +217,14 @@ useEffect(() => {
 
         if (gpsCtrl.signal.aborted || !driverSnap) return;
 
-        // Seed the marker immediately
+        
         setLiveDriver(driverSnap);
 
-        // Fetch driver→pickup and replace the route
+        
         const upgradedPts = await fetchRoute(driverSnap, pickupCoords, gpsCtrl.signal);
         if (gpsCtrl.signal.aborted) return;
         if (upgradedPts.length > 0) {
-          setRoutePoints(upgradedPts); // silently upgrades route, no loader flash
+          setRoutePoints(upgradedPts); 
         }
       };
 
@@ -235,7 +235,7 @@ useEffect(() => {
       mainCtrl.abort();
       if (gpsFetchRef.current) gpsFetchRef.current.abort();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [
     tripStatus,
     pickupCoords?.[0], pickupCoords?.[1],
@@ -247,7 +247,7 @@ useEffect(() => {
     if (gpsFetchRef.current) gpsFetchRef.current.abort();
   }, []);
 
-  // Push location to backend every 5s
+  
   usePolling(async () => {
     if (!profile?.driver_id || !activeTrip || isTripCompleted) return;
     try {
@@ -261,14 +261,14 @@ useEffect(() => {
     } catch (_) {}
   }, 5000, true);
 
-  // Guard after all hooks
+  
   if (
     !activeTrip ||
     activeTrip.pickup_lat == null || activeTrip.pickup_lng == null ||
     activeTrip.drop_lat   == null || activeTrip.drop_lng   == null
   ) return null;
 
-  /* OTP handlers */
+  
   const handleOtpChange = (e, index) => {
     if (/[^0-9]/.test(e.target.value)) return;
     const updated = [...otpInputs];

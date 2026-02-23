@@ -66,11 +66,11 @@
   color: var(--theme-font);
   background: transparent;
 
-  /* Fix browser autofill turning background black */
+  
   -webkit-text-fill-color: var(--theme-font);
 }
 
-/* Override Chrome/Safari autofill background */
+
 .search-box input:-webkit-autofill,
 .search-box input:-webkit-autofill:hover,
 .search-box input:-webkit-autofill:focus,

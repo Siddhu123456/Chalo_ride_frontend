@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'http://192.168.3.86:8000';
-// const API_URL = 'http://localhost:8000';
+
 
 const getInitialRoles = () => {
   try {
@@ -71,7 +71,7 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: localStorage.getItem('token') || null,
-    roles: getInitialRoles(),  // ← read from localStorage on reload
+    roles: getInitialRoles(),  
     authStep: 'CREDENTIALS',
     countries: [],
     loading: false,
@@ -91,7 +91,7 @@ const authSlice = createSlice({
       state.token = null;
       state.roles = [];
       localStorage.removeItem('token');
-      localStorage.removeItem('roles');  // ← clear roles on logout
+      localStorage.removeItem('roles');  
     },
   },
   extraReducers: (builder) => {
@@ -105,7 +105,7 @@ const authSlice = createSlice({
         state.user = { user_id: action.payload.user_id };
         state.roles = action.payload.roles;
         state.authStep = 'ROLE_SELECT';
-        // Store roles so they survive reload after selectRole
+        
         localStorage.setItem('roles', JSON.stringify(action.payload.roles));
       })
       .addCase(loginUser.rejected, (state, action) => {

@@ -16,16 +16,13 @@ const TripSummary = ({ ride, pickup, drop, onConfirm, onChange }) => {
     <div className="ts-card fade-in">
       <div className="ts-inner">
 
-        {/* Header */}
         <h3 className="ts-title">Confirm Your Ride</h3>
 
-        {/* Ride name + price — full width */}
         <div className="ts-summary-row">
           <span className="ts-ride-name">{ride.tenant_name || ride.name}</span>
           <span className="ts-ride-price">₹{Math.round(totalFare)}</span>
         </div>
 
-        {/* Route — locations shown fully, no truncation */}
         <div className="ts-route">
           <div className="ts-route-point">
             <div className="ts-route-icon pickup">
@@ -54,7 +51,6 @@ const TripSummary = ({ ride, pickup, drop, onConfirm, onChange }) => {
           </div>
         </div>
 
-        {/* Fare breakup */}
         <div className="ts-breakup">
           <div className="ts-fare-row">
             <span>Base Fare</span>
@@ -81,7 +77,7 @@ const TripSummary = ({ ride, pickup, drop, onConfirm, onChange }) => {
           </div>
         </div>
 
-        {/* Actions */}
+        
         <div className="ts-actions">
           <button className="ts-secondary-btn" onClick={onChange}>
             Change Ride

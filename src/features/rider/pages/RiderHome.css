@@ -103,10 +103,7 @@
     }
 }
 
-/* ═══════════════════════════════════════════════
-   NEARBY DRIVER PIN MARKERS
-   Add these to the bottom of your RiderHome.css
-   ═══════════════════════════════════════════════ */
+
 
 .rh-driver-pin {
   width: 36px;
@@ -138,7 +135,7 @@
   background: linear-gradient(135deg, #22c55e, #16a34a);
 }
 
-/* Accepted driver — larger, pulsing ring, stronger shadow */
+
 .rh-driver-pin--accepted {
   width: 46px;
   height: 46px;

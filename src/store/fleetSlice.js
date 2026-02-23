@@ -2,9 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const API_URL = "http://192.168.3.86:8000/fleet-owner";
-// const API_URL = "http://localhost:8000/fleet-owner";
+
 const WALLET_API_URL = "http://192.168.3.86:8000/wallet";
-// const WALLET_API_URL = "http://localhost:8000/wallet";
+
 
 
 const getHeaders = (isMultipart = false) => {
@@ -120,7 +120,7 @@ export const fetchFleetVehicles = createAsyncThunk(
   }
 );
 
-// GET /fleets/{fleet_id}/vehicles/unassigned — vehicles with no active driver assignment
+
 export const fetchUnassignedVehicles = createAsyncThunk(
   "fleet/fetchUnassignedVehicles",
   async (fleetId, { rejectWithValue }) => {
@@ -246,7 +246,7 @@ export const assignDriverToVehicle = createAsyncThunk(
   }
 );
 
-// PUT /{vehicle_id}/driver — change an existing driver assignment
+
 export const changeDriver = createAsyncThunk(
   "fleet/changeDriver",
   async ({ vehicleId, fleetId, payload }, { rejectWithValue, dispatch }) => {
@@ -418,7 +418,7 @@ const fleetSlice = createSlice({
     hasExistingFleet: null,
 
     vehicles: [],
-    unassignedVehicles: [],       // vehicles with no active driver
+    unassignedVehicles: [],       
     drivers: [],
     availableDrivers: [],
     assignments: [],
@@ -609,7 +609,7 @@ const fleetSlice = createSlice({
       .addMatcher((action) => action.type.endsWith("/fulfilled"), (state) => {
         state.loading = false;
       })
-// const API_URL = 'http://192.168.3.86:8000/admin';
+
       .addMatcher((action) => action.type.endsWith("/rejected"), (state, action) => {
         state.loading = false;
         state.error = action.payload || "Something went wrong";

@@ -20,13 +20,13 @@ import {
 
 import { respondOffer, generateOtp } from "../../../store/driverSlice";
 
-// ── CRITICAL: must import leaflet CSS before any map renders ──
+
 import "leaflet/dist/leaflet.css";
 import "./LeafletMapModal.css";
 
-// ── Fix broken default marker icons in Vite / webpack builds ──
-// Without this, Leaflet tries to load marker images from a path that
-// bundlers rewrite incorrectly, causing blank tiles AND broken markers.
+
+
+
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
@@ -34,9 +34,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl:     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 
-/* ─── OSRM direct fetch (no leaflet-routing-machine) ────────────────────────
-   Decodes a Google-encoded polyline into [[lat,lng], ...] pairs.
-────────────────────────────────────────────────────────────────────────────── */
+
 function decodePolyline(encoded) {
   const coords = [];
   let index = 0, lat = 0, lng = 0;
@@ -63,11 +61,11 @@ async function fetchRoute(from, to, signal) {
     if (data.code === "Ok" && data.routes?.[0]?.geometry) {
       return decodePolyline(data.routes[0].geometry);
     }
-  } catch (_) { /* AbortError or network error — silently ignore */ }
+  } catch (_) {  }
   return [];
 }
 
-/* ─── Custom marker icons (divIcon — no broken image paths) ─────────────── */
+
 const pickupMarkerIcon = L.divIcon({
   className: "",
   html: `<div class="lmm-pin lmm-pin--green">
@@ -104,7 +102,7 @@ const driverMarkerIcon = L.divIcon({
   iconSize: [44, 44], iconAnchor: [22, 22], tooltipAnchor: [22, -22],
 });
 
-/* ─── FitBounds — runs once after routes load ────────────────────────────── */
+
 const FitBounds = ({ points }) => {
   const map    = useMap();
   const didFit = useRef(false);
@@ -125,21 +123,21 @@ const FitBounds = ({ points }) => {
   return null;
 };
 
-/* ─── LeafletMapModal ────────────────────────────────────────────────────── */
+
 const LeafletMapModal = ({ offer, onClose }) => {
   const dispatch = useDispatch();
 
-  // All hooks before any conditional returns
+  
   const [driverCoords, setDriverCoords] = useState(null);
-  const [route1,       setRoute1]       = useState([]); // driver → pickup
-  const [route2,       setRoute2]       = useState([]); // pickup → drop
+  const [route1,       setRoute1]       = useState([]); 
+  const [route2,       setRoute2]       = useState([]); 
   const [routesReady,  setRoutesReady]  = useState(false);
   const [actionState,  setActionState]  = useState("idle");
   const watchIdRef  = useRef(null);
   const abortRef    = useRef(null);
   const resolvedRef = useRef(0);
 
-  // Watch driver geolocation
+  
   useEffect(() => {
     if (!offer) return;
     if (!("geolocation" in navigator)) return;
@@ -156,7 +154,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
     };
   }, [offer]);
 
-  // Fetch both OSRM routes once driver location is known
+  
   useEffect(() => {
     if (!offer || !driverCoords) return;
 
@@ -182,13 +180,13 @@ const LeafletMapModal = ({ offer, onClose }) => {
     });
 
     return () => ctrl.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  
   }, [driverCoords?.[0], driverCoords?.[1], offer?.attempt_id]);
 
-  // Cancel fetch on unmount
+  
   useEffect(() => () => { if (abortRef.current) abortRef.current.abort(); }, []);
 
-  // Guard after hooks
+  
   if (!offer) return null;
 
   const pickupCoords = [offer.pickup_lat, offer.pickup_lng];
@@ -305,10 +303,10 @@ const LeafletMapModal = ({ offer, onClose }) => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {/* Fit map to all points once routes are ready */}
+            
             {routesReady && <FitBounds points={allPoints} />}
 
-            {/* Route 1: driver → pickup (red dashed) */}
+            
             {route1.length > 1 && (
               <>
                 <Polyline positions={route1} pathOptions={{ color: "#ff3b30", weight: 7,  opacity: 0.12 }} />
@@ -316,7 +314,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
               </>
             )}
 
-            {/* Route 2: pickup → drop (indigo solid) */}
+            
             {route2.length > 1 && (
               <>
                 <Polyline positions={route2} pathOptions={{ color: "#4361ee", weight: 7,  opacity: 0.12 }} />
@@ -324,7 +322,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
               </>
             )}
 
-            {/* Driver marker */}
+            
             {driverCoords && (
               <Marker position={driverCoords} icon={driverMarkerIcon}>
                 <Tooltip direction="top" className="lmm-tooltip lmm-tooltip--driver">
@@ -336,7 +334,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
               </Marker>
             )}
 
-            {/* Pickup marker */}
+            
             <Marker position={pickupCoords} icon={pickupMarkerIcon}>
               <Tooltip direction="top" className="lmm-tooltip lmm-tooltip--pickup">
                 <div className="lmm-tooltip__inner">
@@ -346,7 +344,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
               </Tooltip>
             </Marker>
 
-            {/* Drop marker */}
+            
             <Marker position={dropCoords} icon={dropMarkerIcon}>
               <Tooltip direction="top" className="lmm-tooltip lmm-tooltip--drop">
                 <div className="lmm-tooltip__inner">
@@ -357,7 +355,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
             </Marker>
           </MapContainer>
 
-          {/* Legend */}
+          
           <div className="lmm-legend">
             <div className="lmm-legend__item">
               <span className="lmm-legend__line lmm-legend__line--red" />
@@ -370,7 +368,7 @@ const LeafletMapModal = ({ offer, onClose }) => {
           </div>
         </div>
 
-        {/* ── Actions ── */}
+        
         <div className="lmm-actions">
           <button
             className="lmm-btn lmm-btn--reject"

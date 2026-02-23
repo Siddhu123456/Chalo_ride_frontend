@@ -166,7 +166,7 @@
   flex-shrink: 0;
 }
 
-/* Ensure SVG icons (react-icons) inherit color and size predictably */
+
 .ds-icon,
 .ds-icon svg {
   color: var(--theme-font);
@@ -178,7 +178,7 @@
   display: block;
 }
 
-/* Hover and active contrast rules */
+
 .ds-link:hover .ds-icon,
 .ds-link:hover .ds-icon svg {
   color: var(--theme-border-yellow);

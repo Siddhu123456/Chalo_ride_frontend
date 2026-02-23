@@ -203,12 +203,7 @@ const FleetRegistration = () => {
             </p>
 
             <div className="fleet-dialog-actions">
-              {/* <button
-                className="fleet-dialog-btn fleet-dialog-btn--secondary"
-                onClick={() => navigate("/dashboard", { replace: true })}
-              >
-                Go to Dashboard
-              </button> */}
+              
               <button
                 className="fleet-dialog-btn"
                 onClick={handleDialogConfirm}

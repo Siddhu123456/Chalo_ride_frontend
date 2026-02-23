@@ -1,8 +1,6 @@
-/* ═══════════════════════════════════════════════════════════════════════════
-   LeafletMapModal.css
-   ═══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Overlay ── */
+
+
 .lmm-overlay {
   position: fixed;
   inset: 0;
@@ -22,13 +20,13 @@
   to   { opacity: 1; }
 }
 
-/* ── Modal card ── */
+
 .lmm-modal {
   background: #ffffff;
   border-radius: 20px;
   width: 100%;
   max-width: 680px;
-  /* No max-height here — let content define size naturally */
+  
   display: flex;
   flex-direction: column;
   box-shadow:
@@ -44,7 +42,7 @@
   to   { opacity: 1; transform: translateY(0)    scale(1);    }
 }
 
-/* ── Header ── */
+
 .lmm-header {
   display: flex;
   align-items: center;
@@ -88,7 +86,7 @@
   gap: 1rem;
 }
 
-/* ── Fare pill ── */
+
 .lmm-fare {
   display: flex;
   align-items: baseline;
@@ -112,7 +110,7 @@
   letter-spacing: -0.5px;
 }
 
-/* ── Close button ── */
+
 .lmm-close-btn {
   width: 32px;
   height: 32px;
@@ -136,7 +134,7 @@
   transform: scale(1.08);
 }
 
-/* ── Meta strip ── */
+
 .lmm-meta-strip {
   display: flex;
   align-items: center;
@@ -168,7 +166,7 @@
   flex-shrink: 0;
 }
 
-/* ── Route summary ── */
+
 .lmm-route-summary {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid #f0f1f3;
@@ -236,13 +234,7 @@
   opacity: 0.5;
 }
 
-/* ── Map wrapper ───────────────────────────────────────────────────────────
-   KEY RULES:
-   1. Explicit px height — Leaflet needs a real px value, not flex:1 / %.
-   2. touch-action: none — tells the browser THIS element handles touch,
-      so pinch-zoom stays inside the map and doesn't zoom the whole page.
-   3. overscroll-behavior: contain — stops scroll chaining to the page.
-────────────────────────────────────────────────────────────────────────────── */
+
 .lmm-map-wrap {
   position: relative;
   height: 320px;
@@ -250,17 +242,17 @@
   flex-shrink: 0;
   overflow: hidden;
   background: #e8eaed;
-  touch-action: none;             /* prevent browser from intercepting pinch-zoom */
-  overscroll-behavior: contain;   /* stop scroll chaining to parent / page       */
+  touch-action: none;             
+  overscroll-behavior: contain;   
 }
 
-/* Leaflet container fills the wrapper exactly */
+
 .lmm-map-wrap .leaflet-container {
   height: 100% !important;
   width: 100% !important;
 }
 
-/* ── Map loading overlay ── */
+
 .lmm-map-loader {
   position: absolute;
   inset: 0;
@@ -290,7 +282,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* ── Zoom control — keep top-right, away from legend ── */
+
 .lmm-map-wrap .leaflet-control-zoom {
   margin: 10px 10px 0 0;
   border: none !important;
@@ -320,7 +312,7 @@
   color: #000 !important;
 }
 
-/* ── Legend ── */
+
 .lmm-legend {
   position: absolute;
   bottom: 10px;
@@ -363,7 +355,7 @@
   background: #4361ee;
 }
 
-/* ── Action buttons row ── */
+
 .lmm-actions {
   display: flex;
   gap: 0.75rem;
@@ -372,7 +364,7 @@
   flex-shrink: 0;
 }
 
-/* ── Buttons ── */
+
 .lmm-btn {
   flex: 1;
   display: inline-flex;
@@ -402,7 +394,7 @@
   transform: scale(0.98) !important;
 }
 
-/* Reject */
+
 .lmm-btn--reject {
   background: #fff0f0;
   color: #dc3545;
@@ -419,7 +411,7 @@
   box-shadow: 0 4px 12px rgba(220, 53, 69, 0.35);
 }
 
-/* Accept */
+
 .lmm-btn--accept {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #fff;
@@ -437,7 +429,7 @@
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
 }
 
-/* Spinner inside button */
+
 .lmm-btn__spinner {
   width: 16px;
   height: 16px;
@@ -448,9 +440,7 @@
   flex-shrink: 0;
 }
 
-/* ══════════════════════════════════════════════
-   CUSTOM MARKER STYLES
-   ══════════════════════════════════════════════ */
+
 
 .lmm-pin {
   display: flex;
@@ -481,7 +471,7 @@
 .lmm-pin--green .lmm-pin__tail { background: #22c55e; }
 .lmm-pin--blue  .lmm-pin__tail { background: #4361ee; }
 
-/* Driver animated pin */
+
 .lmm-driver-pin {
   position: relative;
   width: 44px;
@@ -519,9 +509,7 @@
   z-index: 1;
 }
 
-/* ══════════════════════════════════════════════
-   TOOLTIP STYLES
-   ══════════════════════════════════════════════ */
+
 
 .lmm-tooltip.leaflet-tooltip {
   background: transparent !important;
@@ -577,7 +565,7 @@
 .lmm-tooltip--drop   .lmm-tooltip__inner strong { color: #818cf8; }
 .lmm-tooltip--driver .lmm-tooltip__inner strong { color: #fb8080; }
 
-/* ── Responsive ── */
+
 @media (max-width: 600px) {
   .lmm-modal { border-radius: 16px; }
   .lmm-map-wrap { height: 240px; }

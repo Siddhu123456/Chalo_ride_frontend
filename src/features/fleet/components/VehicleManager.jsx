@@ -36,7 +36,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
     }
   }, [fleetId, dispatch]);
 
-  // Refresh both lists when modal closes
+  
   const prevManage = React.useRef(selectedVehicleForManage);
   useEffect(() => {
     if (prevManage.current && !selectedVehicleForManage && fleetId) {
@@ -51,7 +51,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
     [unassignedVehicles]
   );
 
-  // Main filtered list — excludes unassigned vehicles entirely
+  
   const filteredVehicles = useMemo(() => {
     const list = Array.isArray(vehicles) ? vehicles : [];
 
@@ -66,7 +66,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
       filtered = list;
     }
 
-    // Remove unassigned vehicles — they live in their own section
+    
     return filtered.filter((v) => !unassignedIds.has(v.vehicle_id));
   }, [vehicles, unassignedIds, filter]);
 
@@ -104,7 +104,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
         </div>
       </div>
 
-      {/* ── Unassigned Vehicles Section ── */}
+      
       {unassignedVehicles.length > 0 && (
         <div className="vm-unassigned-section">
           <div className="vm-unassigned-header">
@@ -160,7 +160,7 @@ const VehicleManager = ({ fleetId, onAdd }) => {
         </div>
       )}
 
-      {/* ── Main Vehicles Section ── */}
+      
       <div className="vm-main-section">
         {unassignedVehicles.length > 0 && (
           <div className="vm-main-header">

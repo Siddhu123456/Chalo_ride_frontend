@@ -329,13 +329,13 @@ const TenantFinancials = () => {
         )}
       </div>
 
-      {/* Trips Modal */}
+      
       {viewingTrips && (
         <div className="tfin-modal-overlay" onClick={closeTripsModal}>
           <div className="tfin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="tfin-modal-header">
               <h2>Settlement Trips — #{viewingTrips}</h2>
-              {/* Plain × character — no icon dependency */}
+              
               <button className="tfin-modal-close" onClick={closeTripsModal} aria-label="Close">
                 ×
               </button>

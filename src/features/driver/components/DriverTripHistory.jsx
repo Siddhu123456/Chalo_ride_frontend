@@ -64,11 +64,11 @@ const DriverTripHistory = () => {
     const matchesSearch = !q || (
       (trip.pickup_address && trip.pickup_address.toLowerCase().includes(q)) ||
       (trip.drop_address   && trip.drop_address.toLowerCase().includes(q))   ||
-      // trip_id may be a number — convert safely to avoid crash
+      
       (trip.trip_id != null && String(trip.trip_id).toLowerCase().includes(q))
     );
 
-    // option values are UPPERCASE to match backend status strings exactly
+    
     const matchesFilter =
       filterStatus === "all" ||
       (trip.status && trip.status.toUpperCase() === filterStatus);
@@ -103,7 +103,7 @@ const DriverTripHistory = () => {
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
           >
-            {/* UPPERCASE values match backend TripStatusEnum exactly */}
+            
             <option value="all">All Trips</option>
             <option value="COMPLETED">Completed</option>
             <option value="CANCELLED">Cancelled</option>
