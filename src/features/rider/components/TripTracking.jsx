@@ -72,7 +72,6 @@ const TripTracking = ({ onNewRide }) => {
 
   const canCancelTrip = status === "REQUESTED" || status === "ASSIGNED";
 
-  /* ── SEARCHING ── */
   if (loading || status === "REQUESTED") {
     return (
       <div className="tt-card fade-in">
@@ -107,7 +106,6 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* ── ASSIGNED ── */
   if (status === "ASSIGNED") {
     return (
       <div className="tt-card fade-in">
@@ -160,7 +158,6 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* ── PICKED UP ── */
   if (status === "PICKED_UP") {
     return (
       <div className="tt-card fade-in">
@@ -187,7 +184,6 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* ── COMPLETED ── */
   if (status === "COMPLETED") {
     return (
       <div className="tt-card fade-in">
@@ -255,7 +251,6 @@ const TripTracking = ({ onNewRide }) => {
     );
   }
 
-  /* ── CANCELLED ── */
   if (status === "CANCELLED") {
     return (
       <div className="tt-card fade-in">
@@ -278,7 +273,6 @@ const TripTracking = ({ onNewRide }) => {
   return null;
 };
 
-/* ── CANCEL MODAL ── */
 const CancelModal = ({ cancelReason, setCancelReason, onCancel, onConfirm, cancelling }) => {
   const cancelReasons = [
     "Driver is taking too long",

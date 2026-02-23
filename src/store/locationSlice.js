@@ -38,7 +38,6 @@ const locationSlice = createSlice({
       state.pickup = initialState.pickup;
       state.drop = initialState.drop;
       state.isLoadingLocation = false;
-      // keep currentLocation unchanged
     },
   },
 });

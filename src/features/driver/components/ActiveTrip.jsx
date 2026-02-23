@@ -120,7 +120,7 @@ useEffect(() => {
   if (tripMissing || notActiveState) {
     cancelHandledRef.current = true;
 
-    alert("❌ Trip was cancelled by the rider");
+    alert(" Trip was cancelled by the rider");
     navigate("/driver/trip-offers", { replace: true });
   }
 }, [activeTrip, tripStatus, navigate]);

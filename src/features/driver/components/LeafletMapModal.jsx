@@ -231,7 +231,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
     <div className="lmm-overlay" onClick={onClose}>
       <div className="lmm-modal" onClick={(e) => e.stopPropagation()}>
 
-        {/* ── Header ── */}
         <div className="lmm-header">
           <div className="lmm-header__left">
             <span className="lmm-header__badge">Trip Offer</span>
@@ -248,7 +247,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
           </div>
         </div>
 
-        {/* ── Meta strip ── */}
         <div className="lmm-meta-strip">
           <div className="lmm-meta-item">
             <Navigation size={14} className="lmm-meta-item__icon" />
@@ -263,7 +261,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
           </div>
         </div>
 
-        {/* ── Route summary ── */}
         <div className="lmm-route-summary">
           <div className="lmm-route-point">
             <div className="lmm-route-point__dot lmm-route-point__dot--pickup" />
@@ -282,11 +279,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
           </div>
         </div>
 
-        {/* ── Map ── */}
-        {/*
-          stop wheel + touch events from bubbling past this div to the page.
-          Without this, scrolling/pinching inside the map zooms the entire browser window.
-        */}
         <div
           className="lmm-map-wrap"
           onWheel={(e) => e.stopPropagation()}
@@ -294,7 +286,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
           onTouchMove={(e) => e.stopPropagation()}
         >
 
-          {/* Loading overlay */}
           {(!driverCoords || !routesReady) && (
             <div className="lmm-map-loader">
               <div className="lmm-map-loader__spinner" />
@@ -302,11 +293,6 @@ const LeafletMapModal = ({ offer, onClose }) => {
             </div>
           )}
 
-          {/*
-            IMPORTANT: MapContainer must have an explicit pixel height.
-            scrollWheelZoom="center" zooms toward cursor without moving map center.
-            zoomControl={true} shows +/- buttons for click-to-zoom.
-          */}
           <MapContainer
             center={[centerLat, centerLng]}
             zoom={13}
